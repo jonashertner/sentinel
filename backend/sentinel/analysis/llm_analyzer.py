@@ -40,7 +40,7 @@ async def analyze_event(event: HealthEvent) -> HealthEvent:
 
     try:
         client = AsyncAnthropic(api_key=settings.anthropic_api_key)
-        model = "claude-haiku-4-5-20251001" if event.risk_score < 6.0 else "claude-sonnet-4-6"
+        model = "claude-opus-4-6"
 
         prompt = f"""Analyze this public health event:
 
