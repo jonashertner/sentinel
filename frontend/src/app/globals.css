@@ -58,3 +58,71 @@ body {
   transition-duration: 150ms;
   transition-timing-function: ease;
 }
+
+/* Map animations */
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes pulse-ring-slow {
+  0% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes threat-arc-flow {
+  0% { stroke-dashoffset: 20; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes critical-glow {
+  0%, 100% { filter: drop-shadow(0 0 2px currentColor); }
+  50% { filter: drop-shadow(0 0 8px currentColor); }
+}
+
+@keyframes marker-pulse {
+  0%, 100% { opacity: 0.7; r: inherit; }
+  50% { opacity: 1; }
+}
+
+@keyframes dot-travel {
+  0% { offset-distance: 0%; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: center;
+}
+
+.animate-pulse-ring-slow {
+  animation: pulse-ring-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: center;
+}
+
+.animate-threat-arc {
+  animation: threat-arc-flow 1s linear infinite;
+}
+
+.animate-critical-glow {
+  animation: critical-glow 2s ease-in-out infinite;
+}
+
+.map-tooltip {
+  pointer-events: none;
+  position: absolute;
+  z-index: 50;
+  border-radius: 6px;
+  border: 1px solid var(--color-sentinel-border);
+  background: var(--color-sentinel-surface);
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--color-sentinel-text);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
