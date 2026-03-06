@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: cd frontend && npm run build
         env:
-          NEXT_PUBLIC_BASE_PATH: ""
+          NEXT_PUBLIC_BASE_PATH: "/sentinel"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

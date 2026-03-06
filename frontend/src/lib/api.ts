@@ -1,6 +1,7 @@
 import type { HealthEvent, RiskCategory, Situation, Watchlist } from "./types";
 
-const DATA_BASE = process.env.NEXT_PUBLIC_DATA_PATH || "/data";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const DATA_BASE = process.env.NEXT_PUBLIC_DATA_PATH || `${BASE_PATH}/data`;
 
 async function fetchJson<T>(path: string): Promise<T> {
   const res = await fetch(`${DATA_BASE}${path}`);
