@@ -2,6 +2,7 @@ import json
 from datetime import date
 from pathlib import Path
 
+from sentinel.models.annotation import Annotation
 from sentinel.models.event import HealthEvent
 from sentinel.models.situation import Situation
 
@@ -55,3 +56,13 @@ class DataStore:
         for path in sorted(self.situations_dir.glob("*.json")):
             situations.append(Situation.model_validate_json(path.read_text()))
         return situations
+
+    def save_annotation(self, annotation: Annotation) -> None:
+        path = self.annotations_dir / f"{annotation.id}.json"
+        path.write_text(annotation.model_dump_json(indent=2))
+
+    def load_annotations(self) -> list[Annotation]:
+        annotations = []
+        for path in sorted(self.annotations_dir.glob("*.json")):
+            annotations.append(Annotation.model_validate_json(path.read_text()))
+        return annotations
