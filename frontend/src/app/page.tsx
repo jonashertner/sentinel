@@ -53,6 +53,24 @@ const REGION_ORDER = [
   "Western Pacific",
 ];
 
+const DISEASE_SHORT: Record<string, string> = {
+  "Avian influenza A(H5N1)": "H5N1 AI",
+  "Avian influenza A(H5N6)": "H5N6 AI",
+  "Avian influenza A(H7N9)": "H7N9 AI",
+  "Crimean-Congo haemorrhagic fever": "CCHF",
+  "Undiagnosed respiratory illness": "URI",
+  "Foot-and-mouth disease": "FMD",
+  "African swine fever": "ASF",
+  "Rift Valley fever": "RVF",
+  "Marburg virus disease": "Marburg",
+  "West Nile fever": "WNV",
+  "Mpox: recombinant virus with genomic elements of clades Ib and IIb": "Mpox Ib/IIb",
+};
+
+function shortenDisease(name: string): string {
+  return DISEASE_SHORT[name] || name;
+}
+
 const REGION_COLORS: Record<string, string> = {
   Europe: "#3b82f6",
   "Southeast Asia": "#f97316",
@@ -479,19 +497,14 @@ export default function CommandCenter() {
                   {allDiseases.map((disease) => (
                     <th
                       key={disease}
-                      className="px-3 py-2.5 text-center font-medium text-sentinel-text-muted"
+                      className="h-24 px-1 py-1 text-center font-medium text-sentinel-text-muted align-bottom"
                       title={disease}
                     >
-                      <span className="block max-w-[80px] truncate">
-                        {disease.replace("Avian influenza A(H5N1)", "H5N1 AI")
-                          .replace("Crimean-Congo haemorrhagic fever", "CCHF")
-                          .replace("Undiagnosed respiratory illness", "URI")
-                          .replace("Foot-and-mouth disease", "FMD")
-                          .replace("African swine fever", "ASF")
-                          .replace("Rift Valley fever", "RVF")
-                          .replace("Marburg virus disease", "Marburg")
-                          .replace("West Nile fever", "WNV")}
-                      </span>
+                      <div className="flex items-end justify-center h-full">
+                        <span className="-rotate-45 origin-bottom-left whitespace-nowrap text-[10px] block translate-x-2">
+                          {shortenDisease(disease)}
+                        </span>
+                      </div>
                     </th>
                   ))}
                   <th className="px-3 py-2.5 text-center font-semibold uppercase tracking-wider text-sentinel-text-muted">
@@ -621,15 +634,7 @@ export default function CommandCenter() {
               >
                 <div>
                   <p className="text-[11px] font-medium text-sentinel-text-secondary leading-none">
-                    {disease
-                      .replace("Avian influenza A(H5N1)", "H5N1 AI")
-                      .replace("Crimean-Congo haemorrhagic fever", "CCHF")
-                      .replace("Undiagnosed respiratory illness", "URI")
-                      .replace("Foot-and-mouth disease", "FMD")
-                      .replace("African swine fever", "ASF")
-                      .replace("Rift Valley fever", "RVF")
-                      .replace("Marburg virus disease", "Marburg")
-                      .replace("West Nile fever", "WNV")}
+                    {shortenDisease(disease)}
                   </p>
                   <p className="mt-1 text-[10px] font-mono text-sentinel-text-muted">
                     {total} events
