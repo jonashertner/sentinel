@@ -1,0 +1,42 @@
+[
+    {
+        "id": "wl-border",
+        "name": "Swiss Border Countries",
+        "diseases": [],
+        "countries": ["DE", "FR", "IT", "AT", "LI"],
+        "min_risk_score": 3.0,
+        "one_health_tags": []
+    },
+    {
+        "id": "wl-zoonotic",
+        "name": "BLV Priority Zoonoses",
+        "diseases": ["Avian influenza", "Avian influenza A(H5N1)", "Rabies", "Brucellosis", "Q fever", "West Nile fever"],
+        "countries": [],
+        "min_risk_score": 2.0,
+        "one_health_tags": ["zoonotic"]
+    },
+    {
+        "id": "wl-pandemic",
+        "name": "BAG Pandemic Watchlist",
+        "diseases": ["COVID-19", "Influenza A(H1N1)", "Mpox", "Ebola", "MERS", "Marburg"],
+        "countries": [],
+        "min_risk_score": 4.0,
+        "one_health_tags": []
+    },
+    {
+        "id": "wl-vector",
+        "name": "Vector-borne Disease Monitor",
+        "diseases": ["Dengue", "Zika", "Chikungunya", "West Nile fever"],
+        "countries": [],
+        "min_risk_score": 2.0,
+        "one_health_tags": ["vector-borne"]
+    },
+    {
+        "id": "wl-food",
+        "name": "Foodborne Outbreak Tracker",
+        "diseases": ["Salmonellosis", "Listeriosis", "Campylobacteriosis", "E. coli infection"],
+        "countries": [],
+        "min_risk_score": 2.0,
+        "one_health_tags": ["foodborne"]
+    }
+]
