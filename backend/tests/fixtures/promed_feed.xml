@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>ProMED-mail</title>
+    <link>https://promedmail.org</link>
+    <description>ProMED-mail alerts</description>
+    <item>
+      <title>PRO/AH/EDR> Avian influenza (57): Americas (USA) HPAI H5N1, poultry</title>
+      <link>https://promedmail.org/promed-post/?id=20260301.001</link>
+      <description>Highly pathogenic avian influenza H5N1 detected in poultry in the United States.</description>
+      <pubDate>Sat, 01 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>PRO> Measles update (12): Europe, vaccination</title>
+      <link>https://promedmail.org/promed-post/?id=20260302.002</link>
+      <description>Update on measles cases across Europe with focus on vaccination gaps.</description>
+      <pubDate>Mon, 02 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>PRO/AH> Rabies (03): Asia (India), dog, human exposure</title>
+      <link>https://promedmail.org/promed-post/?id=20260303.003</link>
+      <description>Rabies cases in dogs with human exposure reported in India.</description>
+      <pubDate>Tue, 03 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

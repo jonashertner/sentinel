@@ -1,0 +1,22 @@
+{
+  "signals": [
+    {
+      "title": "Cholera outbreak in Mozambique",
+      "summary": "Rising cholera cases reported in Mozambique following flooding.",
+      "url": "https://portal.who.int/eios/signal/2026-001",
+      "date": "2026-03-01",
+      "disease": "Cholera",
+      "countries": ["MZ"],
+      "species": "human"
+    },
+    {
+      "title": "Lassa fever cases in Nigeria",
+      "summary": "Seasonal increase in Lassa fever cases in southern Nigeria.",
+      "url": "https://portal.who.int/eios/signal/2026-002",
+      "date": "2026-03-02",
+      "disease": "Lassa fever",
+      "countries": ["NG"],
+      "species": "human"
+    }
+  ]
+}

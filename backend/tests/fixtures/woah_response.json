@@ -1,0 +1,40 @@
+{
+  "content": [
+    {
+      "reportId": 12345,
+      "disease": "Highly pathogenic avian influenza",
+      "diseaseName": "Highly pathogenic avian influenza",
+      "country": "Germany",
+      "countryIso": "DE",
+      "eventDate": "2026-03-01",
+      "title": "Highly pathogenic avian influenza - Germany",
+      "summary": "HPAI H5N1 detected in wild birds in northern Germany.",
+      "animalCategory": "Birds",
+      "species": "wild birds"
+    },
+    {
+      "reportId": 12346,
+      "disease": "African swine fever",
+      "diseaseName": "African swine fever",
+      "country": "Poland",
+      "countryIso": "PL",
+      "eventDate": "2026-02-28",
+      "title": "African swine fever - Poland",
+      "summary": "ASF confirmed in wild boar in eastern Poland.",
+      "animalCategory": "Suidae",
+      "species": "wild boar"
+    },
+    {
+      "reportId": 12347,
+      "disease": "Foot and mouth disease",
+      "diseaseName": "Foot and mouth disease",
+      "country": "Kenya",
+      "countryIso": "KE",
+      "eventDate": "2026-03-02",
+      "title": "Foot and mouth disease - Kenya",
+      "summary": "FMD outbreak in cattle reported in Kenya.",
+      "animalCategory": "Cattle",
+      "species": "cattle"
+    }
+  ]
+}

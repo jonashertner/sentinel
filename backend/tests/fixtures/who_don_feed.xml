@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>WHO Disease Outbreak News</title>
+    <link>https://www.who.int/emergencies/disease-outbreak-news</link>
+    <description>Disease Outbreak News from WHO</description>
+    <item>
+      <title>Avian Influenza A (H5N1) – Cambodia</title>
+      <link>https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-001</link>
+      <description>A case of human infection with avian influenza A(H5N1) virus was reported in Cambodia.</description>
+      <pubDate>Tue, 03 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mpox – Democratic Republic of the Congo</title>
+      <link>https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-002</link>
+      <description>An outbreak of mpox has been reported in the Democratic Republic of the Congo.</description>
+      <pubDate>Mon, 02 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Dengue – Brazil</title>
+      <link>https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-003</link>
+      <description>Increased dengue cases reported in Brazil during the 2025-2026 season.</description>
+      <pubDate>Sun, 01 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>ECDC - Communicable disease threats</title>
+    <link>https://www.ecdc.europa.eu</link>
+    <description>ECDC threat reports</description>
+    <item>
+      <title>Measles – multi-country outbreak in EU/EEA</title>
+      <link>https://www.ecdc.europa.eu/en/news-events/measles-multi-country-2026</link>
+      <description>Increase in measles cases reported across multiple EU/EEA countries.</description>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>West Nile virus – seasonal surveillance 2026</title>
+      <link>https://www.ecdc.europa.eu/en/news-events/wnv-2026</link>
+      <description>West Nile virus transmission season surveillance update for Europe.</description>
+      <pubDate>Tue, 03 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
