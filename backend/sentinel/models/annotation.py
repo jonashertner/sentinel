@@ -35,7 +35,7 @@ class Annotation(BaseModel):
     type: AnnotationType
     content: str
     visibility: Visibility
-    risk_override: float | None = None
+    risk_override: float | None = Field(default=None, ge=0.0, le=10.0)
     status_change: EventStatus | None = None
     linked_event_ids: list[str] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)

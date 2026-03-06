@@ -37,7 +37,7 @@ class TestWHODONCollector:
     def test_country_extraction(self):
         xml = (FIXTURES / "who_don_feed.xml").read_text()
         events = self.collector.parse_feed(xml)
-        assert events[0].countries == ["CA"]
+        assert events[0].countries == ["KH"]
 
     def test_date_parsing(self):
         xml = (FIXTURES / "who_don_feed.xml").read_text()

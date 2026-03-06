@@ -1,72 +1,106 @@
-"""ECDC Epidemiological Updates collector (replaces WHO EIOS for PoC).
+"""WHO EIOS (Epidemic Intelligence from Open Sources) collector.
 
-WHO EIOS requires institutional access credentials. This collector uses
-the ECDC publications/data feed which contains epidemiological updates,
-rapid risk assessments, and surveillance reports.
+NOTE: Production use requires EIOS access credentials. This collector provides
+a placeholder implementation that can be extended once credentials are available.
+The public EIOS API is not openly accessible; this collector uses a configurable
+endpoint and will gracefully return an empty list if access is unavailable.
 """
 
 import logging
-import re
 from datetime import date
 
-import feedparser
 import httpx
 
+from sentinel.analysis.normalizer import normalize_country
 from sentinel.collectors.base import BaseCollector
 from sentinel.models.event import HealthEvent, Source, Species
 
 logger = logging.getLogger(__name__)
 
-# ECDC epidemiological publications and data feed
-ECDC_EPID_FEED = "https://www.ecdc.europa.eu/en/taxonomy/term/2943/feed"
+EIOS_API_URL = "https://portal.who.int/eios/api/signals"
 
 
 class WHOEIOSCollector(BaseCollector):
-    """Collects ECDC epidemiological updates as supplementary European intelligence."""
-
     source_name = "WHO_EIOS"
 
-    def __init__(self, api_url: str = ECDC_EPID_FEED):
+    def __init__(self, api_url: str = EIOS_API_URL, api_key: str | None = None):
         self.api_url = api_url
+        self.api_key = api_key
 
     async def collect(self) -> list[HealthEvent]:
+        """Fetch signals from EIOS.
+
+        Returns an empty list if credentials are not configured or the API
+        is unreachable. This is expected behaviour for environments without
+        EIOS access.
+        """
         try:
-            async with httpx.AsyncClient(timeout=30, headers={"User-Agent": "SENTINEL/1.0"}) as client:
-                resp = await client.get(self.api_url)
+            headers = {}
+            if self.api_key:
+                headers["Authorization"] = f"Bearer {self.api_key}"
+
+            async with httpx.AsyncClient(
+                timeout=30,
+                headers={"User-Agent": "SENTINEL/1.0"},
+            ) as client:
+                resp = await client.get(self.api_url, headers=headers)
                 resp.raise_for_status()
-            return self._parse_feed(resp.text)
+            return self.parse_response(resp.json())
         except Exception:
-            logger.exception("Failed to collect ECDC epidemiological data")
+            logger.exception("Failed to collect WHO EIOS data (credentials may be required)")
             return []
 
-    def _parse_feed(self, xml: str) -> list[HealthEvent]:
-        feed = feedparser.parse(xml)
+    def parse_response(self, data: dict | list) -> list[HealthEvent]:
+        """Parse EIOS API response into HealthEvents."""
         events = []
-        for entry in feed.entries:
-            event = self._parse_entry(entry)
+        items = data if isinstance(data, list) else data.get("signals", data.get("items", []))
+        for item in items:
+            event = self._parse_item(item)
             if event:
                 events.append(event)
         return events
 
-    def _parse_entry(self, entry) -> HealthEvent | None:
-        title = entry.get("title", "")
-        link = entry.get("link", "")
-        summary = entry.get("summary", "")
-
-        if not title or not link:
+    def _parse_item(self, item: dict) -> HealthEvent | None:
+        title = item.get("title", "")
+        if not title:
             return None
 
-        # Strip HTML
-        clean_summary = re.sub(r"<[^>]+>", " ", summary).strip()
+        summary = item.get("summary", item.get("description", ""))
+        url = item.get("url", item.get("link", ""))
+        report_date = item.get("date", item.get("publishedDate", ""))
 
-        published = entry.get("published_parsed")
-        date_reported = (
-            date(published.tm_year, published.tm_mon, published.tm_mday)
-            if published
-            else date.today()
-        )
+        try:
+            date_reported = date.fromisoformat(report_date[:10]) if report_date else date.today()
+        except (ValueError, TypeError):
+            date_reported = date.today()
 
-        disease = self._extract_disease(title)
+        disease = item.get("disease", item.get("category", "Unknown"))
+        raw_countries = item.get("countries", [])
+        if isinstance(raw_countries, str):
+            raw_countries = [raw_countries]
+        elif not isinstance(raw_countries, list):
+            raw_countries = []
+        if not raw_countries:
+            country = item.get("country", "")
+            raw_countries = [country] if country else []
+
+        country_codes: list[str] = []
+        for raw_country in raw_countries:
+            for code in normalize_country(str(raw_country).strip()):
+                if code != "XX":
+                    country_codes.append(code)
+        if not country_codes:
+            country_codes = ["XX"]
+        else:
+            country_codes = sorted(set(country_codes))
+
+        species_str = item.get("species", "human")
+        if "animal" in str(species_str).lower():
+            species = Species.ANIMAL
+        elif "both" in str(species_str).lower():
+            species = Species.BOTH
+        else:
+            species = Species.HUMAN
 
         return HealthEvent(
             source=Source.WHO_EIOS,
@@ -74,14 +108,10 @@ class WHOEIOSCollector(BaseCollector):
             date_reported=date_reported,
             date_collected=date.today(),
             disease=disease,
-            countries=["EU"],
-            regions=["EURO"],
-            species=Species.HUMAN,
-            summary=clean_summary[:2000],
-            url=link,
-            raw_content=clean_summary,
+            countries=country_codes,
+            regions=[],
+            species=species,
+            summary=str(summary)[:2000],
+            url=str(url),
+            raw_content=str(item),
         )
-
-    def _extract_disease(self, title: str) -> str:
-        parts = re.split(r"\s*[–—,]\s*", title, maxsplit=1)
-        return parts[0].strip() if parts else title

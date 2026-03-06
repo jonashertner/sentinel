@@ -42,6 +42,20 @@ class TestWOAHCollector:
         assert events[0].countries == ["DE"]
         assert events[1].countries == ["PL"]
 
+    def test_country_name_fallback_normalization(self):
+        data = {
+            "content": [
+                {
+                    "reportId": 9999,
+                    "disease": "Foot and mouth disease",
+                    "country": "Kenya",
+                    "eventDate": "2026-03-02",
+                }
+            ]
+        }
+        events = self.collector.parse_response(data)
+        assert events[0].countries == ["KE"]
+
     def test_url_construction(self):
         data = json.loads((FIXTURES / "woah_response.json").read_text())
         events = self.collector.parse_response(data)

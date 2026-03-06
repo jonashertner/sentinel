@@ -48,7 +48,7 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     if settings.enable_woah:
         collectors.append(WOAHCollector())
     if settings.enable_who_eios:
-        collectors.append(WHOEIOSCollector())
+        collectors.append(WHOEIOSCollector(api_key=settings.who_eios_api_key or None))
 
     all_events = []
     for collector in collectors:

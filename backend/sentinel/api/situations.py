@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
-from sentinel.api.deps import get_store
+from sentinel.api.deps import get_store, require_write_access
 from sentinel.models.situation import Priority, Situation, SituationStatus
 from sentinel.store import DataStore
 
@@ -40,7 +40,11 @@ async def list_situations(store: DataStore = Depends(get_store)):
 
 
 @router.post("", response_model=Situation, status_code=201)
-async def create_situation(body: SituationCreate, store: DataStore = Depends(get_store)):
+async def create_situation(
+    body: SituationCreate,
+    store: DataStore = Depends(get_store),
+    _auth: None = Depends(require_write_access),
+):
     situation = Situation(**body.model_dump())
     store.save_situation(situation)
     return situation
@@ -59,6 +63,7 @@ async def update_situation(
     situation_id: str,
     body: SituationUpdate,
     store: DataStore = Depends(get_store),
+    _auth: None = Depends(require_write_access),
 ):
     situations = store.load_situations()
     for s in situations:
@@ -77,6 +82,7 @@ async def link_events(
     situation_id: str,
     body: EventLink,
     store: DataStore = Depends(get_store),
+    _auth: None = Depends(require_write_access),
 ):
     situations = store.load_situations()
     for s in situations:

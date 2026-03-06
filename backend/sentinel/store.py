@@ -1,7 +1,9 @@
 import json
+import os
 import re
 from datetime import date
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 from sentinel.models.annotation import Annotation
 from sentinel.models.event import HealthEvent
@@ -9,6 +11,16 @@ from sentinel.models.situation import Situation
 
 # Annotation IDs must be safe for use in filenames
 _SAFE_ID_RE = re.compile(r"^[a-zA-Z0-9_-]+$")
+
+
+def _atomic_write_text(path: Path, content: str) -> None:
+    """Write file contents atomically to avoid partial writes."""
+    with NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as tmp:
+        tmp.write(content)
+        tmp.flush()
+        os.fsync(tmp.fileno())
+        temp_path = Path(tmp.name)
+    temp_path.replace(path)
 
 
 class DataStore:
@@ -27,7 +39,7 @@ class DataStore:
     def save_events(self, day: date, events: list[HealthEvent]) -> None:
         path = self.events_dir / f"{day.isoformat()}.json"
         data = [e.model_dump(mode="json") for e in events]
-        path.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+        _atomic_write_text(path, json.dumps(data, indent=2, ensure_ascii=False))
 
     def load_events(self, day: date) -> list[HealthEvent]:
         path = self.events_dir / f"{day.isoformat()}.json"
@@ -45,7 +57,7 @@ class DataStore:
 
     def save_report(self, day: date, content: str) -> None:
         path = self.reports_dir / f"{day.isoformat()}-daily.md"
-        path.write_text(content)
+        _atomic_write_text(path, content)
 
     def load_report(self, day: date) -> str:
         path = self.reports_dir / f"{day.isoformat()}-daily.md"
@@ -53,7 +65,7 @@ class DataStore:
 
     def save_situation(self, situation: Situation) -> None:
         path = self.situations_dir / f"{situation.id}.json"
-        path.write_text(situation.model_dump_json(indent=2))
+        _atomic_write_text(path, situation.model_dump_json(indent=2))
 
     def load_situations(self) -> list[Situation]:
         situations = []
@@ -68,7 +80,7 @@ class DataStore:
         # Ensure resolved path stays within annotations directory
         if not path.resolve().is_relative_to(self.annotations_dir.resolve()):
             raise ValueError(f"Invalid annotation ID: {annotation.id!r}")
-        path.write_text(annotation.model_dump_json(indent=2))
+        _atomic_write_text(path, annotation.model_dump_json(indent=2))
 
     def load_annotations(self) -> list[Annotation]:
         annotations = []
@@ -104,4 +116,4 @@ class DataStore:
             "latest_collection": latest_collection or event_dates[-1] if event_dates else "",
         }
         path = self.base / "manifest.json"
-        path.write_text(json.dumps(manifest, indent=2))
+        _atomic_write_text(path, json.dumps(manifest, indent=2))

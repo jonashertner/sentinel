@@ -33,6 +33,7 @@ The pipeline needs an Anthropic API key to perform LLM analysis. Without it, the
 | Secret Name | Value | Required |
 |-------------|-------|----------|
 | `ANTHROPIC_API_KEY` | Your Anthropic API key (`sk-ant-...`) | Recommended |
+| `WHO_EIOS_API_KEY` | WHO EIOS API key (if your organization has access) | Optional |
 | `MAPBOX_TOKEN` | Your Mapbox public access token | Optional |
 
 The pipeline workflow references the secret as `${{ secrets.ANTHROPIC_API_KEY }}` and passes it to the Python process as the `SENTINEL_ANTHROPIC_API_KEY` environment variable.
@@ -176,9 +177,12 @@ All backend settings use the `SENTINEL_` prefix:
 | Variable | Default | Set Via |
 |----------|---------|---------|
 | `SENTINEL_ANTHROPIC_API_KEY` | `""` | GitHub Secret `ANTHROPIC_API_KEY` |
+| `SENTINEL_WHO_EIOS_API_KEY` | `""` | EIOS credential secret (if available) |
 | `SENTINEL_DATA_DIR` | `data` | Workflow env (set to `../data`) |
 | `SENTINEL_LOG_LEVEL` | `INFO` | Workflow env |
 | `SENTINEL_MAPBOX_TOKEN` | `""` | GitHub Secret `MAPBOX_TOKEN` |
+| `SENTINEL_API_ALLOWED_ORIGINS` | `http://localhost:3000,http://127.0.0.1:3000` | Backend env / deployment config |
+| `SENTINEL_API_WRITE_KEY` | `""` | Backend env / secret manager (protects mutating API routes via `X-API-Key`) |
 | `SENTINEL_ENABLE_WHO_DON` | `true` | Workflow env |
 | `SENTINEL_ENABLE_WHO_EIOS` | `true` | Workflow env |
 | `SENTINEL_ENABLE_PROMED` | `true` | Workflow env |

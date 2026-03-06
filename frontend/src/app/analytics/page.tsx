@@ -46,7 +46,7 @@ export default function AnalyticsPage() {
     });
 
     return { trendData: data, trendDiseases: diseases };
-  }, [events]);
+  }, [events, DATES]);
 
   // Source comparison
   const sourceData = useMemo(() => {
@@ -82,7 +82,7 @@ export default function AnalyticsPage() {
         avgSwissRelevance: Math.round(avgSwissRelevance * 10) / 10,
       };
     });
-  }, [events]);
+  }, [events, DATES]);
 
   // Disease breakdown: total events per disease, sorted desc
   const diseaseBreakdownData = useMemo(() => {

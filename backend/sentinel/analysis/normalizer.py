@@ -144,6 +144,8 @@ def normalize_country(text: str) -> list[str]:
     key = text.lower().strip()
     if not key:
         return ["XX"]
+    if key.upper() == "EU":
+        return ["EU"]
     # Already a valid 2-letter code (but not XX)
     if len(key) == 2 and key.upper() != "XX" and key.upper() in WHO_REGIONS:
         return [key.upper()]
@@ -160,6 +162,9 @@ def assign_who_regions(countries: list[str]) -> list[str]:
     """Assign WHO regions based on country codes."""
     regions = set()
     for c in countries:
+        if c == "EU":
+            regions.add("EURO")
+            continue
         if c in WHO_REGIONS:
             regions.add(WHO_REGIONS[c])
     return sorted(regions)

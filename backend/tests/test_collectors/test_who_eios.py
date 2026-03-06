@@ -36,6 +36,22 @@ class TestWHOEIOSCollector:
         events = self.collector.parse_response(data)
         assert events[0].countries == ["MZ"]
 
+    def test_country_name_normalization(self):
+        data = {
+            "signals": [
+                {
+                    "title": "Cholera update",
+                    "summary": "Update",
+                    "url": "https://example.com/signal",
+                    "date": "2026-03-03",
+                    "disease": "Cholera",
+                    "countries": ["Mozambique"],
+                }
+            ]
+        }
+        events = self.collector.parse_response(data)
+        assert events[0].countries == ["MZ"]
+
     def test_species_defaults_to_human(self):
         data = json.loads((FIXTURES / "who_eios_response.json").read_text())
         events = self.collector.parse_response(data)

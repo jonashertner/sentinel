@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from sentinel.api import analytics, annotations, events, exports, situations, watchlists
+from sentinel.config import settings
 
 app = FastAPI(
     title="SENTINEL API",
@@ -9,10 +10,18 @@ app = FastAPI(
     version="0.1.0",
 )
 
+configured_origins = [
+    origin.strip()
+    for origin in settings.api_allowed_origins.split(",")
+    if origin.strip()
+]
+allow_origins = configured_origins or ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # GitHub Pages domain in production
-    allow_credentials=True,
+    allow_origins=allow_origins,
+    # Browsers reject "*" + credentials, so only enable credentials for explicit origins.
+    allow_credentials=allow_origins != ["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )

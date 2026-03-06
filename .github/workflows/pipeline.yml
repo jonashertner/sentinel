@@ -24,6 +24,7 @@ jobs:
         run: cd backend && uv run python -m sentinel.pipeline
         env:
           SENTINEL_ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SENTINEL_WHO_EIOS_API_KEY: ${{ secrets.WHO_EIOS_API_KEY }}
           SENTINEL_DATA_DIR: ../data
       - name: Commit new data
         run: |

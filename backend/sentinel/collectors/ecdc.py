@@ -5,6 +5,7 @@ from datetime import date
 import feedparser
 import httpx
 
+from sentinel.analysis.normalizer import normalize_country
 from sentinel.collectors.base import BaseCollector
 from sentinel.models.event import HealthEvent, Source, Species
 
@@ -67,24 +68,29 @@ class ECDCCollector(BaseCollector):
         )
 
     def _extract_disease_and_countries(self, title: str) -> tuple[str, list[str]]:
-        # ECDC titles: "Report name, date range, week N" or "Disease - Country"
+        # ECDC titles are mixed ("Disease – context" or reports without countries).
         parts = re.split(r"\s*[–—]\s*", title, maxsplit=1)
         disease = parts[0].strip() if parts else title
-
-        # Remove trailing date/week info from disease name
         disease = re.sub(r",\s*\d{1,2}\s+\w+\s*$", "", disease)
         disease = re.sub(r",\s*week\s+\d+\s*$", "", disease, flags=re.IGNORECASE)
 
-        countries: list[str] = []
-        if len(parts) > 1:
-            location = parts[1].strip()
-            location_clean = re.sub(
-                r",?\s*week\s+\d+.*$", "", location, flags=re.IGNORECASE,
-            ).strip()
-            if location_clean:
-                # Pass full country names — normalizer will resolve to ISO codes
-                for segment in re.split(r"[,/]|\band\b", location_clean):
-                    name = segment.strip()
-                    if name:
-                        countries.append(name)
-        return disease, countries if countries else ["EU"]
+        if len(parts) == 1:
+            return disease, ["EU"]
+
+        location = re.sub(r",?\s*week\s+\d+.*$", "", parts[1], flags=re.IGNORECASE).strip()
+        if not location:
+            return disease, ["EU"]
+
+        if "eu/eea" in location.lower() or "europe" in location.lower():
+            return disease, ["EU"]
+
+        country_codes: list[str] = []
+        for segment in re.split(r"[,/]|\band\b", location):
+            candidate = segment.strip()
+            if not candidate:
+                continue
+            for code in normalize_country(candidate):
+                if code != "XX":
+                    country_codes.append(code)
+
+        return disease, sorted(set(country_codes)) if country_codes else ["EU"]

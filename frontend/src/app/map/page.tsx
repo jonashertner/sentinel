@@ -1,18 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { loadEvents, loadAllEvents } from "@/lib/api";
+import { getManifest, loadEvents, loadAllEvents } from "@/lib/api";
 import type { HealthEvent } from "@/lib/types";
 import { GlobalMap } from "@/components/maps/GlobalMap";
 
 export default function MapPage() {
   const [events, setEvents] = useState<HealthEvent[]>([]);
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [loading, setLoading] = useState(true);
   const [viewAll, setViewAll] = useState(true);
 
   useEffect(() => {
-    const fetcher = viewAll ? loadAllEvents() : loadEvents(selectedDate);
+    getManifest()
+      .then((manifest) => {
+        setAvailableDates(manifest.event_dates);
+        setSelectedDate((current) => (
+          current || manifest.event_dates[manifest.event_dates.length - 1] || ""
+        ));
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const fetcher = viewAll || !selectedDate ? loadAllEvents() : loadEvents(selectedDate);
     fetcher
       .then(setEvents)
       .catch(() => setEvents([]))
@@ -20,6 +32,7 @@ export default function MapPage() {
   }, [selectedDate, viewAll]);
 
   const handleDateChange = (date: string) => {
+    setLoading(true);
     setSelectedDate(date);
     setViewAll(false);
   };
@@ -38,7 +51,10 @@ export default function MapPage() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setViewAll(true)}
+            onClick={() => {
+              setLoading(true);
+              setViewAll(true);
+            }}
             className={`rounded px-3 py-1.5 text-[11px] font-medium ${
               viewAll
                 ? "bg-sentinel-text text-sentinel-bg"
@@ -64,6 +80,7 @@ export default function MapPage() {
           <GlobalMap
             events={events}
             selectedDate={selectedDate}
+            availableDates={availableDates}
             onDateChange={handleDateChange}
           />
         )}

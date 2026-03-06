@@ -39,6 +39,7 @@ const RISK_ORDER: Record<RiskCategory, number> = {
 interface GlobalMapProps {
   events: HealthEvent[];
   selectedDate: string;
+  availableDates?: string[];
   onDateChange: (date: string) => void;
 }
 
@@ -55,6 +56,7 @@ interface TooltipState {
 export function GlobalMap({
   events,
   selectedDate,
+  availableDates,
   onDateChange,
 }: GlobalMapProps) {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
@@ -63,10 +65,11 @@ export function GlobalMap({
   const svgRef = useRef<SVGSVGElement>(null);
 
   // Derive available dates from events
-  const DATES = useMemo(() => {
+  const inferredDates = useMemo(() => {
     const dateSet = new Set(events.map((e) => e.date_reported));
     return [...dateSet].sort();
   }, [events]);
+  const DATES = availableDates && availableDates.length > 0 ? availableDates : inferredDates;
 
   // --- Zoom / Pan state ---
   const [zoom, setZoom] = useState(1);
