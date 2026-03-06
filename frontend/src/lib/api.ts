@@ -1,4 +1,4 @@
-import type { HealthEvent, Situation, Watchlist } from "./types";
+import type { HealthEvent, RiskCategory, Situation, Watchlist } from "./types";
 
 const DATA_BASE = process.env.NEXT_PUBLIC_DATA_PATH || "/data";
 
@@ -8,8 +8,23 @@ async function fetchJson<T>(path: string): Promise<T> {
   return res.json();
 }
 
+function deriveRiskCategory(score: number): RiskCategory {
+  if (score >= 8) return "CRITICAL";
+  if (score >= 6) return "HIGH";
+  if (score >= 4) return "MEDIUM";
+  return "LOW";
+}
+
+function enrichEvent(event: HealthEvent): HealthEvent {
+  if (!event.risk_category) {
+    return { ...event, risk_category: deriveRiskCategory(event.risk_score) };
+  }
+  return event;
+}
+
 export async function loadEvents(date: string): Promise<HealthEvent[]> {
-  return fetchJson(`/events/${date}.json`);
+  const events = await fetchJson<HealthEvent[]>(`/events/${date}.json`);
+  return events.map(enrichEvent);
 }
 
 export async function loadAllEvents(): Promise<HealthEvent[]> {

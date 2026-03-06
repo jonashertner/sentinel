@@ -1,0 +1,30 @@
+{
+    "id": "sit-002-dengue-sea",
+    "title": "Dengue Fever Surge \u2014 Southeast Asia 2026",
+    "status": "ACTIVE",
+    "created": "2026-03-01",
+    "updated": "2026-03-06T10:00:00Z",
+    "events": [
+        "evt-20260301-002",
+        "evt-20260303-003",
+        "evt-20260305-002",
+        "evt-20260306-002"
+    ],
+    "diseases": ["Dengue"],
+    "countries": ["TH", "VN", "ID"],
+    "lead_analyst": "Dr. Marco B\u00fchlmann",
+    "priority": "P2",
+    "summary": "Coordinated dengue surge across Thailand, Vietnam, and Indonesia with combined cases exceeding 155,000 and over 315 deaths in 2026. Multiple serotypes co-circulating increases risk of severe dengue. ECDC has issued a regional travel advisory. The situation is primarily relevant for Swiss traveller health and imported case management.",
+    "annotations": [],
+    "swiss_impact_assessment": "MODERATE \u2014 Southeast Asia is a popular destination for Swiss travellers, particularly during spring months. Increased dengue activity will likely result in more imported cases. BAG should update travel health advisories and ensure clinician awareness of dengue diagnostic protocols for returning travellers with febrile illness.",
+    "recommended_actions": [
+        "Update BAG travel health advisories for Thailand, Vietnam, and Indonesia",
+        "Brief Swiss travel medicine providers on elevated dengue risk",
+        "Ensure dengue rapid diagnostic tests available at major Swiss hospitals",
+        "Coordinate with ECDC on travel advisory alignment",
+        "Monitor imported dengue case numbers in Swiss surveillance data"
+    ],
+    "human_health_status": "ACTIVE \u2014 155,000+ cases and 315+ deaths across TH, VN, ID in 2026. Multiple serotypes co-circulating.",
+    "animal_health_status": null,
+    "environmental_status": "Above-average rainfall and warm temperatures expanding Aedes mosquito habitat across the region."
+}

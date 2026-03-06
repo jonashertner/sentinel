@@ -1,0 +1,35 @@
+{
+    "id": "sit-001-h5n1",
+    "title": "H5N1 Avian Influenza \u2014 European Poultry Outbreaks 2026",
+    "status": "ESCALATED",
+    "created": "2026-03-01",
+    "updated": "2026-03-06T08:00:00Z",
+    "events": [
+        "evt-20260301-001",
+        "evt-20260302-001",
+        "evt-20260303-001",
+        "evt-20260303-002",
+        "evt-20260304-001",
+        "evt-20260305-001",
+        "evt-20260306-001"
+    ],
+    "diseases": ["Avian influenza A(H5N1)"],
+    "countries": ["NL", "DE", "FR", "AT"],
+    "lead_analyst": "Dr. Sarah Keller",
+    "priority": "P1",
+    "summary": "Rapidly evolving H5N1 situation in European poultry with confirmed cases moving closer to Swiss borders. Wild bird detections along the Rhine corridor suggest ongoing introduction via migratory routes. German case near Basel region is of immediate concern for Swiss poultry farms. Austrian suspected case in Vorarlberg adds a third border front.",
+    "annotations": [],
+    "swiss_impact_assessment": "HIGH \u2014 H5N1 clade 2.3.4.4b detected in commercial poultry in Germany (Baden-W\u00fcrttemberg) and wild birds in France along the Rhine. Suspected case in Austrian Vorarlberg near Lake Constance. Swiss poultry sector at direct risk on multiple borders. BLV should consider heightened biosecurity measures and enhanced wild bird surveillance in northwestern and northeastern Switzerland.",
+    "recommended_actions": [
+        "Alert cantonal veterinary offices in BS, BL, AG, ZH, SG, TG",
+        "Increase wild bird surveillance along Rhine and Lake Constance",
+        "Review poultry farm biosecurity compliance in border cantons",
+        "Coordinate with German, French, and Austrian veterinary authorities",
+        "Pre-position H5N1 test kits at cantonal labs",
+        "Issue guidance to poultry farmers on enhanced biosecurity measures",
+        "Consider mandatory housing orders for free-range poultry in high-risk zones"
+    ],
+    "human_health_status": "No human cases in Europe. Low risk of human infection with current clade 2.3.4.4b.",
+    "animal_health_status": "CRITICAL \u2014 Active outbreaks in NL, DE, FR poultry. Suspected case in AT. Wild bird die-offs reported along Rhine corridor.",
+    "environmental_status": "Wild bird migration actively spreading virus along European flyways. Rhine corridor and Lake Constance identified as high-risk zones."
+}

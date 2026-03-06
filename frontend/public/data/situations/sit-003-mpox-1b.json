@@ -1,0 +1,31 @@
+{
+    "id": "sit-003-mpox-1b",
+    "title": "Mpox Clade Ib \u2014 East Africa Regional Spread 2026",
+    "status": "ACTIVE",
+    "created": "2026-03-02",
+    "updated": "2026-03-06T09:30:00Z",
+    "events": [
+        "evt-20260302-002",
+        "evt-20260304-002",
+        "evt-20260305-003",
+        "evt-20260306-003"
+    ],
+    "diseases": ["Mpox"],
+    "countries": ["CD", "BI", "RW"],
+    "lead_analyst": "Dr. Amina Bosshard",
+    "priority": "P2",
+    "summary": "Mpox clade Ib continues to expand geographically in East Africa. Confirmed cross-border transmission from DRC to Burundi and now Rwanda. Over 2,100 cumulative cases with sustained human-to-human transmission. WHO is considering reconvening the IHR Emergency Committee. Vaccine supply remains insufficient for containment strategy in affected countries.",
+    "annotations": [],
+    "swiss_impact_assessment": "MODERATE \u2014 International spread of mpox clade Ib is an evolving concern. While no cases have been reported in Europe, the expanding geographic range increases the probability of importation. BAG should maintain active surveillance for mpox in travellers from East/Central Africa and verify MVA-BN vaccine stockpiles. Joint BLV-BAG monitoring is warranted given the zoonotic origin of the pathogen.",
+    "recommended_actions": [
+        "Maintain active mpox surveillance at Swiss points of entry",
+        "Verify MVA-BN vaccine stockpiles and cold chain capacity",
+        "Review mpox diagnostic protocols with reference laboratories",
+        "Monitor WHO IHR Emergency Committee deliberations",
+        "Brief cantonal health departments on mpox clade Ib clinical presentation",
+        "Coordinate with ECDC on case definitions and reporting"
+    ],
+    "human_health_status": "ACTIVE \u2014 2,100+ confirmed cases across DRC, Burundi, and Rwanda. 35 deaths. Sustained human-to-human transmission.",
+    "animal_health_status": "Zoonotic reservoir (rodents) active in DRC forest zones. No new animal-to-human spillover events reported.",
+    "environmental_status": "Deforestation and mining activities in DRC continue to increase human-wildlife interface contact."
+}
