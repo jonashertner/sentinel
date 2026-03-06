@@ -17,6 +17,7 @@ import {
   Shield,
   Sun,
   Moon,
+  Monitor,
   Menu,
   X,
 } from "lucide-react";
@@ -37,7 +38,13 @@ const AGENCIES = ["BLV", "BAG", "Joint"] as const;
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { theme, toggle: toggleTheme } = useTheme();
+  const { theme, mode, setMode } = useTheme();
+  const cycleTheme = () => {
+    const next = mode === "system" ? "light" : mode === "light" ? "dark" : "system";
+    setMode(next);
+  };
+  const ThemeIcon = mode === "system" ? Monitor : theme === "dark" ? Sun : Moon;
+  const themeLabel = mode === "system" ? "System" : mode === "light" ? "Light" : "Dark";
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [agency, setAgency] = useState<(typeof AGENCIES)[number]>("Joint");
@@ -154,27 +161,19 @@ export function Sidebar() {
         <div className="border-t border-sentinel-border px-2 py-2">
           {showLabels ? (
             <button
-              onClick={toggleTheme}
+              onClick={cycleTheme}
               className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-[12px] font-medium text-sentinel-text-muted hover:bg-sentinel-surface-hover hover:text-sentinel-text-secondary"
             >
-              {theme === "dark" ? (
-                <Sun className="h-3.5 w-3.5" strokeWidth={1.5} />
-              ) : (
-                <Moon className="h-3.5 w-3.5" strokeWidth={1.5} />
-              )}
-              <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+              <ThemeIcon className="h-3.5 w-3.5" strokeWidth={1.5} />
+              <span>{themeLabel}</span>
             </button>
           ) : (
             <button
-              onClick={toggleTheme}
+              onClick={cycleTheme}
               className="flex w-full items-center justify-center py-2 text-sentinel-text-muted hover:text-sentinel-text-secondary"
-              title={theme === "dark" ? "Light mode" : "Dark mode"}
+              title={themeLabel}
             >
-              {theme === "dark" ? (
-                <Sun className="h-3.5 w-3.5" strokeWidth={1.5} />
-              ) : (
-                <Moon className="h-3.5 w-3.5" strokeWidth={1.5} />
-              )}
+              <ThemeIcon className="h-3.5 w-3.5" strokeWidth={1.5} />
             </button>
           )}
         </div>
