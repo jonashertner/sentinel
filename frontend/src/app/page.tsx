@@ -15,12 +15,33 @@ import { VERIFICATION_STYLES } from "@/lib/constants";
 // DATES derived from loaded events in the component
 
 const WHO_REGION_NAMES: Record<string, string> = {
+  // WHO region codes
   EURO: "Europe",
   SEARO: "Southeast Asia",
   AFRO: "Africa",
   AMRO: "Americas",
   EMRO: "Middle East",
   WPRO: "Western Pacific",
+  // Sub-region normalization
+  "West Africa": "Africa",
+  "East Africa": "Africa",
+  "Central Africa": "Africa",
+  "North Africa": "Africa",
+  "Southern Africa": "Africa",
+  "Central Asia": "Middle East",
+  "South Asia": "Southeast Asia",
+  "East Asia": "Western Pacific",
+  "South America": "Americas",
+  "Central America": "Americas",
+  "North America": "Americas",
+  "Caribbean": "Americas",
+  // Pass-through for already-normalized values
+  Europe: "Europe",
+  Africa: "Africa",
+  "Southeast Asia": "Southeast Asia",
+  Americas: "Americas",
+  "Middle East": "Middle East",
+  "Western Pacific": "Western Pacific",
 };
 
 const REGION_ORDER = [
