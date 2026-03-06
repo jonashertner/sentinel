@@ -89,6 +89,16 @@ export const COUNTRY_NAMES: Record<string, string> = {
   KE: "Kenya",
 };
 
+export const VERIFICATION_STYLES: Record<
+  string,
+  { label: string; color: string; bg: string }
+> = {
+  UNVERIFIED: { label: "Unverified", color: "text-amber-400", bg: "bg-amber-500/10" },
+  PENDING: { label: "Pending", color: "text-sky-400", bg: "bg-sky-500/10" },
+  CONFIRMED: { label: "Confirmed", color: "text-emerald-400", bg: "bg-emerald-500/10" },
+  REFUTED: { label: "Refuted", color: "text-red-400", bg: "bg-red-500/10" },
+};
+
 export const PRIORITY_LABELS = {
   P1: { label: "Immediate", color: "text-sentinel-critical" },
   P2: { label: "High", color: "text-sentinel-high" },

@@ -1,107 +1,163 @@
 [
-    {
-        "id": "evt-20260304-001",
-        "source": "PROMED",
-        "title": "H5N1 detected in wild birds along Rhine corridor, eastern France",
-        "date_reported": "2026-03-04",
-        "date_collected": "2026-03-04",
-        "disease": "Avian influenza A(H5N1)",
-        "pathogen": "Influenza A virus (H5N1) clade 2.3.4.4b",
-        "countries": ["FR"],
-        "regions": ["Europe"],
-        "species": "animal",
-        "case_count": 15,
-        "death_count": 15,
-        "summary": "ProMED reports H5N1 HPAI detection in wild birds along the Rhine corridor in Alsace, eastern France. 15 dead waterfowl (common pochard and tufted duck) tested positive in the Haut-Rhin department. The detection area is approximately 30 km from the Swiss border at Basel. French authorities have activated enhanced poultry surveillance in the Grand Est region.",
-        "url": "https://promedmail.org/promed-post/?id=2026030400001",
-        "raw_content": "ProMED-mail post: Avian influenza, H5N1 — France (Alsace, Haut-Rhin). Wild bird die-off along Rhine. 15 positive: Aythya ferina, Aythya fuligula. Clade 2.3.4.4b. ~30 km from Swiss border. Grand Est region under enhanced surveillance. French veterinary authorities notify EU member states.",
-        "risk_score": 8.0,
-        "swiss_relevance": 9.0,
-        "one_health_tags": ["zoonotic"],
-        "analysis": "H5N1 detection in Alsace completes a concerning pattern of virus circulation on both sides of the Rhine, directly adjacent to northwestern Switzerland. The Haut-Rhin department borders canton Basel-Landschaft and is connected by shared wetland habitats. Combined with the German detections, Switzerland is now flanked by active H5N1 circulation on two borders. BLV should consider activating its avian influenza contingency plan and coordinating directly with French and German veterinary authorities through established bilateral channels."
-    },
-    {
-        "id": "evt-20260304-002",
-        "source": "PROMED",
-        "title": "Mpox clade Ib — first confirmed cases in Burundi",
-        "date_reported": "2026-03-04",
-        "date_collected": "2026-03-03",
-        "disease": "Mpox",
-        "pathogen": "Monkeypox virus clade Ib",
-        "countries": ["BI"],
-        "regions": ["East Africa"],
-        "species": "human",
-        "case_count": 23,
-        "death_count": 1,
-        "summary": "Burundi's Ministry of Health has confirmed 23 cases of mpox clade Ib, including 1 death, in Bujumbura and Cibitoke provinces. This marks the first confirmed clade Ib cases in Burundi. Epidemiological investigation indicates cross-border transmission from DRC via the Gatumba border crossing. Contact tracing and ring vaccination initiated.",
-        "url": "https://promedmail.org/promed-post/?id=2026030400002",
-        "raw_content": "ProMED-mail post: Mpox, clade Ib — Burundi (first report). 23 confirmed cases, 1 death. Bujumbura and Cibitoke provinces. Cross-border link to DRC. Clade Ib confirmed by Africa CDC reference lab. Ring vaccination with MVA-BN initiated.",
-        "risk_score": 7.0,
-        "swiss_relevance": 3.5,
-        "one_health_tags": ["zoonotic"],
-        "analysis": "The cross-border spread of mpox clade Ib to Burundi confirms the expansion of this lineage beyond DRC and represents a significant epidemiological development. Burundi's limited diagnostic and surveillance capacity may mean the true case count is higher. The border crossing route of transmission suggests that other neighbouring countries (Rwanda, Uganda) are also at risk. International spread potential is increasing as the geographic range expands."
-    },
-    {
-        "id": "evt-20260304-003",
-        "source": "ECDC",
-        "title": "Salmonella Enteritidis outbreak linked to imported eggs, Netherlands",
-        "date_reported": "2026-03-04",
-        "date_collected": "2026-03-04",
-        "disease": "Salmonellosis",
-        "pathogen": "Salmonella enterica serovar Enteritidis ST11",
-        "countries": ["NL"],
-        "regions": ["Europe"],
-        "species": "human",
-        "case_count": 89,
-        "death_count": 0,
-        "summary": "ECDC reports a multi-country Salmonella Enteritidis outbreak linked to imported eggs from a Dutch packing centre. 89 confirmed cases across Netherlands (52), Germany (23), Belgium (9), and Luxembourg (5). Whole genome sequencing confirms a single-source cluster (ST11). RASFF notification issued. Product recall underway for implicated egg batches.",
-        "url": "https://www.ecdc.europa.eu/en/news-events/salmonella-enteritidis-eggs-netherlands-2026",
-        "raw_content": "ECDC Rapid Outbreak Assessment: Salmonella Enteritidis ST11 — multi-country outbreak linked to eggs from Netherlands. 89 cases: NL 52, DE 23, BE 9, LU 5. RASFF alert 2026.1247. Product recall initiated. Implicated batches distributed to 8 EU countries including Switzerland.",
-        "risk_score": 5.5,
-        "swiss_relevance": 7.0,
-        "one_health_tags": ["foodborne"],
-        "analysis": "This multi-country Salmonella outbreak is directly relevant to Switzerland as implicated egg batches were distributed to Swiss retailers. BLV should urgently verify whether any recalled batches entered the Swiss food chain and coordinate with cantonal food inspectors for product withdrawal if needed. The ST11 sequence type indicates a well-characterized lineage. Rapid RASFF follow-up is essential to prevent further cases in Switzerland."
-    },
-    {
-        "id": "evt-20260304-004",
-        "source": "ECDC",
-        "title": "COVID-19 variant KP.3.1.2 becoming dominant in European wastewater surveillance",
-        "date_reported": "2026-03-04",
-        "date_collected": "2026-03-04",
-        "disease": "COVID-19",
-        "pathogen": "SARS-CoV-2 KP.3.1.2",
-        "countries": ["DE", "FR", "NL", "BE"],
-        "regions": ["Europe"],
-        "species": "human",
-        "case_count": null,
-        "death_count": null,
-        "summary": "ECDC wastewater surveillance report indicates SARS-CoV-2 variant KP.3.1.2 is becoming dominant across multiple European countries. Wastewater viral loads are increasing in Germany, France, Netherlands, and Belgium. Hospitalization rates remain stable. No evidence of increased virulence compared to predecessor variants.",
-        "url": "https://www.ecdc.europa.eu/en/covid-19/surveillance/wastewater-monitoring-2026-week10",
-        "raw_content": "ECDC COVID-19 Wastewater Monitoring Report, Week 10/2026: KP.3.1.2 increasing in prevalence. Dominant in DE (62%), FR (55%), NL (48%), BE (51%). Viral loads rising. Hospitalizations stable. No immune escape signals beyond expected evolution.",
-        "risk_score": 3.0,
-        "swiss_relevance": 4.0,
-        "one_health_tags": [],
-        "analysis": "The emergence of KP.3.1.2 as the dominant SARS-CoV-2 variant in Western Europe follows expected evolutionary patterns. Rising wastewater viral loads suggest increasing community transmission, though stable hospitalization rates indicate no significant change in clinical severity. Swiss wastewater surveillance should be cross-referenced with this European data. BAG may wish to issue routine seasonal guidance on COVID-19 prevention for vulnerable populations, but no emergency measures are indicated."
-    },
-    {
-        "id": "evt-20260304-005",
-        "source": "WHO_DON",
-        "title": "Yellow fever outbreak expanding in Nigeria — Lagos state affected",
-        "date_reported": "2026-03-04",
-        "date_collected": "2026-03-03",
-        "disease": "Yellow fever",
-        "pathogen": "Yellow fever virus",
-        "countries": ["NG"],
-        "regions": ["West Africa"],
-        "species": "human",
-        "case_count": 156,
-        "death_count": 23,
-        "summary": "WHO reports an expanding yellow fever outbreak in Nigeria with cases now confirmed in Lagos state. 156 confirmed cases and 23 deaths across 8 states. Reactive vaccination campaigns underway in affected states with WHO support.",
-        "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-yellow-fever-nigeria",
-        "raw_content": "WHO Disease Outbreak News: Yellow fever — Nigeria. 156 confirmed cases, 23 deaths, 8 states affected including Lagos. CFR 14.7%. Reactive vaccination in 5 states. ICG vaccine release approved.",
-        "risk_score": 5.0,
-        "swiss_relevance": 2.0,
-        "one_health_tags": ["vector-borne"],
-        "analysis": "Yellow fever in Lagos state is concerning due to the megacity's population density and potential for explosive urban transmission. The 14.7% CFR among confirmed cases reflects the severity of the disease. Swiss travellers to Nigeria should verify yellow fever vaccination status. Risk of importation to Switzerland is low given mandatory vaccination requirements for travellers."
-    }
+  {
+    "id": "evt-20260304-001",
+    "source": "PROMED",
+    "title": "H5N1 detected in wild birds along Rhine corridor, eastern France",
+    "date_reported": "2026-03-04",
+    "date_collected": "2026-03-04",
+    "disease": "Avian influenza A(H5N1)",
+    "pathogen": "Influenza A virus (H5N1) clade 2.3.4.4b",
+    "countries": [
+      "FR"
+    ],
+    "regions": [
+      "Europe"
+    ],
+    "species": "animal",
+    "case_count": 15,
+    "death_count": 15,
+    "summary": "ProMED reports H5N1 HPAI detection in wild birds along the Rhine corridor in Alsace, eastern France. 15 dead waterfowl (common pochard and tufted duck) tested positive in the Haut-Rhin department. The detection area is approximately 30 km from the Swiss border at Basel. French authorities have activated enhanced poultry surveillance in the Grand Est region.",
+    "url": "https://promedmail.org/promed-post/?id=2026030400001",
+    "raw_content": "ProMED-mail post: Avian influenza, H5N1 \u2014 France (Alsace, Haut-Rhin). Wild bird die-off along Rhine. 15 positive: Aythya ferina, Aythya fuligula. Clade 2.3.4.4b. ~30 km from Swiss border. Grand Est region under enhanced surveillance. French veterinary authorities notify EU member states.",
+    "risk_score": 8.0,
+    "swiss_relevance": 9.0,
+    "one_health_tags": [
+      "zoonotic"
+    ],
+    "analysis": "H5N1 detection in Alsace completes a concerning pattern of virus circulation on both sides of the Rhine, directly adjacent to northwestern Switzerland. The Haut-Rhin department borders canton Basel-Landschaft and is connected by shared wetland habitats. Combined with the German detections, Switzerland is now flanked by active H5N1 circulation on two borders. BLV should consider activating its avian influenza contingency plan and coordinating directly with French and German veterinary authorities through established bilateral channels.",
+    "verification_status": "UNVERIFIED",
+    "ihr_unusual": true,
+    "ihr_serious_impact": true,
+    "ihr_international_spread": true,
+    "ihr_trade_travel_risk": true
+  },
+  {
+    "id": "evt-20260304-002",
+    "source": "PROMED",
+    "title": "Mpox clade Ib \u2014 first confirmed cases in Burundi",
+    "date_reported": "2026-03-04",
+    "date_collected": "2026-03-03",
+    "disease": "Mpox",
+    "pathogen": "Monkeypox virus clade Ib",
+    "countries": [
+      "BI"
+    ],
+    "regions": [
+      "East Africa"
+    ],
+    "species": "human",
+    "case_count": 23,
+    "death_count": 1,
+    "summary": "Burundi's Ministry of Health has confirmed 23 cases of mpox clade Ib, including 1 death, in Bujumbura and Cibitoke provinces. This marks the first confirmed clade Ib cases in Burundi. Epidemiological investigation indicates cross-border transmission from DRC via the Gatumba border crossing. Contact tracing and ring vaccination initiated.",
+    "url": "https://promedmail.org/promed-post/?id=2026030400002",
+    "raw_content": "ProMED-mail post: Mpox, clade Ib \u2014 Burundi (first report). 23 confirmed cases, 1 death. Bujumbura and Cibitoke provinces. Cross-border link to DRC. Clade Ib confirmed by Africa CDC reference lab. Ring vaccination with MVA-BN initiated.",
+    "risk_score": 7.0,
+    "swiss_relevance": 3.5,
+    "one_health_tags": [
+      "zoonotic"
+    ],
+    "analysis": "The cross-border spread of mpox clade Ib to Burundi confirms the expansion of this lineage beyond DRC and represents a significant epidemiological development. Burundi's limited diagnostic and surveillance capacity may mean the true case count is higher. The border crossing route of transmission suggests that other neighbouring countries (Rwanda, Uganda) are also at risk. International spread potential is increasing as the geographic range expands.",
+    "verification_status": "UNVERIFIED",
+    "ihr_unusual": true,
+    "ihr_serious_impact": true,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
+  },
+  {
+    "id": "evt-20260304-003",
+    "source": "ECDC",
+    "title": "Salmonella Enteritidis outbreak linked to imported eggs, Netherlands",
+    "date_reported": "2026-03-04",
+    "date_collected": "2026-03-04",
+    "disease": "Salmonellosis",
+    "pathogen": "Salmonella enterica serovar Enteritidis ST11",
+    "countries": [
+      "NL"
+    ],
+    "regions": [
+      "Europe"
+    ],
+    "species": "human",
+    "case_count": 89,
+    "death_count": 0,
+    "summary": "ECDC reports a multi-country Salmonella Enteritidis outbreak linked to imported eggs from a Dutch packing centre. 89 confirmed cases across Netherlands (52), Germany (23), Belgium (9), and Luxembourg (5). Whole genome sequencing confirms a single-source cluster (ST11). RASFF notification issued. Product recall underway for implicated egg batches.",
+    "url": "https://www.ecdc.europa.eu/en/news-events/salmonella-enteritidis-eggs-netherlands-2026",
+    "raw_content": "ECDC Rapid Outbreak Assessment: Salmonella Enteritidis ST11 \u2014 multi-country outbreak linked to eggs from Netherlands. 89 cases: NL 52, DE 23, BE 9, LU 5. RASFF alert 2026.1247. Product recall initiated. Implicated batches distributed to 8 EU countries including Switzerland.",
+    "risk_score": 5.5,
+    "swiss_relevance": 7.0,
+    "one_health_tags": [
+      "foodborne"
+    ],
+    "analysis": "This multi-country Salmonella outbreak is directly relevant to Switzerland as implicated egg batches were distributed to Swiss retailers. BLV should urgently verify whether any recalled batches entered the Swiss food chain and coordinate with cantonal food inspectors for product withdrawal if needed. The ST11 sequence type indicates a well-characterized lineage. Rapid RASFF follow-up is essential to prevent further cases in Switzerland.",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": true,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": true,
+    "ihr_trade_travel_risk": true
+  },
+  {
+    "id": "evt-20260304-004",
+    "source": "ECDC",
+    "title": "COVID-19 variant KP.3.1.2 becoming dominant in European wastewater surveillance",
+    "date_reported": "2026-03-04",
+    "date_collected": "2026-03-04",
+    "disease": "COVID-19",
+    "pathogen": "SARS-CoV-2 KP.3.1.2",
+    "countries": [
+      "DE",
+      "FR",
+      "NL",
+      "BE"
+    ],
+    "regions": [
+      "Europe"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "ECDC wastewater surveillance report indicates SARS-CoV-2 variant KP.3.1.2 is becoming dominant across multiple European countries. Wastewater viral loads are increasing in Germany, France, Netherlands, and Belgium. Hospitalization rates remain stable. No evidence of increased virulence compared to predecessor variants.",
+    "url": "https://www.ecdc.europa.eu/en/covid-19/surveillance/wastewater-monitoring-2026-week10",
+    "raw_content": "ECDC COVID-19 Wastewater Monitoring Report, Week 10/2026: KP.3.1.2 increasing in prevalence. Dominant in DE (62%), FR (55%), NL (48%), BE (51%). Viral loads rising. Hospitalizations stable. No immune escape signals beyond expected evolution.",
+    "risk_score": 3.0,
+    "swiss_relevance": 4.0,
+    "one_health_tags": [],
+    "analysis": "The emergence of KP.3.1.2 as the dominant SARS-CoV-2 variant in Western Europe follows expected evolutionary patterns. Rising wastewater viral loads suggest increasing community transmission, though stable hospitalization rates indicate no significant change in clinical severity. Swiss wastewater surveillance should be cross-referenced with this European data. BAG may wish to issue routine seasonal guidance on COVID-19 prevention for vulnerable populations, but no emergency measures are indicated.",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": true,
+    "ihr_serious_impact": true,
+    "ihr_international_spread": true,
+    "ihr_trade_travel_risk": true
+  },
+  {
+    "id": "evt-20260304-005",
+    "source": "WHO_DON",
+    "title": "Yellow fever outbreak expanding in Nigeria \u2014 Lagos state affected",
+    "date_reported": "2026-03-04",
+    "date_collected": "2026-03-03",
+    "disease": "Yellow fever",
+    "pathogen": "Yellow fever virus",
+    "countries": [
+      "NG"
+    ],
+    "regions": [
+      "West Africa"
+    ],
+    "species": "human",
+    "case_count": 156,
+    "death_count": 23,
+    "summary": "WHO reports an expanding yellow fever outbreak in Nigeria with cases now confirmed in Lagos state. 156 confirmed cases and 23 deaths across 8 states. Reactive vaccination campaigns underway in affected states with WHO support.",
+    "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-yellow-fever-nigeria",
+    "raw_content": "WHO Disease Outbreak News: Yellow fever \u2014 Nigeria. 156 confirmed cases, 23 deaths, 8 states affected including Lagos. CFR 14.7%. Reactive vaccination in 5 states. ICG vaccine release approved.",
+    "risk_score": 5.0,
+    "swiss_relevance": 2.0,
+    "one_health_tags": [
+      "vector-borne"
+    ],
+    "analysis": "Yellow fever in Lagos state is concerning due to the megacity's population density and potential for explosive urban transmission. The 14.7% CFR among confirmed cases reflects the severity of the disease. Swiss travellers to Nigeria should verify yellow fever vaccination status. Risk of importation to Switzerland is low given mandatory vaccination requirements for travellers.",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": true,
+    "ihr_serious_impact": true,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
+  }
 ]

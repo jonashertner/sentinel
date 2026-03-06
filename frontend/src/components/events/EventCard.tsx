@@ -1,7 +1,7 @@
 "use client";
 
 import { clsx } from "clsx";
-import { RISK_COLORS } from "@/lib/constants";
+import { RISK_COLORS, VERIFICATION_STYLES } from "@/lib/constants";
 import type { HealthEvent } from "@/lib/types";
 import { RiskPill } from "@/components/ui/RiskPill";
 import { Badge, SourceBadge } from "@/components/ui/Badge";
@@ -40,6 +40,17 @@ export function EventCard({ event, expanded, onToggle }: EventCardProps) {
           </p>
           <div className="mt-1.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
             <SourceBadge source={event.source} className="sm:hidden" />
+            {event.verification_status && (
+              <span
+                className={clsx(
+                  "inline-flex items-center rounded border border-current/20 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider",
+                  VERIFICATION_STYLES[event.verification_status]?.color || "text-sentinel-text-muted",
+                  VERIFICATION_STYLES[event.verification_status]?.bg || "bg-sentinel-surface",
+                )}
+              >
+                {VERIFICATION_STYLES[event.verification_status]?.label || event.verification_status}
+              </span>
+            )}
             <Badge label={event.disease} variant="tag" />
             {event.countries.map((c) => (
               <span

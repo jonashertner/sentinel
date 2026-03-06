@@ -19,6 +19,13 @@ class Species(StrEnum):
     BOTH = "both"
 
 
+class VerificationStatus(StrEnum):
+    UNVERIFIED = "UNVERIFIED"
+    PENDING = "PENDING"
+    CONFIRMED = "CONFIRMED"
+    REFUTED = "REFUTED"
+
+
 class RiskCategory(StrEnum):
     CRITICAL = "CRITICAL"
     HIGH = "HIGH"
@@ -57,6 +64,14 @@ class HealthEvent(BaseModel):
     swiss_relevance: float = Field(default=0.0, ge=0.0, le=10.0)
     one_health_tags: list[str] = Field(default_factory=list)
     analysis: str = ""
+
+    verification_status: VerificationStatus = VerificationStatus.UNVERIFIED
+
+    # IHR (2005) Annex 2 decision instrument criteria
+    ihr_unusual: bool | None = None
+    ihr_serious_impact: bool | None = None
+    ihr_international_spread: bool | None = None
+    ihr_trade_travel_risk: bool | None = None
 
     @computed_field  # type: ignore[prop-decorator]
     @property

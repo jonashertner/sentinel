@@ -11,6 +11,8 @@ export type Species = "human" | "animal" | "both";
 
 export type RiskCategory = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 
+export type VerificationStatus = "UNVERIFIED" | "PENDING" | "CONFIRMED" | "REFUTED";
+
 export type AnnotationType =
   | "ASSESSMENT"
   | "NOTE"
@@ -59,6 +61,11 @@ export interface HealthEvent {
   risk_category: RiskCategory;
   one_health_tags: string[];
   analysis: string;
+  verification_status: VerificationStatus;
+  ihr_unusual: boolean | null;
+  ihr_serious_impact: boolean | null;
+  ihr_international_spread: boolean | null;
+  ihr_trade_travel_risk: boolean | null;
 }
 
 export interface Annotation {

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, CheckCircle2, XCircle, HelpCircle } from "lucide-react";
+import { clsx } from "clsx";
 import type { HealthEvent } from "@/lib/types";
+import { VERIFICATION_STYLES } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
 
 interface EventDetailProps {
@@ -39,6 +41,51 @@ export function EventDetail({ event }: EventDetailProps) {
 
   return (
     <div className="border-t border-sentinel-border-subtle bg-sentinel-bg/50 px-3 sm:px-5 py-4 sm:py-5 space-y-4 sm:space-y-5">
+      {/* Verification Status + IHR Annex 2 */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        {/* Verification */}
+        <div className="sm:w-40 shrink-0">
+          <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
+            Verification
+          </h4>
+          {event.verification_status && (
+            <span
+              className={clsx(
+                "inline-flex items-center rounded px-2 py-1 text-[11px] font-semibold uppercase tracking-wider",
+                VERIFICATION_STYLES[event.verification_status]?.color,
+                VERIFICATION_STYLES[event.verification_status]?.bg,
+              )}
+            >
+              {VERIFICATION_STYLES[event.verification_status]?.label || event.verification_status}
+            </span>
+          )}
+        </div>
+
+        {/* IHR Annex 2 */}
+        <div className="flex-1">
+          <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
+            IHR Annex 2 Assessment
+          </h4>
+          <div className="grid grid-cols-2 gap-1.5">
+            {([
+              ["Unusual / unexpected", event.ihr_unusual],
+              ["Serious public health impact", event.ihr_serious_impact],
+              ["International spread risk", event.ihr_international_spread],
+              ["Trade / travel restriction risk", event.ihr_trade_travel_risk],
+            ] as const).map(([label, value]) => {
+              const Icon = value === true ? CheckCircle2 : value === false ? XCircle : HelpCircle;
+              const color = value === true ? "text-sentinel-critical" : value === false ? "text-sentinel-clear" : "text-sentinel-text-muted";
+              return (
+                <div key={label} className="flex items-center gap-1.5">
+                  <Icon className={clsx("h-3.5 w-3.5 shrink-0", color)} />
+                  <span className="text-[11px] text-sentinel-text-secondary">{label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Full Summary */}
       <div>
         <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">

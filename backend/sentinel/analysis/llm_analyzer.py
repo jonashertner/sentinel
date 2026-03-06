@@ -22,7 +22,13 @@ SYSTEM_PROMPT = (
     "- recommended_actions: List of 2-4 specific monitoring/preparedness actions "
     "for Swiss authorities\n"
     "- adjusted_risk_score: Float 0-10, your professional assessment "
-    "(can differ from automated score)"
+    "(can differ from automated score)\n"
+    "- ihr_annex2: Object with four boolean fields assessing IHR (2005) Annex 2 "
+    "decision instrument criteria:\n"
+    "  - unusual: Is this event unusual or unexpected?\n"
+    "  - serious_impact: Is there serious public health impact?\n"
+    "  - international_spread: Is there significant risk of international spread?\n"
+    "  - trade_travel_risk: Is there significant risk of trade/travel restrictions?"
 )
 
 
@@ -94,6 +100,18 @@ One Health tags: {', '.join(event.one_health_tags) or 'None'}
                 event.risk_score = max(min(adjusted, 10.0), 0.0)
             except (ValueError, TypeError):
                 pass
+
+        # IHR Annex 2 overrides from LLM
+        if "ihr_annex2" in data and isinstance(data["ihr_annex2"], dict):
+            a2 = data["ihr_annex2"]
+            if "unusual" in a2:
+                event.ihr_unusual = bool(a2["unusual"])
+            if "serious_impact" in a2:
+                event.ihr_serious_impact = bool(a2["serious_impact"])
+            if "international_spread" in a2:
+                event.ihr_international_spread = bool(a2["international_spread"])
+            if "trade_travel_risk" in a2:
+                event.ihr_trade_travel_risk = bool(a2["trade_travel_risk"])
 
     except Exception:
         logger.exception("LLM analysis failed for event %s", event.id)

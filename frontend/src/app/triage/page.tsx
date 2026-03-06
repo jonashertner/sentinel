@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { loadAllEvents } from "@/lib/api";
-import type { HealthEvent, RiskCategory } from "@/lib/types";
-import { SOURCE_LABELS, COUNTRY_NAMES } from "@/lib/constants";
+import type { HealthEvent, RiskCategory, VerificationStatus } from "@/lib/types";
+import { SOURCE_LABELS, COUNTRY_NAMES, VERIFICATION_STYLES } from "@/lib/constants";
 import { FilterBar } from "@/components/ui/FilterBar";
 import type { FilterConfig } from "@/components/ui/FilterBar";
 import { EventCard } from "@/components/events/EventCard";
@@ -18,6 +18,7 @@ export default function TriagePage() {
   const [filterDisease, setFilterDisease] = useState("");
   const [filterRisk, setFilterRisk] = useState("");
   const [filterCountry, setFilterCountry] = useState("");
+  const [filterVerification, setFilterVerification] = useState("");
 
   useEffect(() => {
     loadAllEvents()
@@ -76,6 +77,14 @@ export default function TriagePage() {
       })),
       value: filterCountry,
     },
+    {
+      key: "verification",
+      label: "Verification",
+      options: (["UNVERIFIED", "PENDING", "CONFIRMED", "REFUTED"] as VerificationStatus[]).map(
+        (v) => ({ value: v, label: VERIFICATION_STYLES[v]?.label || v }),
+      ),
+      value: filterVerification,
+    },
   ];
 
   const activeChips = [
@@ -88,6 +97,10 @@ export default function TriagePage() {
     filterCountry && {
       key: "country",
       label: COUNTRY_NAMES[filterCountry] || filterCountry,
+    },
+    filterVerification && {
+      key: "verification",
+      label: VERIFICATION_STYLES[filterVerification]?.label || filterVerification,
     },
   ].filter(Boolean) as { key: string; label: string }[];
 
@@ -105,6 +118,9 @@ export default function TriagePage() {
       case "country":
         setFilterCountry(value);
         break;
+      case "verification":
+        setFilterVerification(value);
+        break;
     }
   }
 
@@ -119,10 +135,11 @@ export default function TriagePage() {
         if (filterDisease && e.disease !== filterDisease) return false;
         if (filterRisk && e.risk_category !== filterRisk) return false;
         if (filterCountry && !e.countries.includes(filterCountry)) return false;
+        if (filterVerification && e.verification_status !== filterVerification) return false;
         return true;
       })
       .sort((a, b) => b.swiss_relevance - a.swiss_relevance);
-  }, [events, filterSource, filterDisease, filterRisk, filterCountry]);
+  }, [events, filterSource, filterDisease, filterRisk, filterCountry, filterVerification]);
 
   if (loading) {
     return (

@@ -1,4 +1,4 @@
-from sentinel.models.event import HealthEvent, Source, Species
+from sentinel.models.event import HealthEvent, Source, Species, VerificationStatus
 
 SWISS_NEIGHBORS = {"DE", "FR", "IT", "AT", "LI"}
 SWISS_TRADE_PARTNERS = {"DE", "FR", "IT", "AT", "NL", "BE", "ES", "US", "CN", "BR", "GB", "PL"}
@@ -64,4 +64,30 @@ def score_event(event: HealthEvent) -> HealthEvent:
 
     event.risk_score = min(score, 10.0)
     event.one_health_tags = sorted(tags)
+
+    # Verification status based on source authority
+    if event.source in (Source.WHO_DON, Source.ECDC):
+        event.verification_status = VerificationStatus.CONFIRMED
+    elif event.source == Source.WOAH:
+        event.verification_status = VerificationStatus.CONFIRMED
+    elif event.source == Source.WHO_EIOS:
+        event.verification_status = VerificationStatus.PENDING
+    else:
+        event.verification_status = VerificationStatus.UNVERIFIED
+
+    # IHR Annex 2 decision instrument criteria
+    event.ihr_unusual = event.disease in HIGH_CONCERN_DISEASES or (
+        event.case_count is not None and event.case_count > 50
+    )
+    event.ihr_serious_impact = (
+        (event.death_count is not None and event.death_count > 0)
+        or event.disease in HIGH_CONCERN_DISEASES
+    )
+    event.ihr_international_spread = any(
+        c in SWISS_NEIGHBORS | SWISS_TRADE_PARTNERS for c in event.countries
+    ) or len(event.countries) > 1
+    event.ihr_trade_travel_risk = any(
+        c in SWISS_TRADE_PARTNERS for c in event.countries
+    )
+
     return event

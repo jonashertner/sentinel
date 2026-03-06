@@ -10,6 +10,7 @@ import { RiskPill } from "@/components/ui/RiskPill";
 import { SourceBadge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Sparkline } from "@/components/ui/Sparkline";
+import { VERIFICATION_STYLES } from "@/lib/constants";
 
 // DATES derived from loaded events in the component
 
@@ -65,7 +66,7 @@ export default function CommandCenter() {
 
   const todayEvents = useMemo(
     () => events.filter((e) => e.date_reported === latestDate),
-    [events],
+    [events, latestDate],
   );
 
   const criticalCount = useMemo(
@@ -80,13 +81,56 @@ export default function CommandCenter() {
 
   const dailyCounts = useMemo(() => {
     return DATES.map((d) => events.filter((e) => e.date_reported === d).length);
-  }, [events]);
+  }, [events, DATES]);
 
   const priorityEvents = useMemo(() => {
     return [...events]
       .sort((a, b) => b.swiss_relevance - a.swiss_relevance)
       .slice(0, 10);
   }, [events]);
+
+  // "What Changed Overnight" deltas
+  const overnightChanges = useMemo(() => {
+    const newEvents = events.filter((e) => e.date_reported === latestDate);
+    const previousEvents = events.filter((e) => e.date_reported === previousDate);
+
+    // New diseases not seen before latest date
+    const previousDiseases = new Set(
+      events.filter((e) => e.date_reported !== latestDate).map((e) => e.disease),
+    );
+    const newDiseases = newEvents
+      .map((e) => e.disease)
+      .filter((d) => !previousDiseases.has(d));
+    const uniqueNewDiseases = [...new Set(newDiseases)];
+
+    // New countries not seen before
+    const previousCountries = new Set(
+      events.filter((e) => e.date_reported !== latestDate).flatMap((e) => e.countries),
+    );
+    const newCountries = newEvents
+      .flatMap((e) => e.countries)
+      .filter((c) => !previousCountries.has(c));
+    const uniqueNewCountries = [...new Set(newCountries)];
+
+    // High-priority new events (swiss_relevance >= 4 or risk_score >= 6)
+    const escalatedNew = newEvents.filter(
+      (e) => e.swiss_relevance >= 4.0 || e.risk_score >= 6.0,
+    );
+
+    // Situations that are ESCALATED or ACTIVE
+    const activeSituations = situations.filter(
+      (s) => s.status === "ESCALATED" || s.status === "ACTIVE",
+    );
+
+    return {
+      newCount: newEvents.length,
+      previousCount: previousEvents.length,
+      uniqueNewDiseases,
+      uniqueNewCountries,
+      escalatedNew,
+      activeSituations,
+    };
+  }, [events, situations, latestDate, previousDate]);
 
   // Region x Disease matrix
   const threatMatrix = useMemo(() => {
@@ -124,9 +168,11 @@ export default function CommandCenter() {
       }
     }
 
-    return REGION_ORDER.filter((r) => regionMap.has(r)).map(
-      (r) => regionMap.get(r)!,
-    );
+    const ordered = REGION_ORDER.filter((r) => regionMap.has(r));
+    const extras = Array.from(regionMap.keys())
+      .filter((r) => !REGION_ORDER.includes(r))
+      .sort();
+    return [...ordered, ...extras].map((r) => regionMap.get(r)!);
   }, [events]);
 
   // Unique diseases across all data for matrix columns
@@ -161,7 +207,7 @@ export default function CommandCenter() {
         const sumB = b[1].reduce((s, v) => s + v, 0);
         return sumB - sumA;
       });
-  }, [events, allDiseases]);
+  }, [events, allDiseases, DATES]);
 
   // Source statistics for transparency panel
   const sourceCounts = useMemo(() => {
@@ -278,6 +324,120 @@ export default function CommandCenter() {
           )}
         />
       </div>
+
+      {/* What Changed Overnight */}
+      {latestDate && (
+        <Card className="p-0 overflow-hidden border-sentinel-text-muted/20">
+          <div className="border-b border-sentinel-border px-5 py-2.5 flex items-center justify-between">
+            <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
+              What Changed — {latestDate}
+            </h2>
+            <span className="text-[10px] text-sentinel-text-muted">
+              vs. {previousDate || "—"}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-sentinel-border-subtle">
+            {/* New events */}
+            <div className="px-4 py-3">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
+                New Events
+              </div>
+              <div className="mt-1 flex items-baseline gap-2">
+                <span className="text-xl font-mono font-bold tabular-nums text-sentinel-text">
+                  {overnightChanges.newCount}
+                </span>
+                {overnightChanges.previousCount > 0 && (
+                  <span className="text-[10px] text-sentinel-text-muted">
+                    (prev: {overnightChanges.previousCount})
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Elevated signals */}
+            <div className="px-4 py-3">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
+                Elevated Signals
+              </div>
+              <div className="mt-1 space-y-1">
+                {overnightChanges.escalatedNew.length > 0 ? (
+                  overnightChanges.escalatedNew.slice(0, 3).map((e) => (
+                    <div key={e.id} className="flex items-center gap-2">
+                      <RiskPill
+                        score={e.risk_score}
+                        category={e.risk_category}
+                        className="scale-75 origin-left"
+                      />
+                      <span className="text-[11px] text-sentinel-text-secondary truncate">
+                        {e.disease}
+                      </span>
+                      <span className="text-[10px] text-sentinel-text-muted">
+                        {e.countries.join(", ")}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-[11px] text-sentinel-text-muted">
+                    No elevated signals
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* New diseases / countries */}
+            <div className="px-4 py-3">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
+                New This Period
+              </div>
+              <div className="mt-1 space-y-1">
+                {overnightChanges.uniqueNewDiseases.length > 0 && (
+                  <div className="text-[11px] text-sentinel-text-secondary">
+                    <span className="text-sentinel-text-muted">Diseases: </span>
+                    {overnightChanges.uniqueNewDiseases.join(", ")}
+                  </div>
+                )}
+                {overnightChanges.uniqueNewCountries.length > 0 && (
+                  <div className="text-[11px] text-sentinel-text-secondary">
+                    <span className="text-sentinel-text-muted">Countries: </span>
+                    {overnightChanges.uniqueNewCountries.join(", ")}
+                  </div>
+                )}
+                {overnightChanges.uniqueNewDiseases.length === 0 &&
+                  overnightChanges.uniqueNewCountries.length === 0 && (
+                    <span className="text-[11px] text-sentinel-text-muted">
+                      No new diseases or countries
+                    </span>
+                  )}
+              </div>
+            </div>
+
+            {/* Active situations */}
+            <div className="px-4 py-3">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
+                Active Situations
+              </div>
+              <div className="mt-1 space-y-1">
+                {overnightChanges.activeSituations.length > 0 ? (
+                  overnightChanges.activeSituations.slice(0, 3).map((s) => (
+                    <Link
+                      key={s.id}
+                      href={`/situations/${s.id}`}
+                      className="flex items-center gap-1.5 text-[11px] text-sentinel-text-secondary hover:text-sentinel-text"
+                    >
+                      <span className={`inline-block h-1.5 w-1.5 rounded-full ${s.status === "ESCALATED" ? "bg-sentinel-critical" : "bg-sentinel-high"}`} />
+                      <span className="truncate">{s.title}</span>
+                    </Link>
+                  ))
+                ) : (
+                  <span className="text-[11px] text-sentinel-text-muted">
+                    No active situations
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Main Content: Threat Matrix + Priority Events */}
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 sm:gap-6">

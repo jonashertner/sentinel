@@ -2,7 +2,7 @@
   {
     "id": "4ea923a21254bef5",
     "source": "ECDC",
-    "title": "Communicable disease threats report, 28 February – 6 March 2026 , week 10",
+    "title": "Communicable disease threats report, 28 February \u2013 6 March 2026 , week 10",
     "date_reported": "2026-03-06",
     "date_collected": "2026-03-06",
     "disease": "Communicable disease threats report, 28 February",
@@ -16,14 +16,19 @@
     "species": "human",
     "case_count": null,
     "death_count": null,
-    "summary": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period 28 February–6 March 2026  and includes updates on respiratory virus epidemiology in the EU/EEA, Sars-CoV-2 variant classification, MERS, mass gathering monitoring, and chikungunya.",
+    "summary": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period 28 February\u20136 March 2026  and includes updates on respiratory virus epidemiology in the EU/EEA, Sars-CoV-2 variant classification, MERS, mass gathering monitoring, and chikungunya.",
     "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-28-february-6-march-2026-week-10",
-    "raw_content": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period 28 February–6 March 2026  and includes updates on respiratory virus epidemiology in the EU/EEA, Sars-CoV-2 variant classification, MERS, mass gathering monitoring, and chikungunya.",
+    "raw_content": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period 28 February\u20136 March 2026  and includes updates on respiratory virus epidemiology in the EU/EEA, Sars-CoV-2 variant classification, MERS, mass gathering monitoring, and chikungunya.",
     "risk_score": 1.0,
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "3102f2b327e9e703",
@@ -49,7 +54,12 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "e0e4163dc64e90dc",
@@ -75,7 +85,12 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "af2ae71f814199d2",
@@ -101,7 +116,12 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "7ce4d72d805d8abb",
@@ -127,7 +147,12 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "f9fbe8b0e4ea05a3",
@@ -153,7 +178,12 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "ebb4c2b40e55b693",
@@ -179,7 +209,12 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "e5fd1019c867beba",
@@ -205,7 +240,12 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "ae137f7c739d3d86",
@@ -231,7 +271,12 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   },
   {
     "id": "5f1b788f67dadf96",
@@ -257,6 +302,11 @@
     "swiss_relevance": 0.0,
     "risk_category": "LOW",
     "one_health_tags": [],
-    "analysis": ""
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false
   }
 ]
