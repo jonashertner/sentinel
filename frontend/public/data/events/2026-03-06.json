@@ -2,7 +2,7 @@
     {
         "id": "evt-20260306-001",
         "source": "WOAH",
-        "title": "H5N1 suspected in poultry flock, Vorarlberg, Austria \u2014 near Swiss border",
+        "title": "H5N1 suspected in poultry flock, Vorarlberg, Austria — near Swiss border",
         "date_reported": "2026-03-06",
         "date_collected": "2026-03-06",
         "disease": "Avian influenza A(H5N1)",
@@ -12,18 +12,18 @@
         "species": "animal",
         "case_count": 5500,
         "death_count": 1200,
-        "summary": "Austria reports a suspected H5N1 HPAI case in a commercial poultry farm in Vorarlberg, approximately 20 km from the Swiss border.",
+        "summary": "Austria reports a suspected H5N1 HPAI case in a commercial poultry farm in Vorarlberg, approximately 20 km from the Swiss border with canton St. Gallen. Preliminary rapid tests are positive for influenza A H5; full subtype confirmation pending. Approximately 5,500 birds in the affected flock. Precautionary movement restrictions have been imposed in the Bregenz district. Austrian authorities have notified Switzerland via the bilateral early warning system.",
         "url": "https://wahis.woah.org/2026/AT/h5n1-suspected-vorarlberg",
-        "raw_content": "",
+        "raw_content": "WOAH Notification: Avian influenza, HPAI suspected — Austria (Vorarlberg). Rapid test H5 positive, subtype confirmation pending. Commercial poultry, Bregenz district. 5,500 birds. ~20 km from Swiss border (St. Gallen). Movement restrictions imposed. Switzerland notified.",
         "risk_score": 8.5,
         "swiss_relevance": 9.5,
         "one_health_tags": ["zoonotic"],
-        "analysis": ""
+        "analysis": "A suspected H5N1 case in Austrian Vorarlberg represents a third border region with active avian influenza, effectively placing Switzerland in the centre of a multi-country outbreak arc from Netherlands through Germany and France to Austria. Vorarlberg borders cantons St. Gallen and Graubünden, and shares the Lake Constance ecosystem which is a critical overwintering site for waterfowl. This suspected case, combined with confirmed outbreaks in NL, DE, and FR, makes H5N1 introduction into Swiss territory a matter of when, not if. Immediate BLV action is required."
     },
     {
         "id": "evt-20260306-002",
         "source": "ECDC",
-        "title": "ECDC travel advisory \u2014 dengue risk elevated for Southeast Asia",
+        "title": "ECDC travel advisory — dengue risk elevated for Southeast Asia",
         "date_reported": "2026-03-06",
         "date_collected": "2026-03-06",
         "disease": "Dengue",
@@ -33,13 +33,13 @@
         "species": "human",
         "case_count": null,
         "death_count": null,
-        "summary": "ECDC has issued a travel advisory for dengue in Southeast Asia following escalating outbreaks.",
+        "summary": "ECDC has issued a travel advisory for dengue in Southeast Asia following escalating outbreaks in Thailand, Vietnam, and Indonesia. Combined cases in the three countries exceed 155,000 with over 315 deaths in 2026. ECDC recommends travellers use mosquito bite prevention measures and consult travel health services before departure. The advisory notes the new Qdenga vaccine as an option for frequent travellers.",
         "url": "https://www.ecdc.europa.eu/en/dengue/travel-advisory-southeast-asia-march2026",
-        "raw_content": "",
+        "raw_content": "ECDC Travel Advisory: Dengue — Southeast Asia. Elevated risk in TH, VN, ID. Combined 155,000+ cases, 315+ deaths in 2026. Recommendations: mosquito bite prevention, pre-travel health consultation, consider Qdenga vaccination for frequent travellers. Advisory valid until further notice.",
         "risk_score": 5.0,
         "swiss_relevance": 3.5,
         "one_health_tags": ["vector-borne"],
-        "analysis": ""
+        "analysis": "The ECDC travel advisory consolidates the dengue intelligence from multiple Southeast Asian countries into an actionable recommendation. Switzerland should align its travel health advisories with this ECDC guidance. BAG travel medicine recommendations should emphasize mosquito bite prevention and consider proactive communication to travel agencies and airlines serving Southeast Asian destinations. Imported dengue cases in returning Swiss travellers are likely to increase in the coming weeks."
     },
     {
         "id": "evt-20260306-003",
@@ -54,18 +54,18 @@
         "species": "human",
         "case_count": 8,
         "death_count": 0,
-        "summary": "WHO reports 8 confirmed mpox clade Ib cases in Rwanda, all linked to the Rusizi border crossing with DRC.",
+        "summary": "WHO reports 8 confirmed mpox clade Ib cases in Rwanda, all linked to the Rusizi border crossing with DRC. Cases include border workers and traders with recent travel to South Kivu province. Rwanda's Ministry of Health has activated its mpox response plan and initiated contact tracing. Screening at major border crossings has been intensified.",
         "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-mpox-rwanda",
-        "raw_content": "",
+        "raw_content": "WHO Disease Outbreak News: Mpox — Rwanda. 8 confirmed clade Ib cases linked to Rusizi border crossing. Border workers and traders. Contact tracing ongoing. Rwanda mpox response plan activated. Border screening intensified at Rusizi, Gisenyi, and Kigali airport.",
         "risk_score": 7.0,
         "swiss_relevance": 4.0,
         "one_health_tags": ["zoonotic"],
-        "analysis": ""
+        "analysis": "Rwanda becoming the third country with confirmed mpox clade Ib cases demonstrates ongoing regional spread in East Africa. The border crossing transmission route highlights the challenge of containing the virus in a region with high cross-border mobility. Rwanda's relatively stronger health system may contain the cluster, but the precedent of DRC-to-Burundi-to-Rwanda spread suggests further regional expansion is likely. Swiss surveillance for mpox in travellers from East Africa should remain active."
     },
     {
         "id": "evt-20260306-004",
         "source": "ECDC",
-        "title": "Campylobacter jejuni cluster in Basel region \u2014 28 cases in one week",
+        "title": "Campylobacter jejuni cluster in Basel region — 28 cases in one week",
         "date_reported": "2026-03-06",
         "date_collected": "2026-03-06",
         "disease": "Campylobacteriosis",
@@ -75,13 +75,13 @@
         "species": "human",
         "case_count": 28,
         "death_count": 0,
-        "summary": "ECDC EpiPulse reports a Campylobacter jejuni cluster in the Basel region of Switzerland. 28 cases confirmed.",
+        "summary": "ECDC EpiPulse reports a Campylobacter jejuni cluster in the Basel region of Switzerland. 28 cases with onset between February 28 and March 5, 2026. Whole genome sequencing at the Swiss National Reference Centre confirms a single-source outbreak (ST-21 complex). Preliminary investigation points to a common food source, possibly linked to a regional poultry supplier. Cantonal laboratory Basel-Stadt is leading the investigation.",
         "url": "https://www.ecdc.europa.eu/en/news-events/campylobacter-cluster-switzerland-2026",
-        "raw_content": "",
+        "raw_content": "ECDC EpiPulse Notification: Campylobacter jejuni ST-21 cluster — Switzerland (Basel). 28 cases, onset Feb 28 - Mar 5. Single source confirmed by WGS. Investigation by cantonal laboratory Basel-Stadt ongoing. Suspected food vehicle: poultry products from regional supplier. No cross-border cases reported.",
         "risk_score": 5.0,
         "swiss_relevance": 10.0,
         "one_health_tags": ["foodborne"],
-        "analysis": ""
+        "analysis": "This is a domestic Swiss outbreak requiring immediate food safety investigation. A cluster of 28 Campylobacter cases from a single source in one week is well above the expected baseline for the Basel region. The suspected link to a poultry supplier is particularly notable in the context of the concurrent H5N1 situation, as enhanced poultry surveillance for avian influenza may also benefit food safety monitoring. BLV and cantonal authorities should coordinate the food chain investigation and consider precautionary measures for the implicated supplier."
     },
     {
         "id": "evt-20260306-005",
@@ -96,13 +96,13 @@
         "species": "human",
         "case_count": 1,
         "death_count": 0,
-        "summary": "WHO EIOS signal reports a confirmed case of CCHF in a patient hospitalized in Madrid.",
+        "summary": "WHO EIOS signal reports a confirmed case of Crimean-Congo haemorrhagic fever in a patient hospitalized in Madrid who recently returned from rural Turkey. The patient is receiving ribavirin treatment and is in stable condition. Hospital infection control measures implemented. Contact tracing of healthcare workers and close contacts initiated.",
         "url": "https://portal.who.int/eios/2026/ES/cchf-imported-case",
-        "raw_content": "",
+        "raw_content": "WHO EIOS Signal: CCHF — Spain (Madrid). Imported case, travel history to rural Turkey (Erzurum province). Hospitalized, stable. Ribavirin treatment. IPC measures in place. Contact tracing: 12 healthcare workers, 5 close contacts.",
         "risk_score": 5.5,
         "swiss_relevance": 3.0,
         "one_health_tags": ["zoonotic", "vector-borne"],
-        "analysis": ""
+        "analysis": "An imported CCHF case in Spain from Turkey is a reminder of the tick-borne zoonotic disease risk in endemic areas. While CCHF is not endemic in Switzerland and Hyalomma tick presence remains limited, imported cases in Europe occur periodically. The case in Madrid does not pose a significant risk to Switzerland but illustrates the importance of travel history assessment in febrile returning travellers. Clinician awareness of CCHF should be maintained."
     },
     {
         "id": "evt-20260306-006",
@@ -117,12 +117,12 @@
         "species": "animal",
         "case_count": 12,
         "death_count": 0,
-        "summary": "ProMED reports confirmation of Bluetongue virus serotype 3 in cattle in Upper Bavaria, Germany.",
+        "summary": "ProMED reports confirmation of Bluetongue virus serotype 3 (BTV-3) in 12 cattle on two farms in Upper Bavaria, Germany. This is the earliest seasonal detection of BTV-3 in Germany, likely facilitated by mild winter conditions that allowed Culicoides midge survival. Clinical signs include fever, nasal discharge, and lameness. Vaccination with newly approved BTV-3 vaccine recommended for farms in the restriction zone.",
         "url": "https://promedmail.org/promed-post/?id=2026030600001",
-        "raw_content": "",
+        "raw_content": "ProMED-mail post: Bluetongue, serotype 3 — Germany (Bavaria). 12 cattle cases on 2 farms. BTV-3 confirmed. Earliest seasonal detection. Mild winter cited. BTV-3 vaccine available. Movement restrictions in Upper Bavaria.",
         "risk_score": 5.0,
         "swiss_relevance": 6.5,
         "one_health_tags": [],
-        "analysis": ""
+        "analysis": "Early-season BTV-3 detection in Bavaria is relevant for Swiss livestock health. BTV-3 spread into Switzerland via Culicoides midges is a realistic scenario given the proximity of Bavaria to Swiss territory and the shared environmental conditions. BLV should assess BTV-3 vaccine availability for Swiss cattle herds in border cantons and consider pre-emptive vaccination guidance. Midge surveillance in northeastern Switzerland should be initiated earlier than usual this season."
     }
 ]

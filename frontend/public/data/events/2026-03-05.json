@@ -12,18 +12,18 @@
         "species": "both",
         "case_count": null,
         "death_count": null,
-        "summary": "ECDC has raised the H5N1 avian influenza threat level for animal health in Europe to HIGH.",
+        "summary": "ECDC has raised the H5N1 avian influenza threat level for animal health in Europe to HIGH, citing the rapid geographic spread of clade 2.3.4.4b across the Netherlands, Germany, and France within one week. The assessment notes the Rhine corridor as a high-risk zone for further spread. Human infection risk remains LOW but is under review. ECDC recommends enhanced surveillance in all EU/EEA countries bordering the Rhine.",
         "url": "https://www.ecdc.europa.eu/en/avian-influenza/threats/h5n1-threat-assessment-march2026",
-        "raw_content": "",
+        "raw_content": "ECDC Threat Assessment: Avian influenza A(H5N1) clade 2.3.4.4b — Europe, March 2026. Risk level: HIGH (animal health), LOW (human health). Affected: NL, DE, FR. Rhine corridor identified as high-risk zone. Recommendations: enhanced wild bird and poultry surveillance, cross-border coordination, PPE for poultry workers.",
         "risk_score": 8.5,
         "swiss_relevance": 9.5,
         "one_health_tags": ["zoonotic"],
-        "analysis": ""
+        "analysis": "The ECDC threat assessment upgrade to HIGH is a significant milestone that validates the escalation trajectory observed over the past 5 days. The explicit identification of the Rhine corridor as a high-risk zone is directly pertinent to Switzerland. This assessment should trigger BLV's enhanced response protocol for avian influenza. Coordination with ECDC via the EpiSouth network and bilateral channels with DE and FR veterinary authorities is essential. Poultry farmers in northwestern Switzerland should receive immediate guidance on heightened biosecurity measures."
     },
     {
         "id": "evt-20260305-002",
         "source": "WHO_DON",
-        "title": "Indonesia reports record dengue cases \u2014 200+ deaths in 2026",
+        "title": "Indonesia reports record dengue cases — 200+ deaths in 2026",
         "date_reported": "2026-03-05",
         "date_collected": "2026-03-05",
         "disease": "Dengue",
@@ -33,13 +33,13 @@
         "species": "human",
         "case_count": 85000,
         "death_count": 214,
-        "summary": "WHO reports Indonesia has recorded 85,000 dengue cases and 214 deaths in the first two months of 2026.",
+        "summary": "WHO reports Indonesia has recorded 85,000 dengue cases and 214 deaths in the first two months of 2026, exceeding the same period records from 2023. All four serotypes are circulating, with DENV-1, 2, and 3 most prevalent. Java and Sumatra are the worst-affected islands. The government has declared a national dengue alert and mobilized military resources for vector control.",
         "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-dengue-indonesia",
-        "raw_content": "",
+        "raw_content": "WHO Disease Outbreak News: Dengue — Indonesia. 85,000 confirmed cases, 214 deaths in Jan-Feb 2026. Record-breaking season. Multiple serotypes co-circulating. National dengue alert declared. 34 of 38 provinces reporting cases. Military mobilized for fogging and vector control.",
         "risk_score": 6.0,
         "swiss_relevance": 2.5,
         "one_health_tags": ["vector-borne"],
-        "analysis": ""
+        "analysis": "Indonesia's record-breaking dengue season adds to the concerning regional picture across Southeast Asia. The co-circulation of three serotypes significantly increases the risk of severe dengue due to antibody-dependent enhancement. With 214 deaths, Indonesia is bearing the highest burden in the region. Swiss relevance relates to the estimated 30,000+ Swiss tourists visiting Indonesia annually, particularly Bali. BAG should consider updating travel health advisories and ensuring returning travellers with febrile illness are evaluated for dengue."
     },
     {
         "id": "evt-20260305-003",
@@ -54,13 +54,13 @@
         "species": "human",
         "case_count": 2100,
         "death_count": 35,
-        "summary": "WHO EIOS signal captures WHO Director-General's statement expressing concern about the international spread potential of mpox clade Ib.",
+        "summary": "WHO EIOS signal captures WHO Director-General's statement expressing concern about the international spread potential of mpox clade Ib following confirmed cross-border transmission from DRC to Burundi. Cumulative cases in affected countries exceed 2,100 with 35 deaths. WHO is reviewing whether to reconvene the Emergency Committee under IHR. Enhanced surveillance recommended at international points of entry.",
         "url": "https://portal.who.int/eios/2026/mpox-clade-ib-spread-concern",
-        "raw_content": "",
+        "raw_content": "WHO EIOS Signal: Mpox clade Ib — international spread concern. DG statement on cross-border transmission DRC-Burundi. 2,100+ cases, 35 deaths. IHR Emergency Committee reconvening under consideration. Entry screening recommended. Vaccine supply remains insufficient for containment strategy.",
         "risk_score": 7.5,
         "swiss_relevance": 5.0,
         "one_health_tags": ["zoonotic"],
-        "analysis": ""
+        "analysis": "The WHO DG's statement signals growing institutional concern about mpox clade Ib. The potential reconvening of the IHR Emergency Committee could result in a renewed PHEIC declaration, which would have implications for Swiss preparedness and response obligations. The combination of geographic expansion, sustained transmission, and limited vaccine supply creates conditions for continued international spread. BAG should review mpox surveillance protocols and ensure diagnostic capacity is maintained. MVA-BN vaccine stocks should be verified."
     },
     {
         "id": "evt-20260305-004",
@@ -75,18 +75,18 @@
         "species": "animal",
         "case_count": null,
         "death_count": null,
-        "summary": "ECDC reports early-season detection of West Nile virus lineage 2 in mosquito pools in the Veneto region of northern Italy.",
+        "summary": "ECDC reports early-season detection of West Nile virus lineage 2 in Culex pipiens mosquito pools in the Veneto region of northern Italy. This is the earliest seasonal detection on record, likely due to an unusually warm February. No human or equine cases reported yet. Italian authorities have initiated early vector surveillance and blood supply safety measures.",
         "url": "https://www.ecdc.europa.eu/en/west-nile-fever/surveillance/wnv-italy-early-detection-2026",
-        "raw_content": "",
+        "raw_content": "ECDC Communicable Disease Threats Report: West Nile virus — Italy (Veneto). Early season detection in mosquito pools. WNV lineage 2. Earliest detection since surveillance began. Warm February cited. No human/equine cases. Blood safety measures activated in Veneto.",
         "risk_score": 4.5,
         "swiss_relevance": 5.5,
         "one_health_tags": ["zoonotic", "vector-borne"],
-        "analysis": ""
+        "analysis": "Early-season WNV detection in northern Italy is concerning because it suggests a potentially more intense transmission season ahead. The Veneto region is adjacent to southern Switzerland (Ticino), and Culex pipiens is present in Swiss territory. With climate change extending the mosquito season, the risk of WNV introduction into southern Switzerland continues to increase. BLV and BAG should coordinate on integrated mosquito surveillance in Ticino and Graubünden."
     },
     {
         "id": "evt-20260305-005",
         "source": "PROMED",
-        "title": "Anthrax outbreak in livestock, eastern Turkey \u2014 Erzurum province",
+        "title": "Anthrax outbreak in livestock, eastern Turkey — Erzurum province",
         "date_reported": "2026-03-05",
         "date_collected": "2026-03-05",
         "disease": "Anthrax",
@@ -96,9 +96,9 @@
         "species": "both",
         "case_count": 34,
         "death_count": 8,
-        "summary": "ProMED reports an anthrax outbreak in livestock in Erzurum province, eastern Turkey.",
+        "summary": "ProMED reports an anthrax outbreak in livestock in Erzurum province, eastern Turkey. 34 cattle affected with 8 deaths. Two veterinarians developed cutaneous anthrax and are under treatment. The outbreak is linked to a known anthrax spore site disturbed during construction work.",
         "url": "https://promedmail.org/promed-post/?id=2026030500001",
-        "raw_content": "",
+        "raw_content": "ProMED-mail post: Anthrax — Turkey (Erzurum). 34 cattle cases, 8 deaths. 2 human cutaneous anthrax cases (veterinarians). Construction disturbed known anthrax burial site. Vaccination campaign in surrounding herds.",
         "risk_score": 3.5,
         "swiss_relevance": 1.0,
         "one_health_tags": ["zoonotic"],
@@ -107,7 +107,7 @@
     {
         "id": "evt-20260305-006",
         "source": "WHO_DON",
-        "title": "Marburg virus disease \u2014 confirmed case in Tanzania, Kagera region",
+        "title": "Marburg virus disease — confirmed case in Tanzania, Kagera region",
         "date_reported": "2026-03-05",
         "date_collected": "2026-03-04",
         "disease": "Marburg virus disease",
@@ -117,12 +117,12 @@
         "species": "human",
         "case_count": 1,
         "death_count": 1,
-        "summary": "WHO reports a single confirmed fatal case of Marburg virus disease in a gold miner in Kagera region, Tanzania.",
+        "summary": "WHO reports a single confirmed fatal case of Marburg virus disease in a gold miner in Kagera region, Tanzania. The case had onset of symptoms on February 25 and died on March 2. Cave exposure is the suspected source. Contact tracing of 47 individuals is underway. No secondary cases identified to date.",
         "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-marburg-tanzania",
-        "raw_content": "",
+        "raw_content": "WHO Disease Outbreak News: Marburg virus disease — Tanzania. 1 confirmed case (fatal) in Kagera region. Gold miner with cave exposure. Onset Feb 25, death Mar 2. 47 contacts under follow-up. No secondary cases. IHR notification received.",
         "risk_score": 6.0,
         "swiss_relevance": 2.0,
         "one_health_tags": ["zoonotic"],
-        "analysis": ""
+        "analysis": "A single confirmed Marburg case linked to cave exposure in a gold miner is consistent with sporadic zoonotic spillover from Rousettus aegyptiacus bat reservoirs. While the risk of international spread from a single case is low, Marburg's high CFR and potential for nosocomial transmission warrant close monitoring. Contact tracing results over the coming 21 days will be critical. Swiss relevance is limited but this event should be tracked given Marburg's pandemic potential classification."
     }
 ]

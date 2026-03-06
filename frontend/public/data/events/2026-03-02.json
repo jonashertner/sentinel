@@ -2,7 +2,7 @@
     {
         "id": "evt-20260302-001",
         "source": "WHO_DON",
-        "title": "H5N1 confirmed in commercial poultry farm, Netherlands \u2014 42,000 birds culled",
+        "title": "H5N1 confirmed in commercial poultry farm, Netherlands — 42,000 birds culled",
         "date_reported": "2026-03-02",
         "date_collected": "2026-03-02",
         "disease": "Avian influenza A(H5N1)",
@@ -12,13 +12,13 @@
         "species": "animal",
         "case_count": 42000,
         "death_count": 8500,
-        "summary": "WHO reports confirmation of H5N1 HPAI in a commercial laying hen farm in Gelderland province, Netherlands. Approximately 42,000 birds will be culled.",
+        "summary": "WHO reports confirmation of H5N1 HPAI in a commercial laying hen farm in Gelderland province, Netherlands. Approximately 42,000 birds will be culled. The outbreak was detected through routine mortality monitoring. Genetic sequencing confirms the same clade 2.3.4.4b lineage found in wild birds on March 1. A 3 km protection zone and 10 km surveillance zone have been established.",
         "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-h5n1-netherlands-poultry",
-        "raw_content": "",
+        "raw_content": "WHO Disease Outbreak News: Avian influenza A(H5N1) — Netherlands. A commercial laying hen farm in Gelderland province confirmed positive for HPAI H5N1 clade 2.3.4.4b. 42,000 birds to be culled. Protection zone (3 km) and surveillance zone (10 km) established. Epidemiological link to wild bird detections under investigation.",
         "risk_score": 7.0,
         "swiss_relevance": 5.5,
         "one_health_tags": ["zoonotic"],
-        "analysis": ""
+        "analysis": "The spillover from wild birds to commercial poultry in the Netherlands represents a significant escalation of the H5N1 situation in Europe. The Gelderland province is a major poultry-producing region, and spread to neighboring farms cannot be excluded despite rapid culling. The confirmed genetic link to wild bird detections suggests ongoing environmental pressure. Switzerland should monitor developments closely given trade links and migratory bird corridors connecting the Netherlands to Swiss wetlands."
     },
     {
         "id": "evt-20260302-002",
@@ -33,18 +33,18 @@
         "species": "human",
         "case_count": 1840,
         "death_count": 28,
-        "summary": "WHO reports that mpox clade Ib has spread to three additional provinces in the Democratic Republic of Congo.",
+        "summary": "WHO reports that mpox clade Ib has spread to three additional provinces in the Democratic Republic of Congo, bringing the total affected provinces to 14. Since January 2026, 1,840 confirmed cases and 28 deaths have been reported. The clade Ib variant continues to demonstrate sustained human-to-human transmission, with household and sexual contact as primary transmission routes.",
         "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON-mpox-drc",
-        "raw_content": "",
+        "raw_content": "WHO Disease Outbreak News: Mpox — Democratic Republic of the Congo. Mpox clade Ib has spread to 14 of 26 provinces. 1,840 confirmed cases and 28 deaths reported in 2026. Sustained human-to-human transmission. Vaccination campaign in South Kivu ongoing with limited supply.",
         "risk_score": 7.0,
         "swiss_relevance": 4.0,
         "one_health_tags": ["zoonotic"],
-        "analysis": ""
+        "analysis": "Continued geographic expansion of mpox clade Ib within DRC is concerning. The spread to 14 provinces suggests that containment measures are insufficient. Clade Ib has demonstrated higher transmissibility compared to clade IIb and potential for more severe disease. International spread via regional travel corridors to East Africa and beyond remains a credible risk. Switzerland should maintain vigilance for imported cases, particularly among travellers from affected regions."
     },
     {
         "id": "evt-20260302-003",
         "source": "ECDC",
-        "title": "Measles resurgence in Uzbekistan \u2014 1,200 cases in 2026",
+        "title": "Measles resurgence in Uzbekistan — 1,200 cases in 2026",
         "date_reported": "2026-03-02",
         "date_collected": "2026-03-01",
         "disease": "Measles",
@@ -54,18 +54,18 @@
         "species": "human",
         "case_count": 1200,
         "death_count": 4,
-        "summary": "ECDC reports a measles resurgence in Uzbekistan with 1,200 confirmed cases and 4 deaths.",
+        "summary": "ECDC reports a measles resurgence in Uzbekistan with 1,200 confirmed cases and 4 deaths in the first two months of 2026. The outbreak is concentrated in Tashkent and Samarkand regions. Genotype D8 identified. Suboptimal vaccination coverage among children aged 1-5 years is a contributing factor.",
         "url": "https://www.ecdc.europa.eu/en/news-events/measles-uzbekistan-2026",
-        "raw_content": "",
+        "raw_content": "ECDC Epidemiological Update: Measles — Uzbekistan. 1,200 confirmed cases, 4 deaths reported January-February 2026. Genotype D8 detected. Majority of cases in unvaccinated children. Tashkent and Samarkand regions most affected. Vaccination coverage estimated at 78% for first dose.",
         "risk_score": 4.0,
         "swiss_relevance": 2.0,
         "one_health_tags": [],
-        "analysis": ""
+        "analysis": "The measles resurgence in Uzbekistan reflects persistent vaccination gaps in Central Asia. While direct risk to Switzerland is low, the outbreak serves as a reminder of measles importation risk via international travel. Switzerland's own sub-optimal measles vaccination rates in some cantons could facilitate local transmission from imported cases."
     },
     {
         "id": "evt-20260302-004",
         "source": "PROMED",
-        "title": "Rift Valley fever suspected in livestock, Kenya \u2014 Tana River county",
+        "title": "Rift Valley fever suspected in livestock, Kenya — Tana River county",
         "date_reported": "2026-03-02",
         "date_collected": "2026-03-02",
         "disease": "Rift Valley fever",
@@ -75,13 +75,13 @@
         "species": "both",
         "case_count": 15,
         "death_count": 3,
-        "summary": "ProMED reports suspected Rift Valley fever in livestock in Tana River County, Kenya.",
+        "summary": "ProMED reports suspected Rift Valley fever in livestock (cattle and goats) in Tana River County, Kenya. Increased abortion rates and 15 animal deaths reported. Three herders with febrile illness under investigation. Laboratory confirmation pending.",
         "url": "https://promedmail.org/promed-post/?id=2026030200001",
-        "raw_content": "",
+        "raw_content": "ProMED-mail post: Rift Valley fever, suspected — Kenya (Tana River). Reports of increased livestock abortions and deaths. 15 animal deaths, 3 human febrile cases under investigation. Samples sent to KEMRI for confirmation. Recent heavy rains may have created favorable mosquito breeding conditions.",
         "risk_score": 4.5,
         "swiss_relevance": 1.0,
         "one_health_tags": ["zoonotic", "vector-borne"],
-        "analysis": ""
+        "analysis": "Suspected RVF activity in Kenya following heavy rains fits the typical epidemiological pattern of the disease. If confirmed, this would be the first significant RVF outbreak in Kenya since 2023. The zoonotic and vector-borne nature of RVF requires a One Health response approach. Risk to Switzerland is negligible but relevant for livestock import risk assessments."
     },
     {
         "id": "evt-20260302-005",
@@ -96,12 +96,12 @@
         "species": "human",
         "case_count": 18,
         "death_count": 2,
-        "summary": "WHO EIOS signals report an undiagnosed respiratory illness cluster in Luang Prabang province, Laos.",
+        "summary": "WHO EIOS signals report an undiagnosed respiratory illness cluster in Luang Prabang province, Laos. 18 patients hospitalized with severe pneumonia of unknown aetiology. Two deaths reported. Influenza, COVID-19, and common respiratory pathogens ruled out by initial testing. Further investigation underway.",
         "url": "https://portal.who.int/eios/2026/LA/respiratory-cluster",
-        "raw_content": "",
+        "raw_content": "WHO EIOS Signal: Undiagnosed respiratory illness — Laos (Luang Prabang). 18 hospitalizations, 2 deaths. Severe pneumonia. Negative for influenza, SARS-CoV-2, RSV, adenovirus. Epidemiological investigation initiated.",
         "risk_score": 5.5,
         "swiss_relevance": 2.0,
         "one_health_tags": [],
-        "analysis": ""
+        "analysis": "Undiagnosed respiratory illness clusters with negative testing for common pathogens warrant close monitoring. While the cluster size is small, the 11% fatality rate and unknown aetiology necessitate vigilance. This signal requires follow-up to determine if an emerging pathogen is involved or if the cases have a common environmental exposure. Swiss authorities should track resolution of this signal."
     }
 ]
