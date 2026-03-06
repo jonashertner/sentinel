@@ -1,0 +1,37 @@
+name: Daily Pipeline
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # 06:00 UTC daily
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    name: Collect & Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+      - name: Install dependencies
+        run: cd backend && uv sync
+      - name: Run pipeline
+        run: cd backend && uv run python -m sentinel.pipeline
+        env:
+          SENTINEL_ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SENTINEL_DATA_DIR: ../data
+      - name: Commit new data
+        run: |
+          git config user.name "SENTINEL Pipeline"
+          git config user.email "sentinel-bot@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "No new data to commit"
+          else
+            git commit -m "data: daily collection $(date -u +%Y-%m-%d)"
+            git push
+          fi
