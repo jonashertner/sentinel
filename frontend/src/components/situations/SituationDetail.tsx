@@ -27,26 +27,26 @@ export function SituationDetail({ id }: SituationDetailProps) {
   const [linkedEvents, setLinkedEvents] = useState<HealthEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [noteText, setNoteText] = useState("");
-  const [localAnnotations, setLocalAnnotations] = useState<Annotation[]>([]);
-  const [checkedActions, setCheckedActions] = useState<Set<number>>(new Set());
-
-  useEffect(() => {
-    // Load local annotations
+  const [localAnnotations, setLocalAnnotations] = useState<Annotation[]>(() => {
+    if (typeof window === "undefined") return [];
     try {
       const stored = localStorage.getItem(`sentinel-annotations-${id}`);
-      if (stored) setLocalAnnotations(JSON.parse(stored));
-    } catch {}
-
-    // Load checked actions
+      return stored ? JSON.parse(stored) : [];
+    } catch { return []; }
+  });
+  const [checkedActions, setCheckedActions] = useState<Set<number>>(() => {
+    if (typeof window === "undefined") return new Set<number>();
     try {
       const stored = localStorage.getItem(`sentinel-actions-${id}`);
-      if (stored) setCheckedActions(new Set(JSON.parse(stored)));
-    } catch {}
+      return stored ? new Set(JSON.parse(stored) as number[]) : new Set<number>();
+    } catch { return new Set<number>(); }
+  });
 
+  useEffect(() => {
     // Fetch situation and events
-    const DATA_BASE = "/data";
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
     Promise.all([
-      fetch(`${DATA_BASE}/situations/${id}.json`).then((r) =>
+      fetch(`${basePath}/data/situations/${id}.json`).then((r) =>
         r.ok ? r.json() : null,
       ),
       loadAllEvents(),

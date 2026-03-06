@@ -16,7 +16,7 @@ jobs:
         with:
           version: "latest"
       - name: Install dependencies
-        run: cd backend && uv sync --dev
+        run: cd backend && uv sync --all-extras --dev
       - name: Lint
         run: cd backend && uv run ruff check .
       - name: Type check

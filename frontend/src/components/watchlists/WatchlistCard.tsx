@@ -1,4 +1,3 @@
-import { clsx } from "clsx";
 import { Eye, Trash2 } from "lucide-react";
 import { RISK_COLORS } from "@/lib/constants";
 import type { HealthEvent, Watchlist } from "@/lib/types";

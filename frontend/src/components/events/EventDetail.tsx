@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ExternalLink } from "lucide-react";
-import type { HealthEvent, EventStatus } from "@/lib/types";
+import type { HealthEvent } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 
 interface EventDetailProps {
@@ -16,21 +16,16 @@ function getStorageKey(eventId: string, type: "status" | "annotation") {
 }
 
 export function EventDetail({ event }: EventDetailProps) {
-  const [status, setStatus] = useState<TriageStatus | null>(null);
-  const [annotation, setAnnotation] = useState("");
-  const [savedAnnotation, setSavedAnnotation] = useState("");
-
-  useEffect(() => {
+  const [status, setStatus] = useState<TriageStatus | null>(() => {
     const stored = localStorage.getItem(getStorageKey(event.id, "status"));
-    if (stored) setStatus(stored as TriageStatus);
-    const storedNote = localStorage.getItem(
-      getStorageKey(event.id, "annotation"),
-    );
-    if (storedNote) {
-      setSavedAnnotation(storedNote);
-      setAnnotation(storedNote);
-    }
-  }, [event.id]);
+    return stored ? (stored as TriageStatus) : null;
+  });
+  const [annotation, setAnnotation] = useState(() => {
+    return localStorage.getItem(getStorageKey(event.id, "annotation")) || "";
+  });
+  const [savedAnnotation, setSavedAnnotation] = useState(() => {
+    return localStorage.getItem(getStorageKey(event.id, "annotation")) || "";
+  });
 
   function handleStatus(s: TriageStatus) {
     setStatus(s);

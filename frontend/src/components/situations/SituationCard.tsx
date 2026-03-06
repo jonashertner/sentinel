@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { PRIORITY_LABELS, COUNTRY_NAMES } from "@/lib/constants";
+import { PRIORITY_LABELS } from "@/lib/constants";
 import type { Situation } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 

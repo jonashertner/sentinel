@@ -22,9 +22,10 @@ function riskToColor(score: number): string {
   return "#3b82f6";
 }
 
-function CustomTooltip({ active, payload }: any) {
-  if (!active || !payload?.[0]) return null;
-  const d = payload[0].payload;
+function CustomTooltip({ active, payload }: Record<string, unknown>) {
+  const items = payload as { payload: { disease: string; count: number; maxRisk: number } }[] | undefined;
+  if (!active || !items?.[0]) return null;
+  const d = items[0].payload;
   return (
     <div className="rounded-md border border-sentinel-border bg-sentinel-surface px-3 py-2 shadow-lg">
       <p className="text-[11px] font-medium text-sentinel-text">{d.disease}</p>

@@ -19,24 +19,24 @@ interface RiskTimelineProps {
   }[];
 }
 
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload, label }: Record<string, unknown>) {
   if (!active || !payload) return null;
   return (
     <div className="rounded-md border border-sentinel-border bg-sentinel-surface px-3 py-2 shadow-lg">
       <p className="text-[10px] font-mono font-medium text-sentinel-text-muted mb-1">
-        {label}
+        {label as string}
       </p>
-      {payload.map((entry: any) => (
-        <div key={entry.name} className="flex items-center gap-2 text-[11px]">
+      {(payload as Record<string, unknown>[]).map((entry: Record<string, unknown>) => (
+        <div key={entry.name as string} className="flex items-center gap-2 text-[11px]">
           <span
             className="inline-block h-2 w-2 rounded-full"
-            style={{ backgroundColor: entry.color }}
+            style={{ backgroundColor: entry.color as string }}
           />
-          <span className="text-sentinel-text-secondary">{entry.name}</span>
+          <span className="text-sentinel-text-secondary">{entry.name as string}</span>
           <span className="font-mono font-medium text-sentinel-text ml-auto">
             {typeof entry.value === "number"
-              ? entry.value.toFixed(1)
-              : entry.value}
+              ? (entry.value as number).toFixed(1)
+              : String(entry.value)}
           </span>
         </div>
       ))}

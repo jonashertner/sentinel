@@ -1,7 +1,7 @@
 "use client";
 
 import { clsx } from "clsx";
-import { RISK_COLORS, SOURCE_LABELS } from "@/lib/constants";
+import { RISK_COLORS } from "@/lib/constants";
 import type { HealthEvent } from "@/lib/types";
 import { RiskPill } from "@/components/ui/RiskPill";
 import { Badge, SourceBadge } from "@/components/ui/Badge";

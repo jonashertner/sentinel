@@ -4,10 +4,10 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { loadAllEvents, loadSituations } from "@/lib/api";
 import type { HealthEvent, Situation } from "@/lib/types";
-import { RISK_COLORS, SOURCE_LABELS, COUNTRY_NAMES } from "@/lib/constants";
+import { RISK_COLORS } from "@/lib/constants";
 import { KPICard } from "@/components/ui/KPICard";
 import { RiskPill } from "@/components/ui/RiskPill";
-import { Badge, SourceBadge } from "@/components/ui/Badge";
+import { SourceBadge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Sparkline } from "@/components/ui/Sparkline";
 

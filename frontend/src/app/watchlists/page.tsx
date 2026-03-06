@@ -31,7 +31,13 @@ function matchesWatchlist(event: HealthEvent, wl: Watchlist): boolean {
 
 export default function WatchlistsPage() {
   const [serverWatchlists, setServerWatchlists] = useState<Watchlist[]>([]);
-  const [customWatchlists, setCustomWatchlists] = useState<Watchlist[]>([]);
+  const [customWatchlists, setCustomWatchlists] = useState<Watchlist[]>(() => {
+    try {
+      const stored = localStorage.getItem("sentinel-custom-watchlists");
+      if (stored) return JSON.parse(stored);
+    } catch {}
+    return [];
+  });
   const [events, setEvents] = useState<HealthEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -52,10 +58,6 @@ export default function WatchlistsPage() {
       .catch(() => {})
       .finally(() => setLoading(false));
 
-    try {
-      const stored = localStorage.getItem("sentinel-custom-watchlists");
-      if (stored) setCustomWatchlists(JSON.parse(stored));
-    } catch {}
   }, []);
 
   const allWatchlists = useMemo(

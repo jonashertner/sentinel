@@ -12,7 +12,6 @@ export default function MapPage() {
   const [viewAll, setViewAll] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     const fetcher = viewAll ? loadAllEvents() : loadEvents(selectedDate);
     fetcher
       .then(setEvents)

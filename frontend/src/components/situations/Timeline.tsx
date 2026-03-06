@@ -1,4 +1,3 @@
-import { clsx } from "clsx";
 import { RISK_COLORS } from "@/lib/constants";
 import type { HealthEvent } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
