@@ -10,7 +10,6 @@ import { RiskPill } from "@/components/ui/RiskPill";
 import { SourceBadge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Sparkline } from "@/components/ui/Sparkline";
-import { VERIFICATION_STYLES } from "@/lib/constants";
 
 // DATES derived from loaded events in the component
 
@@ -43,15 +42,6 @@ const WHO_REGION_NAMES: Record<string, string> = {
   "Middle East": "Middle East",
   "Western Pacific": "Western Pacific",
 };
-
-const REGION_ORDER = [
-  "Europe",
-  "Southeast Asia",
-  "Africa",
-  "Americas",
-  "Middle East",
-  "Western Pacific",
-];
 
 const DISEASE_SHORT: Record<string, string> = {
   "Avian influenza A(H5N1)": "H5N1 AI",
@@ -122,12 +112,6 @@ export default function CommandCenter() {
     return DATES.map((d) => events.filter((e) => e.date_reported === d).length);
   }, [events, DATES]);
 
-  const priorityEvents = useMemo(() => {
-    return [...events]
-      .sort((a, b) => b.swiss_relevance - a.swiss_relevance)
-      .slice(0, 10);
-  }, [events]);
-
   // "What Changed Overnight" deltas
   const overnightChanges = useMemo(() => {
     const newEvents = events.filter((e) => e.date_reported === latestDate);
@@ -171,82 +155,71 @@ export default function CommandCenter() {
     };
   }, [events, situations, latestDate, previousDate]);
 
-  // Region x Disease matrix
-  const threatMatrix = useMemo(() => {
-    const regionMap = new Map<
+  // Disease-centric threat landscape
+  const diseaseThreats = useMemo(() => {
+    const map = new Map<
       string,
       {
-        region: string;
-        diseases: Map<string, { count: number; maxRisk: number }>;
-        totalCount: number;
+        disease: string;
+        events: HealthEvent[];
         maxRisk: number;
+        maxSwissRelevance: number;
+        totalCases: number;
+        totalDeaths: number;
+        countries: Set<string>;
+        regions: Set<string>;
+        sources: Set<string>;
+        ihrFlags: number; // count of true IHR criteria
+        hasConfirmed: boolean;
+        trend: number[]; // daily counts for sparkline
       }
     >();
 
     for (const evt of events) {
-      for (const rawRegion of evt.regions) {
-        const region = WHO_REGION_NAMES[rawRegion] || rawRegion;
-        if (!regionMap.has(region)) {
-          regionMap.set(region, {
-            region,
-            diseases: new Map(),
-            totalCount: 0,
-            maxRisk: 0,
-          });
-        }
-        const r = regionMap.get(region)!;
-        r.totalCount++;
-        r.maxRisk = Math.max(r.maxRisk, evt.risk_score);
-
-        if (!r.diseases.has(evt.disease)) {
-          r.diseases.set(evt.disease, { count: 0, maxRisk: 0 });
-        }
-        const d = r.diseases.get(evt.disease)!;
-        d.count++;
-        d.maxRisk = Math.max(d.maxRisk, evt.risk_score);
+      if (!map.has(evt.disease)) {
+        map.set(evt.disease, {
+          disease: evt.disease,
+          events: [],
+          maxRisk: 0,
+          maxSwissRelevance: 0,
+          totalCases: 0,
+          totalDeaths: 0,
+          countries: new Set(),
+          regions: new Set(),
+          sources: new Set(),
+          ihrFlags: 0,
+          hasConfirmed: false,
+          trend: [],
+        });
       }
+      const d = map.get(evt.disease)!;
+      d.events.push(evt);
+      d.maxRisk = Math.max(d.maxRisk, evt.risk_score);
+      d.maxSwissRelevance = Math.max(d.maxSwissRelevance, evt.swiss_relevance);
+      if (evt.case_count) d.totalCases += evt.case_count;
+      if (evt.death_count) d.totalDeaths += evt.death_count;
+      evt.countries.forEach((c) => d.countries.add(c));
+      evt.regions.forEach((r) => d.regions.add(WHO_REGION_NAMES[r] || r));
+      d.sources.add(evt.source);
+      if (evt.verification_status === "CONFIRMED") d.hasConfirmed = true;
+      const flags = [evt.ihr_unusual, evt.ihr_serious_impact, evt.ihr_international_spread, evt.ihr_trade_travel_risk];
+      d.ihrFlags = Math.max(d.ihrFlags, flags.filter(Boolean).length);
     }
 
-    const ordered = REGION_ORDER.filter((r) => regionMap.has(r));
-    const extras = Array.from(regionMap.keys())
-      .filter((r) => !REGION_ORDER.includes(r))
-      .sort();
-    return [...ordered, ...extras].map((r) => regionMap.get(r)!);
-  }, [events]);
-
-  // Unique diseases across all data for matrix columns
-  const allDiseases = useMemo(() => {
-    const diseaseSet = new Set<string>();
-    for (const r of threatMatrix) {
-      for (const d of r.diseases.keys()) {
-        diseaseSet.add(d);
-      }
-    }
-    return Array.from(diseaseSet).sort();
-  }, [threatMatrix]);
-
-  // Disease category sparklines (7 day trend per disease)
-  const diseaseTrends = useMemo(() => {
-    const diseaseMap = new Map<string, number[]>();
-    for (const disease of allDiseases) {
-      diseaseMap.set(
-        disease,
-        DATES.map(
-          (d) =>
-            events.filter(
-              (e) => e.date_reported === d && e.disease === disease,
-            ).length,
-        ),
+    // Compute trends
+    for (const d of map.values()) {
+      d.trend = DATES.map(
+        (dt) => d.events.filter((e) => e.date_reported === dt).length,
       );
     }
-    return Array.from(diseaseMap.entries())
-      .filter(([, counts]) => counts.some((c) => c > 0))
-      .sort((a, b) => {
-        const sumA = a[1].reduce((s, v) => s + v, 0);
-        const sumB = b[1].reduce((s, v) => s + v, 0);
-        return sumB - sumA;
-      });
-  }, [events, allDiseases, DATES]);
+
+    return Array.from(map.values()).sort((a, b) => {
+      // Sort by max risk descending, then by swiss relevance, then by event count
+      if (b.maxRisk !== a.maxRisk) return b.maxRisk - a.maxRisk;
+      if (b.maxSwissRelevance !== a.maxSwissRelevance) return b.maxSwissRelevance - a.maxSwissRelevance;
+      return b.events.length - a.events.length;
+    });
+  }, [events, DATES]);
 
   // Source statistics for transparency panel
   const sourceCounts = useMemo(() => {
@@ -478,180 +451,159 @@ export default function CommandCenter() {
         </Card>
       )}
 
-      {/* Main Content: Threat Matrix + Priority Events */}
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 sm:gap-6">
-        {/* LEFT: World Risk Overview — Threat Matrix */}
-        <Card className="xl:col-span-3 p-0 overflow-hidden">
-          <div className="border-b border-sentinel-border px-5 py-3">
-            <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Threat Matrix — Region x Disease
-            </h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-[11px]">
-              <thead>
-                <tr className="border-b border-sentinel-border-subtle">
-                  <th className="sticky left-0 z-10 bg-sentinel-surface px-4 py-2.5 text-left font-semibold uppercase tracking-wider text-sentinel-text-muted">
-                    Region
-                  </th>
-                  {allDiseases.map((disease) => (
-                    <th
-                      key={disease}
-                      className="h-24 px-1 py-1 text-center font-medium text-sentinel-text-muted align-bottom"
-                      title={disease}
-                    >
-                      <div className="flex items-end justify-center h-full">
-                        <span className="-rotate-45 origin-bottom-left whitespace-nowrap text-[10px] block translate-x-2">
-                          {shortenDisease(disease)}
-                        </span>
-                      </div>
-                    </th>
-                  ))}
-                  <th className="px-3 py-2.5 text-center font-semibold uppercase tracking-wider text-sentinel-text-muted">
-                    Total
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {threatMatrix.map((row) => (
-                  <tr
-                    key={row.region}
-                    className="border-b border-sentinel-border-subtle last:border-b-0"
-                  >
-                    <td className="sticky left-0 z-10 bg-sentinel-surface px-4 py-2.5 font-medium text-sentinel-text-secondary">
-                      <span className="flex items-center gap-2">
-                        <span
-                          className="inline-block h-2 w-2 rounded-full"
-                          style={{
-                            backgroundColor:
-                              REGION_COLORS[row.region] || "#71717a",
-                          }}
-                        />
-                        {row.region}
-                      </span>
-                    </td>
-                    {allDiseases.map((disease) => {
-                      const cell = row.diseases.get(disease);
-                      if (!cell)
-                        return (
-                          <td
-                            key={disease}
-                            className="px-3 py-2.5 text-center text-sentinel-text-muted"
-                          >
-                            <span className="opacity-20">-</span>
-                          </td>
-                        );
-                      return (
-                        <td key={disease} className="px-3 py-2.5 text-center">
-                          <span
-                            className="inline-flex h-7 w-7 items-center justify-center rounded font-mono font-semibold"
-                            style={{
-                              backgroundColor: riskBg(cell.maxRisk),
-                              color: riskColor(cell.maxRisk),
-                            }}
-                          >
-                            {cell.count}
-                          </span>
-                        </td>
-                      );
-                    })}
-                    <td className="px-3 py-2.5 text-center">
-                      <span className="font-mono font-semibold text-sentinel-text">
-                        {row.totalCount}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-
-        {/* RIGHT: Priority Events */}
-        <Card className="xl:col-span-2 p-0 overflow-hidden">
-          <div className="border-b border-sentinel-border px-5 py-3 flex items-center justify-between">
-            <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Priority Events — Top 10
-            </h2>
-            <Link
-              href="/triage"
-              className="text-[10px] font-medium uppercase tracking-wider text-sentinel-text-muted hover:text-sentinel-text-secondary"
-            >
-              View All
-            </Link>
-          </div>
-          <div className="divide-y divide-sentinel-border-subtle overflow-y-auto max-h-[520px]">
-            {priorityEvents.map((evt) => (
-              <Link
-                key={evt.id}
-                href="/triage"
-                className="flex items-start gap-3 px-4 py-3 hover:bg-sentinel-surface-hover"
-              >
-                <RiskPill
-                  score={evt.risk_score}
-                  category={evt.risk_category}
-                  className="shrink-0 mt-0.5"
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <SourceBadge source={evt.source} />
-                    <span className="text-[10px] text-sentinel-text-muted">
-                      {evt.countries.join(", ")}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-[12px] font-medium leading-tight text-sentinel-text line-clamp-1">
-                    {evt.disease}
-                  </p>
-                  <p className="mt-0.5 text-[11px] leading-snug text-sentinel-text-secondary line-clamp-1">
-                    {evt.summary}
-                  </p>
-                  <div className="mt-1 flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-sentinel-text-muted">
-                      CH {evt.swiss_relevance.toFixed(1)}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </Card>
-      </div>
-
-      {/* Bottom Strip: Disease Trend Sparklines */}
+      {/* Active Threat Landscape */}
       <Card className="p-0 overflow-hidden">
-        <div className="border-b border-sentinel-border px-5 py-2.5">
+        <div className="border-b border-sentinel-border px-5 py-3 flex items-center justify-between">
           <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-            6-Day Trend by Disease
+            Active Threats — by Disease
           </h2>
+          <Link
+            href="/triage"
+            className="text-[10px] font-medium uppercase tracking-wider text-sentinel-text-muted hover:text-sentinel-text-secondary"
+          >
+            Full Triage
+          </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap">
-          {diseaseTrends.map(([disease, counts]) => {
-            const total = counts.reduce((s, v) => s + v, 0);
+        <div className="divide-y divide-sentinel-border-subtle">
+          {diseaseThreats.map((threat) => {
+            const trendUp =
+              threat.trend.length >= 2 &&
+              threat.trend[threat.trend.length - 1] >
+                threat.trend[threat.trend.length - 2];
+            const trendDown =
+              threat.trend.length >= 2 &&
+              threat.trend[threat.trend.length - 1] <
+                threat.trend[threat.trend.length - 2];
+            const riskCat =
+              threat.maxRisk >= 8
+                ? "CRITICAL"
+                : threat.maxRisk >= 6
+                  ? "HIGH"
+                  : threat.maxRisk >= 4
+                    ? "MEDIUM"
+                    : "LOW";
+
             return (
               <div
-                key={disease}
-                className="flex items-center gap-3 px-4 sm:px-5 py-3 border-b lg:border-b-0 lg:border-r border-sentinel-border-subtle last:border-b-0 last:lg:border-r-0"
+                key={threat.disease}
+                className="px-4 sm:px-5 py-3 hover:bg-sentinel-surface-hover"
               >
-                <div>
-                  <p className="text-[11px] font-medium text-sentinel-text-secondary leading-none">
-                    {shortenDisease(disease)}
-                  </p>
-                  <p className="mt-1 text-[10px] font-mono text-sentinel-text-muted">
-                    {total} events
-                  </p>
+                {/* Row 1: Risk + Disease name + Trend */}
+                <div className="flex items-center gap-3">
+                  {/* Risk bar */}
+                  <div
+                    className="w-1 self-stretch rounded-full shrink-0"
+                    style={{ backgroundColor: riskColor(threat.maxRisk) }}
+                  />
+
+                  {/* Main content */}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <span
+                        className="text-[13px] font-semibold text-sentinel-text"
+                        title={threat.disease}
+                      >
+                        {shortenDisease(threat.disease)}
+                      </span>
+                      <span
+                        className="text-[10px] font-mono font-bold tabular-nums px-1.5 py-0.5 rounded"
+                        style={{
+                          backgroundColor: riskBg(threat.maxRisk),
+                          color: riskColor(threat.maxRisk),
+                        }}
+                      >
+                        {threat.maxRisk.toFixed(1)} {riskCat}
+                      </span>
+                      {threat.maxSwissRelevance >= 4.0 && (
+                        <span className="text-[10px] font-mono font-semibold text-sentinel-high tabular-nums">
+                          CH {threat.maxSwissRelevance.toFixed(1)}
+                        </span>
+                      )}
+                      {threat.hasConfirmed && (
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 rounded px-1.5 py-0.5">
+                          Confirmed
+                        </span>
+                      )}
+                      {threat.ihrFlags >= 3 && (
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-sentinel-critical bg-sentinel-critical-bg rounded px-1.5 py-0.5">
+                          IHR {threat.ihrFlags}/4
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Row 2: Metrics */}
+                    <div className="mt-1.5 flex items-center gap-4 flex-wrap text-[11px]">
+                      {/* Events count */}
+                      <span className="text-sentinel-text-secondary">
+                        <span className="font-mono font-semibold tabular-nums text-sentinel-text">
+                          {threat.events.length}
+                        </span>{" "}
+                        events
+                      </span>
+
+                      {/* Cases / deaths */}
+                      {(threat.totalCases > 0 || threat.totalDeaths > 0) && (
+                        <span className="text-sentinel-text-muted">
+                          {threat.totalCases > 0 && (
+                            <span>
+                              <span className="font-mono tabular-nums">{threat.totalCases.toLocaleString()}</span> cases
+                            </span>
+                          )}
+                          {threat.totalCases > 0 && threat.totalDeaths > 0 && " · "}
+                          {threat.totalDeaths > 0 && (
+                            <span className="text-sentinel-critical">
+                              <span className="font-mono tabular-nums">{threat.totalDeaths.toLocaleString()}</span> deaths
+                            </span>
+                          )}
+                        </span>
+                      )}
+
+                      {/* Geographic spread */}
+                      <span className="text-sentinel-text-muted">
+                        {Array.from(threat.regions).map((region) => (
+                          <span
+                            key={region}
+                            className="inline-flex items-center gap-1 mr-2"
+                          >
+                            <span
+                              className="inline-block h-1.5 w-1.5 rounded-full"
+                              style={{
+                                backgroundColor:
+                                  REGION_COLORS[region] || "#71717a",
+                              }}
+                            />
+                            <span className="text-[10px]">{region}</span>
+                          </span>
+                        ))}
+                      </span>
+
+                      {/* Countries */}
+                      <span className="text-[10px] font-mono text-sentinel-text-muted">
+                        {Array.from(threat.countries).slice(0, 6).join(", ")}
+                        {threat.countries.size > 6 && ` +${threat.countries.size - 6}`}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Right: trend sparkline + direction */}
+                  <div className="shrink-0 flex items-center gap-2">
+                    <Sparkline
+                      data={threat.trend}
+                      width={64}
+                      height={24}
+                      color={riskColor(threat.maxRisk)}
+                    />
+                    <span className="text-[14px] w-4 text-center">
+                      {trendUp ? (
+                        <span className="text-sentinel-critical">↑</span>
+                      ) : trendDown ? (
+                        <span className="text-sentinel-clear">↓</span>
+                      ) : (
+                        <span className="text-sentinel-text-muted">→</span>
+                      )}
+                    </span>
+                  </div>
                 </div>
-                <Sparkline
-                  data={counts}
-                  width={56}
-                  height={20}
-                  color={
-                    total >= 5
-                      ? RISK_COLORS.CRITICAL.dot
-                      : total >= 3
-                        ? RISK_COLORS.HIGH.dot
-                        : "#71717a"
-                  }
-                />
               </div>
             );
           })}
