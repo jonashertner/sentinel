@@ -123,7 +123,7 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen p-6 space-y-6">
+    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-6 pt-14 md:pt-6">
       {/* Header */}
       <div>
         <h1 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-sentinel-text-muted">
@@ -135,7 +135,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Disease Trends */}
         <Card className="p-0 overflow-hidden">
           <div className="border-b border-sentinel-border px-5 py-3">

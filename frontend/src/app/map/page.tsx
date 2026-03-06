@@ -27,7 +27,7 @@ export default function MapPage() {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <header className="flex shrink-0 items-center justify-between border-b border-sentinel-border px-6 py-3">
+      <header className="flex shrink-0 flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-sentinel-border px-4 sm:px-6 py-3 pt-12 md:pt-3">
         <div>
           <h1 className="text-sm font-semibold tracking-wide text-sentinel-text">
             GLOBAL THREAT MAP

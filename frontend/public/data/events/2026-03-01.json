@@ -81,7 +81,7 @@
         "risk_score": 3.0,
         "swiss_relevance": 4.0,
         "one_health_tags": [],
-        "analysis": ""
+        "analysis": "Increasing seasonal influenza activity across Western Europe is expected for this time of year. A(H3N2) dominance may result in reduced vaccine effectiveness given the challenges of H3N2 antigenic matching. Swiss sentinel surveillance data should be compared with neighbouring countries to assess synchrony. No unusual signals, but BAG should monitor for any divergence from expected seasonal patterns, particularly in ICU admission rates among elderly populations."
     },
     {
         "id": "evt-20260301-005",
@@ -102,6 +102,6 @@
         "risk_score": 3.5,
         "swiss_relevance": 1.5,
         "one_health_tags": [],
-        "analysis": ""
+        "analysis": "FMD in Algeria is geographically distant but relevant for BLV animal import risk assessments. Serotype O is the most globally widespread FMDV lineage. Switzerland maintains FMD-free status without vaccination and any changes in the Mediterranean FMD situation should be monitored. Current risk to Swiss livestock is negligible given existing import controls and the geographic distance from Algeria."
     }
 ]

@@ -136,7 +136,7 @@ export default function TriagePage() {
   }
 
   return (
-    <div className="min-h-screen p-6 space-y-5">
+    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-5 pt-14 md:pt-6">
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>

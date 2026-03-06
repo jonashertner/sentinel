@@ -69,6 +69,13 @@ export function GlobalMap({
   const [animationsEnabled, setAnimationsEnabled] = useState(true);
   const svgRef = useRef<SVGSVGElement>(null);
 
+  // --- Zoom / Pan state ---
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState<[number, number]>([0, 0]);
+  const isPanning = useRef(false);
+  const panStart = useRef<[number, number]>([0, 0]);
+  const panOffset = useRef<[number, number]>([0, 0]);
+
   // --- Projection & Path Generator ---
   const { projection, pathGenerator, graticule } = useMemo(() => {
     const proj = geoNaturalEarth1()
@@ -254,14 +261,52 @@ export function GlobalMap({
     [activeCountries, selectedCountry],
   );
 
+  // --- Zoom handlers ---
+  const handleWheel = useCallback(
+    (e: React.WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.15 : 0.15;
+      setZoom((z) => Math.min(Math.max(z + delta, 0.5), 8));
+    },
+    [],
+  );
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      if (e.button !== 0) return;
+      isPanning.current = true;
+      panStart.current = [e.clientX, e.clientY];
+      panOffset.current = pan;
+      (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    },
+    [pan],
+  );
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      if (!isPanning.current) return;
+      const dx = e.clientX - panStart.current[0];
+      const dy = e.clientY - panStart.current[1];
+      setPan([panOffset.current[0] + dx, panOffset.current[1] + dy]);
+    },
+    [],
+  );
+
+  const handlePointerUp = useCallback(() => {
+    isPanning.current = false;
+  }, []);
+
+  const resetView = useCallback(() => {
+    setZoom(1);
+    setPan([0, 0]);
+  }, []);
+
   // --- Container measurement for responsive ---
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const observer = new ResizeObserver(() => {
-      // Container size tracked for future responsive enhancements
-    });
+    const observer = new ResizeObserver(() => {});
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
@@ -275,9 +320,9 @@ export function GlobalMap({
   return (
     <div className="flex h-full flex-col">
       {/* Map area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
         {/* SVG Map */}
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col min-h-0">
           <div
             ref={containerRef}
             className="relative flex-1 overflow-hidden bg-sentinel-bg"
@@ -285,8 +330,14 @@ export function GlobalMap({
             <svg
               ref={svgRef}
               viewBox="0 0 960 520"
-              className="h-full w-full"
+              className="h-full w-full select-none"
               preserveAspectRatio="xMidYMid meet"
+              onWheel={handleWheel}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerLeave={handlePointerUp}
+              style={{ cursor: "grab" }}
             >
               <defs>
                 {/* Glow filter for Switzerland */}
@@ -307,8 +358,8 @@ export function GlobalMap({
                 </filter>
                 {/* Radial gradient for country highlights */}
                 <radialGradient id="ch-glow-gradient">
-                  <stop offset="0%" stopColor="#fafafa" stopOpacity="0.15" />
-                  <stop offset="100%" stopColor="#fafafa" stopOpacity="0" />
+                  <stop offset="0%" stopColor="var(--sentinel-accent)" stopOpacity="0.15" />
+                  <stop offset="100%" stopColor="var(--sentinel-accent)" stopOpacity="0" />
                 </radialGradient>
                 {/* Arc gradient */}
                 {threatArcs.map((arc) => (
@@ -335,11 +386,13 @@ export function GlobalMap({
                 ))}
               </defs>
 
+              <g transform={`translate(${480 + pan[0]}, ${260 + pan[1]}) scale(${zoom}) translate(-480, -260)`}>
+
               {/* Background sphere */}
               <path
                 d={spherePath}
-                fill="#0c0c0e"
-                stroke="#1e1e21"
+                fill="var(--sentinel-map-water)"
+                stroke="var(--sentinel-map-border)"
                 strokeWidth={0.5}
               />
 
@@ -347,7 +400,7 @@ export function GlobalMap({
               <path
                 d={graticulePath}
                 fill="none"
-                stroke="#1a1a1d"
+                stroke="var(--sentinel-map-graticule)"
                 strokeWidth={0.3}
                 strokeOpacity={0.6}
               />
@@ -356,7 +409,7 @@ export function GlobalMap({
               <path
                 d={equatorPath}
                 fill="none"
-                stroke="#27272a"
+                stroke="var(--sentinel-border)"
                 strokeWidth={0.6}
                 strokeDasharray="4 3"
               />
@@ -371,7 +424,7 @@ export function GlobalMap({
                 const hasEvents = alpha2 ? activeCountries.has(alpha2) : false;
                 const evts = alpha2 ? countryEvents[alpha2] || [] : [];
                 const maxRisk = hasEvents ? getMaxRisk(evts) : null;
-                const color = maxRisk ? RISK_COLORS[maxRisk].dot : "#1e1e21";
+                const color = maxRisk ? RISK_COLORS[maxRisk].dot : null;
                 const isSelected = selectedCountry === alpha2;
                 const isCH = alpha2 === "CH";
 
@@ -381,21 +434,21 @@ export function GlobalMap({
                     d={d}
                     fill={
                       isCH
-                        ? hasEvents
+                        ? hasEvents && color
                           ? `${color}25`
-                          : "#1c1c20"
-                        : hasEvents
+                          : "var(--sentinel-surface-hover)"
+                        : hasEvents && color
                           ? `${color}18`
-                          : "#141416"
+                          : "var(--sentinel-map-land)"
                     }
                     stroke={
                       isSelected
-                        ? "#fafafa"
+                        ? "var(--sentinel-text)"
                         : isCH
-                          ? "#555"
-                          : hasEvents
+                          ? "var(--sentinel-text-muted)"
+                          : hasEvents && color
                             ? `${color}60`
-                            : "#1e1e21"
+                            : "var(--sentinel-map-border)"
                     }
                     strokeWidth={
                       isSelected ? 1.5 : isCH ? 1.2 : hasEvents ? 0.6 : 0.3
@@ -437,7 +490,7 @@ export function GlobalMap({
                         cy={chPos[1]}
                         r={14}
                         fill="none"
-                        stroke="#fafafa"
+                        stroke="var(--sentinel-accent)"
                         strokeWidth={1}
                         opacity={0.4}
                         className="pointer-events-none animate-pulse-ring"
@@ -447,7 +500,7 @@ export function GlobalMap({
                         cy={chPos[1]}
                         r={14}
                         fill="none"
-                        stroke="#fafafa"
+                        stroke="var(--sentinel-accent)"
                         strokeWidth={0.5}
                         opacity={0.2}
                         className="pointer-events-none animate-pulse-ring-slow"
@@ -460,7 +513,7 @@ export function GlobalMap({
                     cy={chPos[1]}
                     r={8}
                     fill="none"
-                    stroke="#fafafa"
+                    stroke="var(--sentinel-accent)"
                     strokeWidth={0.8}
                     strokeDasharray="2 2"
                     opacity={0.5}
@@ -580,6 +633,8 @@ export function GlobalMap({
                   </text>
                 );
               })}
+
+              </g>{/* Close zoom transform group */}
             </svg>
 
             {/* Tooltip */}
@@ -608,6 +663,33 @@ export function GlobalMap({
                 </div>
               </div>
             )}
+
+            {/* Zoom controls */}
+            <div className="absolute right-4 top-4 flex flex-col gap-1">
+              <button
+                onClick={() => setZoom((z) => Math.min(z + 0.3, 8))}
+                className="flex h-7 w-7 items-center justify-center rounded border border-sentinel-border bg-sentinel-surface/90 text-[14px] font-medium text-sentinel-text-secondary backdrop-blur-sm hover:bg-sentinel-surface-hover hover:text-sentinel-text"
+                title="Zoom in"
+              >
+                +
+              </button>
+              <button
+                onClick={() => setZoom((z) => Math.max(z - 0.3, 0.5))}
+                className="flex h-7 w-7 items-center justify-center rounded border border-sentinel-border bg-sentinel-surface/90 text-[14px] font-medium text-sentinel-text-secondary backdrop-blur-sm hover:bg-sentinel-surface-hover hover:text-sentinel-text"
+                title="Zoom out"
+              >
+                −
+              </button>
+              {(zoom !== 1 || pan[0] !== 0 || pan[1] !== 0) && (
+                <button
+                  onClick={resetView}
+                  className="flex h-7 w-7 items-center justify-center rounded border border-sentinel-border bg-sentinel-surface/90 font-mono text-[9px] font-medium text-sentinel-text-muted backdrop-blur-sm hover:bg-sentinel-surface-hover hover:text-sentinel-text"
+                  title="Reset view"
+                >
+                  1:1
+                </button>
+              )}
+            </div>
 
             {/* Top-left stats overlay */}
             <div className="absolute left-4 top-4 flex flex-col gap-2">
@@ -690,7 +772,7 @@ export function GlobalMap({
         </div>
 
         {/* Right sidebar - event detail */}
-        <div className="w-80 shrink-0 overflow-y-auto border-l border-sentinel-border bg-sentinel-surface">
+        <div className="w-full md:w-80 shrink-0 overflow-y-auto border-t md:border-t-0 md:border-l border-sentinel-border bg-sentinel-surface">
           {selectedCountry && detailEvents.length > 0 ? (
             <div className="p-4">
               <div className="flex items-center justify-between">

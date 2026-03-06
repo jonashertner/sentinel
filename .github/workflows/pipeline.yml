@@ -1,8 +1,9 @@
-name: Daily Pipeline
+name: Twice-Daily Pipeline
 
 on:
   schedule:
-    - cron: "0 6 * * *"  # 06:00 UTC daily
+    - cron: "0 6 * * *"   # 06:00 UTC (morning collection)
+    - cron: "0 18 * * *"  # 18:00 UTC (evening collection)
   workflow_dispatch:  # Manual trigger
 
 permissions:
@@ -32,6 +33,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No new data to commit"
           else
-            git commit -m "data: daily collection $(date -u +%Y-%m-%d)"
+            git commit -m "data: collection $(date -u +%Y-%m-%dT%H:%M)Z"
             git push
           fi

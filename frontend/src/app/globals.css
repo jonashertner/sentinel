@@ -1,33 +1,93 @@
 @import "tailwindcss";
 
 @theme {
-  --color-sentinel-bg: #0a0a0b;
-  --color-sentinel-surface: #141416;
-  --color-sentinel-surface-hover: #1c1c1f;
-  --color-sentinel-surface-active: #242428;
-  --color-sentinel-border: #27272a;
-  --color-sentinel-border-subtle: #1e1e21;
-  --color-sentinel-text: #fafafa;
-  --color-sentinel-text-secondary: #a1a1aa;
-  --color-sentinel-text-muted: #71717a;
-  --color-sentinel-critical: #ef4444;
-  --color-sentinel-critical-bg: rgba(239, 68, 68, 0.1);
-  --color-sentinel-high: #f97316;
-  --color-sentinel-high-bg: rgba(249, 115, 22, 0.1);
-  --color-sentinel-medium: #eab308;
-  --color-sentinel-medium-bg: rgba(234, 179, 8, 0.1);
-  --color-sentinel-low: #3b82f6;
-  --color-sentinel-low-bg: rgba(59, 130, 246, 0.1);
-  --color-sentinel-resolved: #52525b;
-  --color-sentinel-clear: #22c55e;
-  --color-sentinel-accent: #e2e2e2;
+  --color-sentinel-bg: var(--sentinel-bg);
+  --color-sentinel-surface: var(--sentinel-surface);
+  --color-sentinel-surface-hover: var(--sentinel-surface-hover);
+  --color-sentinel-surface-active: var(--sentinel-surface-active);
+  --color-sentinel-border: var(--sentinel-border);
+  --color-sentinel-border-subtle: var(--sentinel-border-subtle);
+  --color-sentinel-text: var(--sentinel-text);
+  --color-sentinel-text-secondary: var(--sentinel-text-secondary);
+  --color-sentinel-text-muted: var(--sentinel-text-muted);
+  --color-sentinel-critical: var(--sentinel-critical);
+  --color-sentinel-critical-bg: var(--sentinel-critical-bg);
+  --color-sentinel-high: var(--sentinel-high);
+  --color-sentinel-high-bg: var(--sentinel-high-bg);
+  --color-sentinel-medium: var(--sentinel-medium);
+  --color-sentinel-medium-bg: var(--sentinel-medium-bg);
+  --color-sentinel-low: var(--sentinel-low);
+  --color-sentinel-low-bg: var(--sentinel-low-bg);
+  --color-sentinel-resolved: var(--sentinel-resolved);
+  --color-sentinel-clear: var(--sentinel-clear);
+  --color-sentinel-accent: var(--sentinel-accent);
   --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
+/* ── Dark theme (default) ── */
+:root, [data-theme="dark"] {
+  --sentinel-bg: #0a0a0b;
+  --sentinel-surface: #141416;
+  --sentinel-surface-hover: #1c1c1f;
+  --sentinel-surface-active: #242428;
+  --sentinel-border: #27272a;
+  --sentinel-border-subtle: #1e1e21;
+  --sentinel-text: #fafafa;
+  --sentinel-text-secondary: #a1a1aa;
+  --sentinel-text-muted: #71717a;
+  --sentinel-critical: #ef4444;
+  --sentinel-critical-bg: rgba(239, 68, 68, 0.1);
+  --sentinel-high: #f97316;
+  --sentinel-high-bg: rgba(249, 115, 22, 0.1);
+  --sentinel-medium: #eab308;
+  --sentinel-medium-bg: rgba(234, 179, 8, 0.1);
+  --sentinel-low: #3b82f6;
+  --sentinel-low-bg: rgba(59, 130, 246, 0.1);
+  --sentinel-resolved: #52525b;
+  --sentinel-clear: #22c55e;
+  --sentinel-accent: #e2e2e2;
+  --sentinel-shadow: rgba(0, 0, 0, 0.5);
+  --sentinel-map-land: #141416;
+  --sentinel-map-border: #1e1e21;
+  --sentinel-map-water: #0a0a0b;
+  --sentinel-map-graticule: #1e1e21;
+  color-scheme: dark;
+}
+
+/* ── Light theme ── */
+[data-theme="light"] {
+  --sentinel-bg: #f8f9fa;
+  --sentinel-surface: #ffffff;
+  --sentinel-surface-hover: #f1f3f5;
+  --sentinel-surface-active: #e9ecef;
+  --sentinel-border: #dee2e6;
+  --sentinel-border-subtle: #e9ecef;
+  --sentinel-text: #1a1a1a;
+  --sentinel-text-secondary: #495057;
+  --sentinel-text-muted: #868e96;
+  --sentinel-critical: #dc2626;
+  --sentinel-critical-bg: rgba(220, 38, 38, 0.08);
+  --sentinel-high: #ea580c;
+  --sentinel-high-bg: rgba(234, 88, 12, 0.08);
+  --sentinel-medium: #ca8a04;
+  --sentinel-medium-bg: rgba(202, 138, 4, 0.08);
+  --sentinel-low: #2563eb;
+  --sentinel-low-bg: rgba(37, 99, 235, 0.06);
+  --sentinel-resolved: #9ca3af;
+  --sentinel-clear: #16a34a;
+  --sentinel-accent: #1a1a1a;
+  --sentinel-shadow: rgba(0, 0, 0, 0.08);
+  --sentinel-map-land: #e9ecef;
+  --sentinel-map-border: #dee2e6;
+  --sentinel-map-water: #f8f9fa;
+  --sentinel-map-graticule: #e9ecef;
+  color-scheme: light;
+}
+
 html {
-  background-color: var(--color-sentinel-bg);
-  color: var(--color-sentinel-text);
+  background-color: var(--sentinel-bg);
+  color: var(--sentinel-text);
 }
 
 body {

@@ -184,9 +184,9 @@ export default function CommandCenter() {
   }
 
   return (
-    <div className="min-h-screen p-6 space-y-6">
+    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-6 pt-14 md:pt-6">
       {/* Header */}
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
           <h1 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-sentinel-text-muted">
             Command Center
@@ -198,13 +198,13 @@ export default function CommandCenter() {
         <div className="flex items-center gap-2">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-sentinel-clear" />
           <span className="text-[10px] text-sentinel-text-muted">
-            Pipeline active — Last update 06:00 UTC
+            Pipeline active — Collecting 06:00 &amp; 18:00 UTC
           </span>
         </div>
       </div>
 
       {/* KPI Strip */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <KPICard
           label="New Events (24h)"
           value={todayEvents.length}
@@ -258,9 +258,9 @@ export default function CommandCenter() {
       </div>
 
       {/* Main Content: Threat Matrix + Priority Events */}
-      <div className="grid grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 sm:gap-6">
         {/* LEFT: World Risk Overview — Threat Matrix */}
-        <Card className="col-span-3 p-0 overflow-hidden">
+        <Card className="xl:col-span-3 p-0 overflow-hidden">
           <div className="border-b border-sentinel-border px-5 py-3">
             <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
               Threat Matrix — Region x Disease
@@ -352,7 +352,7 @@ export default function CommandCenter() {
         </Card>
 
         {/* RIGHT: Priority Events */}
-        <Card className="col-span-2 p-0 overflow-hidden">
+        <Card className="xl:col-span-2 p-0 overflow-hidden">
           <div className="border-b border-sentinel-border px-5 py-3 flex items-center justify-between">
             <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
               Priority Events — Top 10

@@ -184,9 +184,9 @@ export function SituationDetail({ id }: SituationDetailProps) {
       </header>
 
       {/* Two-column layout */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 flex-col lg:flex-row overflow-hidden">
         {/* Left column */}
-        <div className="flex-1 overflow-y-auto border-r border-sentinel-border p-6" style={{ flexBasis: "65%" }}>
+        <div className="flex-1 overflow-y-auto border-b lg:border-b-0 lg:border-r border-sentinel-border p-4 sm:p-6" style={{ flexBasis: "65%" }}>
           {/* Timeline */}
           <div>
             <div className="mb-4 text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
@@ -252,7 +252,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
         </div>
 
         {/* Right column */}
-        <div className="overflow-y-auto p-6" style={{ flexBasis: "35%" }}>
+        <div className="overflow-y-auto p-4 sm:p-6" style={{ flexBasis: "35%" }}>
           {/* One Health Matrix */}
           <OneHealthMatrix situation={situation} />
 
