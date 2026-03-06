@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 interface SourceComparisonProps {
-  data: { source: string; count: number }[];
+  data: { sourceKey?: string; source: string; count: number }[];
 }
 
 const SOURCE_COLORS: Record<string, string> = {
@@ -72,7 +72,7 @@ export function SourceComparison({ data }: SourceComparisonProps) {
           {data.map((entry) => (
             <Cell
               key={entry.source}
-              fill={SOURCE_COLORS[entry.source] || "#71717a"}
+              fill={SOURCE_COLORS[entry.sourceKey || entry.source] || "#71717a"}
               fillOpacity={0.8}
             />
           ))}

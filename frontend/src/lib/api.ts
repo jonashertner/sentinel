@@ -3,10 +3,26 @@ import type { HealthEvent, RiskCategory, Situation, Watchlist } from "./types";
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const DATA_BASE = process.env.NEXT_PUBLIC_DATA_PATH || `${BASE_PATH}/data`;
 
+interface Manifest {
+  event_dates: string[];
+  situation_ids: string[];
+  report_dates: string[];
+  total_events: number;
+  latest_collection: string;
+}
+
+let _manifestCache: Manifest | null = null;
+
 async function fetchJson<T>(path: string): Promise<T> {
   const res = await fetch(`${DATA_BASE}${path}`);
   if (!res.ok) throw new Error(`Failed to fetch ${path}`);
   return res.json();
+}
+
+async function getManifest(): Promise<Manifest> {
+  if (_manifestCache) return _manifestCache;
+  _manifestCache = await fetchJson<Manifest>("/manifest.json");
+  return _manifestCache;
 }
 
 function deriveRiskCategory(score: number): RiskCategory {
@@ -29,22 +45,19 @@ export async function loadEvents(date: string): Promise<HealthEvent[]> {
 }
 
 export async function loadAllEvents(): Promise<HealthEvent[]> {
-  const dates = [
-    "2026-03-01",
-    "2026-03-02",
-    "2026-03-03",
-    "2026-03-04",
-    "2026-03-05",
-    "2026-03-06",
-  ];
-  const results = await Promise.allSettled(dates.map((d) => loadEvents(d)));
+  const manifest = await getManifest();
+  const results = await Promise.allSettled(
+    manifest.event_dates.map((d) => loadEvents(d)),
+  );
   return results.flatMap((r) => (r.status === "fulfilled" ? r.value : []));
 }
 
 export async function loadSituations(): Promise<Situation[]> {
-  const ids = ["sit-001-h5n1-europe", "sit-002-dengue-sea", "sit-003-mpox-1b"];
+  const manifest = await getManifest();
   const results = await Promise.allSettled(
-    ids.map((id) => fetchJson<Situation>(`/situations/${id}.json`)),
+    manifest.situation_ids.map((id) =>
+      fetchJson<Situation>(`/situations/${id}.json`),
+    ),
   );
   return results
     .filter((r) => r.status === "fulfilled")
@@ -60,3 +73,13 @@ export async function loadReport(date: string): Promise<string> {
   if (!res.ok) return "";
   return res.text();
 }
+
+export async function loadLatestReport(): Promise<string> {
+  const manifest = await getManifest();
+  const dates = manifest.report_dates;
+  if (dates.length === 0) return "";
+  return loadReport(dates[dates.length - 1]);
+}
+
+export { getManifest };
+export type { Manifest };

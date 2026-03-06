@@ -3,43 +3,41 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { loadAllEvents, loadSituations } from "@/lib/api";
-import type { HealthEvent, Situation } from "@/lib/types";
-import { RISK_COLORS } from "@/lib/constants";
+import type { HealthEvent, Situation, Source } from "@/lib/types";
+import { RISK_COLORS, SOURCE_LABELS } from "@/lib/constants";
 import { KPICard } from "@/components/ui/KPICard";
 import { RiskPill } from "@/components/ui/RiskPill";
 import { SourceBadge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Sparkline } from "@/components/ui/Sparkline";
 
-const DATES = [
-  "2026-03-01",
-  "2026-03-02",
-  "2026-03-03",
-  "2026-03-04",
-  "2026-03-05",
-  "2026-03-06",
-];
+// DATES derived from loaded events in the component
+
+const WHO_REGION_NAMES: Record<string, string> = {
+  EURO: "Europe",
+  SEARO: "Southeast Asia",
+  AFRO: "Africa",
+  AMRO: "Americas",
+  EMRO: "Middle East",
+  WPRO: "Western Pacific",
+};
 
 const REGION_ORDER = [
   "Europe",
   "Southeast Asia",
-  "East Africa",
-  "Central Africa",
-  "West Africa",
-  "North Africa",
-  "Central Asia",
+  "Africa",
+  "Americas",
   "Middle East",
+  "Western Pacific",
 ];
 
 const REGION_COLORS: Record<string, string> = {
   Europe: "#3b82f6",
   "Southeast Asia": "#f97316",
-  "East Africa": "#ef4444",
-  "Central Africa": "#eab308",
-  "West Africa": "#a855f7",
-  "North Africa": "#06b6d4",
-  "Central Asia": "#ec4899",
+  Africa: "#ef4444",
+  Americas: "#a855f7",
   "Middle East": "#14b8a6",
+  "Western Pacific": "#06b6d4",
 };
 
 export default function CommandCenter() {
@@ -48,14 +46,22 @@ export default function CommandCenter() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([loadAllEvents(), loadSituations()]).then(([evts, sits]) => {
-      setEvents(evts);
-      setSituations(sits);
-      setLoading(false);
-    });
+    Promise.all([loadAllEvents(), loadSituations()])
+      .then(([evts, sits]) => {
+        setEvents(evts);
+        setSituations(sits);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
-  const latestDate = "2026-03-06";
+  const DATES = useMemo(() => {
+    const dateSet = new Set(events.map((e) => e.date_reported));
+    return [...dateSet].sort();
+  }, [events]);
+
+  const latestDate = DATES.length > 0 ? DATES[DATES.length - 1] : "";
+  const previousDate = DATES.length > 1 ? DATES[DATES.length - 2] : "";
 
   const todayEvents = useMemo(
     () => events.filter((e) => e.date_reported === latestDate),
@@ -95,7 +101,8 @@ export default function CommandCenter() {
     >();
 
     for (const evt of events) {
-      for (const region of evt.regions) {
+      for (const rawRegion of evt.regions) {
+        const region = WHO_REGION_NAMES[rawRegion] || rawRegion;
         if (!regionMap.has(region)) {
           regionMap.set(region, {
             region,
@@ -156,6 +163,21 @@ export default function CommandCenter() {
       });
   }, [events, allDiseases]);
 
+  // Source statistics for transparency panel
+  const sourceCounts = useMemo(() => {
+    const counts: Record<string, { total: number; latest: string }> = {};
+    for (const evt of events) {
+      if (!counts[evt.source]) {
+        counts[evt.source] = { total: 0, latest: "" };
+      }
+      counts[evt.source].total++;
+      if (evt.date_collected > (counts[evt.source].latest || "")) {
+        counts[evt.source].latest = evt.date_collected;
+      }
+    }
+    return counts;
+  }, [events]);
+
   function riskColor(score: number): string {
     if (score >= 8) return RISK_COLORS.CRITICAL.dot;
     if (score >= 6) return RISK_COLORS.HIGH.dot;
@@ -184,9 +206,9 @@ export default function CommandCenter() {
   }
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-6 pt-14 md:pt-6">
+    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-6 pt-4 md:pt-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pl-12 md:pl-0">
         <div>
           <h1 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-sentinel-text-muted">
             Command Center
@@ -210,7 +232,7 @@ export default function CommandCenter() {
           value={todayEvents.length}
           delta={
             todayEvents.length -
-            events.filter((e) => e.date_reported === "2026-03-05").length
+            events.filter((e) => e.date_reported === previousDate).length
           }
           sparkData={dailyCounts}
         />
@@ -226,7 +248,7 @@ export default function CommandCenter() {
             criticalCount -
             events.filter(
               (e) =>
-                e.date_reported === "2026-03-05" &&
+                e.date_reported === previousDate &&
                 e.risk_category === "CRITICAL",
             ).length
           }
@@ -245,7 +267,7 @@ export default function CommandCenter() {
             swissRelevantCount -
             events.filter(
               (e) =>
-                e.date_reported === "2026-03-05" && e.swiss_relevance >= 6.0,
+                e.date_reported === previousDate && e.swiss_relevance >= 6.0,
             ).length
           }
           sparkData={DATES.map(
@@ -408,13 +430,13 @@ export default function CommandCenter() {
             6-Day Trend by Disease
           </h2>
         </div>
-        <div className="flex flex-wrap gap-0 divide-x divide-sentinel-border-subtle">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap">
           {diseaseTrends.map(([disease, counts]) => {
             const total = counts.reduce((s, v) => s + v, 0);
             return (
               <div
                 key={disease}
-                className="flex items-center gap-3 px-5 py-3"
+                className="flex items-center gap-3 px-4 sm:px-5 py-3 border-b lg:border-b-0 lg:border-r border-sentinel-border-subtle last:border-b-0 last:lg:border-r-0"
               >
                 <div>
                   <p className="text-[11px] font-medium text-sentinel-text-secondary leading-none">
@@ -444,6 +466,55 @@ export default function CommandCenter() {
                         : "#71717a"
                   }
                 />
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+
+      {/* Data Sources — Transparency */}
+      <Card className="p-0 overflow-hidden">
+        <div className="border-b border-sentinel-border px-5 py-3 flex items-center justify-between">
+          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
+            Data Sources
+          </h2>
+          <span className="text-[10px] text-sentinel-text-muted">
+            {events.length} total events from {Object.keys(sourceCounts).length} sources
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+          {(Object.keys(SOURCE_LABELS) as Source[]).map((src) => {
+            const meta = SOURCE_LABELS[src];
+            const stats = sourceCounts[src];
+            return (
+              <div key={src} className="border-t sm:border-t-0 sm:border-l first:border-t-0 first:sm:border-l-0 border-sentinel-border-subtle px-4 py-3 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`inline-block h-1.5 w-1.5 rounded-full ${stats ? "bg-sentinel-clear" : "bg-sentinel-text-muted opacity-40"}`}
+                  />
+                  <SourceBadge source={src} />
+                </div>
+                <p className="text-[10px] text-sentinel-text-muted leading-snug">
+                  {meta.description}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono font-semibold text-sentinel-text-secondary">
+                    {stats?.total ?? 0} events
+                  </span>
+                  {stats && (
+                    <span className="text-[10px] text-sentinel-text-muted">
+                      Last: {stats.latest}
+                    </span>
+                  )}
+                </div>
+                <a
+                  href={meta.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-sentinel-accent hover:underline truncate block"
+                >
+                  {meta.url.replace("https://", "")}
+                </a>
               </div>
             );
           })}

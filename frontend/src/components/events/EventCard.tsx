@@ -25,7 +25,7 @@ export function EventCard({ event, expanded, onToggle }: EventCardProps) {
       )}
       style={{ borderLeftWidth: "3px", borderLeftColor: borderColor }}
     >
-      <div className="flex items-start gap-4 px-5 py-4">
+      <div className="flex items-start gap-3 sm:gap-4 px-3 sm:px-5 py-3 sm:py-4">
         {/* Left: Risk Pill */}
         <RiskPill
           score={event.risk_score}
@@ -35,10 +35,11 @@ export function EventCard({ event, expanded, onToggle }: EventCardProps) {
 
         {/* Center: Title, Disease, Countries, Summary */}
         <div className="min-w-0 flex-1">
-          <p className="text-[13px] font-semibold leading-tight text-sentinel-text">
+          <p className="text-[12px] sm:text-[13px] font-semibold leading-tight text-sentinel-text">
             {event.title}
           </p>
-          <div className="mt-1.5 flex flex-wrap items-center gap-2">
+          <div className="mt-1.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <SourceBadge source={event.source} className="sm:hidden" />
             <Badge label={event.disease} variant="tag" />
             {event.countries.map((c) => (
               <span
@@ -59,10 +60,30 @@ export function EventCard({ event, expanded, onToggle }: EventCardProps) {
               ))}
             </div>
           )}
+          {/* Mobile: inline meta row */}
+          <div className="mt-2 flex items-center gap-3 sm:hidden">
+            <span className="text-[10px] text-sentinel-text-muted">
+              {event.date_reported}
+            </span>
+            <span
+              className={clsx(
+                "text-[12px] font-mono font-bold tabular-nums",
+                event.swiss_relevance >= 8
+                  ? "text-sentinel-critical"
+                  : event.swiss_relevance >= 6
+                    ? "text-sentinel-high"
+                    : event.swiss_relevance >= 4
+                      ? "text-sentinel-medium"
+                      : "text-sentinel-low",
+              )}
+            >
+              CH {event.swiss_relevance.toFixed(1)}
+            </span>
+          </div>
         </div>
 
-        {/* Right: Source, Swiss Relevance, Date */}
-        <div className="shrink-0 flex flex-col items-end gap-2">
+        {/* Right: Source, Swiss Relevance, Date — hidden on mobile */}
+        <div className="hidden sm:flex shrink-0 flex-col items-end gap-2">
           <SourceBadge source={event.source} />
           <div className="text-right">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">

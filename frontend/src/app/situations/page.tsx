@@ -18,7 +18,7 @@ export default function SituationsPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="flex shrink-0 items-center justify-between border-b border-sentinel-border px-4 sm:px-6 py-3 pt-12 md:pt-3">
+      <header className="flex shrink-0 items-center justify-between border-b border-sentinel-border pl-14 pr-4 sm:px-6 md:px-6 py-3">
         <div>
           <h1 className="text-sm font-semibold tracking-wide text-sentinel-text">
             SITUATIONS

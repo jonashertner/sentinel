@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getManifest } from "@/lib/api";
+import type { Manifest } from "@/lib/api";
 import {
   LayoutDashboard,
   Globe,
@@ -47,6 +49,11 @@ export function Sidebar() {
   const themeLabel = mode === "system" ? "System" : mode === "light" ? "Light" : "Dark";
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [manifest, setManifest] = useState<Manifest | null>(null);
+
+  useEffect(() => {
+    getManifest().then(setManifest).catch(() => {});
+  }, []);
   const [agency, setAgency] = useState<(typeof AGENCIES)[number]>("Joint");
   const [agencyOpen, setAgencyOpen] = useState(false);
 
@@ -182,10 +189,10 @@ export function Sidebar() {
         <div className="border-t border-sentinel-border-subtle px-3 py-2">
           {showLabels ? (
             <div className="space-y-0.5 text-[10px] leading-tight text-sentinel-text-muted">
-              <div>Last collection: 2026-03-06 06:00 UTC</div>
+              <div>Last collection: {manifest?.latest_collection ?? "—"}</div>
               <div className="flex items-center gap-1.5">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-sentinel-clear" />
-                Events: 32
+                Events: {manifest?.total_events ?? "—"}
               </div>
             </div>
           ) : (

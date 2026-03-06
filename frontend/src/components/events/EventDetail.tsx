@@ -38,7 +38,7 @@ export function EventDetail({ event }: EventDetailProps) {
   }
 
   return (
-    <div className="border-t border-sentinel-border-subtle bg-sentinel-bg/50 px-5 py-5 space-y-5">
+    <div className="border-t border-sentinel-border-subtle bg-sentinel-bg/50 px-3 sm:px-5 py-4 sm:py-5 space-y-4 sm:space-y-5">
       {/* Full Summary */}
       <div>
         <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">

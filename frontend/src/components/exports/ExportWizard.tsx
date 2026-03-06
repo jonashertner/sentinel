@@ -23,14 +23,11 @@ interface ExportWizardProps {
   report: string;
 }
 
-const DATES = [
-  "2026-03-01",
-  "2026-03-02",
-  "2026-03-03",
-  "2026-03-04",
-  "2026-03-05",
-  "2026-03-06",
-];
+
+function sanitizeCell(value: string): string {
+  if (value && "=+-@\t\r".includes(value[0])) return `'${value}`;
+  return value;
+}
 
 function eventsToCsv(events: HealthEvent[]): string {
   const headers = [
@@ -54,12 +51,12 @@ function eventsToCsv(events: HealthEvent[]): string {
 
   const rows = events.map((e) =>
     [
-      e.id,
+      sanitizeCell(e.id),
       e.source,
-      `"${e.title.replace(/"/g, '""')}"`,
+      `"${sanitizeCell(e.title).replace(/"/g, '""')}"`,
       e.date_reported,
-      e.disease,
-      e.pathogen || "",
+      sanitizeCell(e.disease),
+      sanitizeCell(e.pathogen || ""),
       e.countries.join(";"),
       e.regions.join(";"),
       e.species,
@@ -69,7 +66,7 @@ function eventsToCsv(events: HealthEvent[]): string {
       e.risk_category,
       e.swiss_relevance,
       e.one_health_tags.join(";"),
-      `"${e.summary.replace(/"/g, '""')}"`,
+      `"${sanitizeCell(e.summary).replace(/"/g, '""')}"`,
     ].join(","),
   );
 
@@ -87,11 +84,20 @@ function downloadBlob(content: string, filename: string, mimeType: string) {
 }
 
 export function ExportWizard({ events, situations, report }: ExportWizardProps) {
+  const DATES = useMemo(() => {
+    const dateSet = new Set(events.map((e) => e.date_reported));
+    return [...dateSet].sort();
+  }, [events]);
+
   const [step, setStep] = useState(1);
   const [scope, setScope] = useState<ExportScope>("events");
   const [format, setFormat] = useState<ExportFormat>("csv");
-  const [dateFrom, setDateFrom] = useState("2026-03-01");
-  const [dateTo, setDateTo] = useState("2026-03-06");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+
+  // Initialize date range once DATES are available
+  const effectiveDateFrom = dateFrom || (DATES.length > 0 ? DATES[0] : "");
+  const effectiveDateTo = dateTo || (DATES.length > 0 ? DATES[DATES.length - 1] : "");
   const [minRisk, setMinRisk] = useState(0);
   const [selectedSituations, setSelectedSituations] = useState<Set<string>>(
     new Set(situations.map((s) => s.id)),
@@ -116,11 +122,11 @@ export function ExportWizard({ events, situations, report }: ExportWizardProps) 
   const filteredEvents = useMemo(() => {
     return events.filter(
       (e) =>
-        e.date_reported >= dateFrom &&
-        e.date_reported <= dateTo &&
+        e.date_reported >= effectiveDateFrom &&
+        e.date_reported <= effectiveDateTo &&
         e.risk_score >= minRisk,
     );
-  }, [events, dateFrom, dateTo, minRisk]);
+  }, [events, effectiveDateFrom, effectiveDateTo, minRisk]);
 
   // Selected situations
   const filteredSituations = useMemo(
@@ -169,9 +175,9 @@ export function ExportWizard({ events, situations, report }: ExportWizardProps) 
   return (
     <div className="mx-auto max-w-3xl">
       {/* Step indicator */}
-      <div className="mb-8 flex items-center justify-center gap-2">
+      <div className="mb-6 sm:mb-8 flex items-center justify-center gap-1.5 sm:gap-2">
         {[1, 2, 3].map((s) => (
-          <div key={s} className="flex items-center gap-2">
+          <div key={s} className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={() => setStep(s)}
               className={clsx(
@@ -187,7 +193,7 @@ export function ExportWizard({ events, situations, report }: ExportWizardProps) 
             </button>
             <span
               className={clsx(
-                "text-[11px] font-medium",
+                "text-[11px] font-medium hidden sm:inline",
                 step === s
                   ? "text-sentinel-text"
                   : "text-sentinel-text-muted",
@@ -196,7 +202,7 @@ export function ExportWizard({ events, situations, report }: ExportWizardProps) 
               {s === 1 ? "Scope" : s === 2 ? "Format" : "Preview"}
             </span>
             {s < 3 && (
-              <div className="mx-2 h-px w-12 bg-sentinel-border" />
+              <div className="mx-1 sm:mx-2 h-px w-6 sm:w-12 bg-sentinel-border" />
             )}
           </div>
         ))}
@@ -209,7 +215,7 @@ export function ExportWizard({ events, situations, report }: ExportWizardProps) 
             Select what to export
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {(
               [
                 {
@@ -267,13 +273,13 @@ export function ExportWizard({ events, situations, report }: ExportWizardProps) 
               <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
                 Filter Events
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-end gap-3">
                 <div>
                   <label className="block text-[10px] text-sentinel-text-muted mb-1">
                     From
                   </label>
                   <select
-                    value={dateFrom}
+                    value={effectiveDateFrom}
                     onChange={(e) => setDateFrom(e.target.value)}
                     className="rounded border border-sentinel-border bg-sentinel-bg px-2 py-1.5 text-[11px] text-sentinel-text outline-none"
                   >
@@ -289,7 +295,7 @@ export function ExportWizard({ events, situations, report }: ExportWizardProps) 
                     To
                   </label>
                   <select
-                    value={dateTo}
+                    value={effectiveDateTo}
                     onChange={(e) => setDateTo(e.target.value)}
                     className="rounded border border-sentinel-border bg-sentinel-bg px-2 py-1.5 text-[11px] text-sentinel-text outline-none"
                   >
@@ -352,7 +358,7 @@ export function ExportWizard({ events, situations, report }: ExportWizardProps) 
             Select export format
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {(
               [
                 {

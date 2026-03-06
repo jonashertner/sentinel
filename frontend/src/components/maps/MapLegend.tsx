@@ -5,8 +5,8 @@ const LEVELS: RiskCategory[] = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
 
 export function MapLegend() {
   return (
-    <div className="flex items-center gap-4 text-[10px] uppercase tracking-wider text-sentinel-text-muted">
-      <span className="font-semibold tracking-[0.15em]">Risk</span>
+    <div className="flex items-center gap-2 sm:gap-4 text-[10px] uppercase tracking-wider text-sentinel-text-muted">
+      <span className="font-semibold tracking-[0.15em] hidden sm:inline">Risk</span>
       {LEVELS.map((level) => (
         <span key={level} className="flex items-center gap-1.5">
           <span

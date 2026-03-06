@@ -6,7 +6,6 @@ covering WHO situation reports, response updates, and health advisories.
 """
 
 import logging
-import re
 from datetime import date
 
 import httpx

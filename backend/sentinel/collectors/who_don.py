@@ -111,10 +111,13 @@ class WHODONCollector(BaseCollector):
         countries: list[str] = []
         if len(parts) > 1:
             location = parts[1].strip()
-            # Try to extract known country patterns
+            # Remove parenthetical info like "(region)" and split on commas/and
             location_clean = re.sub(r"\(.*?\)", "", location).strip()
             if location_clean:
-                # Use first 2 chars as rough country code
-                countries = [location_clean[:2].upper()]
+                # Pass full country names — normalizer will resolve to ISO codes
+                for segment in re.split(r"[,/]|\band\b", location_clean):
+                    name = segment.strip()
+                    if name:
+                        countries.append(name)
 
         return disease, countries if countries else ["XX"]

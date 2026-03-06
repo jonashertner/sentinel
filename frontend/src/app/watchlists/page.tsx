@@ -131,7 +131,7 @@ export default function WatchlistsPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="flex shrink-0 items-center justify-between border-b border-sentinel-border px-4 sm:px-6 py-3 pt-12 md:pt-3">
+      <header className="flex shrink-0 items-center justify-between border-b border-sentinel-border pl-14 pr-4 sm:px-6 md:px-6 py-3">
         <div>
           <h1 className="text-sm font-semibold tracking-wide text-sentinel-text">
             WATCHLISTS
@@ -153,7 +153,7 @@ export default function WatchlistsPage() {
         </Button>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         {/* Create form */}
         {showForm && (
           <div className="mb-6 rounded-lg border border-sentinel-border bg-sentinel-surface p-4">
@@ -288,7 +288,7 @@ export default function WatchlistsPage() {
         )}
 
         {/* Watchlist cards */}
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {allWatchlists.map((wl) => {
             const matching = events.filter((e) => matchesWatchlist(e, wl));
             const isCustom = customWatchlists.some((c) => c.id === wl.id);

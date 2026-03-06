@@ -124,7 +124,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
   return (
     <div className="flex h-full flex-col overflow-hidden">
       {/* Header */}
-      <header className="shrink-0 border-b border-sentinel-border px-6 py-4">
+      <header className="shrink-0 border-b border-sentinel-border pl-14 pr-4 sm:px-6 py-4">
         <button
           onClick={() => router.push("/situations")}
           className="mb-3 flex items-center gap-1.5 text-[11px] font-medium text-sentinel-text-muted hover:text-sentinel-text-secondary"
@@ -133,7 +133,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
           Back to Situations
         </button>
 
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
           <div>
             <div className="flex items-center gap-2.5">
               <span
@@ -146,11 +146,11 @@ export function SituationDetail({ id }: SituationDetailProps) {
               </span>
               <Badge label={situation.status} variant="risk" />
             </div>
-            <h1 className="mt-1.5 text-lg font-semibold leading-tight text-sentinel-text">
+            <h1 className="mt-1.5 text-base sm:text-lg font-semibold leading-tight text-sentinel-text">
               {situation.title}
             </h1>
           </div>
-          <div className="shrink-0 text-right text-[10px] text-sentinel-text-muted">
+          <div className="shrink-0 sm:text-right text-[10px] text-sentinel-text-muted">
             <div>Lead: {situation.lead_analyst}</div>
             <div className="mt-0.5 font-mono tabular-nums">
               Created {situation.created}
@@ -162,7 +162,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
         </div>
 
         {/* Countries + diseases */}
-        <div className="mt-3 flex items-center gap-4">
+        <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-4">
           <div className="flex items-center gap-1">
             {situation.countries.map((cc) => (
               <span
@@ -174,8 +174,8 @@ export function SituationDetail({ id }: SituationDetailProps) {
               </span>
             ))}
           </div>
-          <div className="h-3 w-px bg-sentinel-border" />
-          <div className="flex items-center gap-1">
+          <div className="h-3 w-px bg-sentinel-border hidden sm:block" />
+          <div className="flex flex-wrap items-center gap-1">
             {situation.diseases.map((d) => (
               <Badge key={d} label={d} />
             ))}
@@ -186,7 +186,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
       {/* Two-column layout */}
       <div className="flex flex-1 flex-col lg:flex-row overflow-hidden">
         {/* Left column */}
-        <div className="flex-1 overflow-y-auto border-b lg:border-b-0 lg:border-r border-sentinel-border p-4 sm:p-6" style={{ flexBasis: "65%" }}>
+        <div className="flex-1 overflow-y-auto border-b lg:border-b-0 lg:border-r border-sentinel-border p-4 sm:p-6 lg:basis-[65%]">
           {/* Timeline */}
           <div>
             <div className="mb-4 text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
@@ -252,7 +252,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
         </div>
 
         {/* Right column */}
-        <div className="overflow-y-auto p-4 sm:p-6" style={{ flexBasis: "35%" }}>
+        <div className="overflow-y-auto p-4 sm:p-6 lg:basis-[35%]">
           {/* One Health Matrix */}
           <OneHealthMatrix situation={situation} />
 

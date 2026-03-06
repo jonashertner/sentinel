@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { loadAllEvents, loadSituations, loadReport } from "@/lib/api";
+import { loadAllEvents, loadSituations, loadLatestReport } from "@/lib/api";
 import type { HealthEvent, Situation } from "@/lib/types";
 import { ExportWizard } from "@/components/exports/ExportWizard";
 
@@ -12,7 +12,7 @@ export default function ExportsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([loadAllEvents(), loadSituations(), loadReport("2026-03-06")])
+    Promise.all([loadAllEvents(), loadSituations(), loadLatestReport()])
       .then(([ev, sit, rep]) => {
         setEvents(ev);
         setSituations(sit);
@@ -24,7 +24,7 @@ export default function ExportsPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="flex shrink-0 items-center justify-between border-b border-sentinel-border px-4 sm:px-6 py-3 pt-12 md:pt-3">
+      <header className="flex shrink-0 items-center justify-between border-b border-sentinel-border px-4 sm:px-6 py-3 pt-14 md:pt-3">
         <div>
           <h1 className="text-sm font-semibold tracking-wide text-sentinel-text">
             EXPORTS
@@ -35,7 +35,7 @@ export default function ExportsPage() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         {loading ? (
           <div className="flex h-64 items-center justify-center text-[12px] text-sentinel-text-muted">
             Loading export data...

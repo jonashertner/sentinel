@@ -93,6 +93,9 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     report = generate_daily_brief(today, all_events)
     store.save_report(today, report)
 
+    # 10. Update manifest for frontend
+    store.write_manifest()
+
     logger.info(
         "Pipeline complete: %d collected, %d after dedup, %d analyzed",
         result.events_collected,

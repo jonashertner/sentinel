@@ -10,25 +10,25 @@ import { SourceComparison } from "@/components/charts/SourceComparison";
 import { RiskTimeline } from "@/components/charts/RiskTimeline";
 import { DiseaseBreakdown } from "@/components/charts/DiseaseBreakdown";
 
-const DATES = [
-  "2026-03-01",
-  "2026-03-02",
-  "2026-03-03",
-  "2026-03-04",
-  "2026-03-05",
-  "2026-03-06",
-];
+// DATES derived from loaded events in the component
 
 export default function AnalyticsPage() {
   const [events, setEvents] = useState<HealthEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadAllEvents().then((evts) => {
-      setEvents(evts);
-      setLoading(false);
-    });
+    loadAllEvents()
+      .then((evts) => {
+        setEvents(evts);
+      })
+      .catch(() => setEvents([]))
+      .finally(() => setLoading(false));
   }, []);
+
+  const DATES = useMemo(() => {
+    const dateSet = new Set(events.map((e) => e.date_reported));
+    return [...dateSet].sort();
+  }, [events]);
 
   // Disease trends: events per day per disease
   const { trendData, trendDiseases } = useMemo(() => {
@@ -55,8 +55,9 @@ export default function AnalyticsPage() {
       map.set(e.source, (map.get(e.source) || 0) + 1);
     }
     return Array.from(map.entries())
-      .map(([source, count]) => ({
-        source: SOURCE_LABELS[source]?.short || source,
+      .map(([sourceKey, count]) => ({
+        sourceKey,
+        source: SOURCE_LABELS[sourceKey]?.short || sourceKey,
         count,
       }))
       .sort((a, b) => b.count - a.count);
@@ -123,14 +124,14 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-6 pt-14 md:pt-6">
+    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-6 pt-4 md:pt-6">
       {/* Header */}
-      <div>
+      <div className="pl-12 md:pl-0">
         <h1 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-sentinel-text-muted">
           Analytics
         </h1>
         <p className="mt-0.5 text-[11px] text-sentinel-text-muted">
-          6-day intelligence analysis — {events.length} total events
+          {DATES.length}-day intelligence analysis — {events.length} total events
         </p>
       </div>
 

@@ -78,7 +78,13 @@ class ECDCCollector(BaseCollector):
         countries: list[str] = []
         if len(parts) > 1:
             location = parts[1].strip()
-            location_clean = re.sub(r",?\s*week\s+\d+.*$", "", location, flags=re.IGNORECASE).strip()
-            if location_clean and len(location_clean) >= 2:
-                countries = [location_clean[:2].upper()]
+            location_clean = re.sub(
+                r",?\s*week\s+\d+.*$", "", location, flags=re.IGNORECASE,
+            ).strip()
+            if location_clean:
+                # Pass full country names — normalizer will resolve to ISO codes
+                for segment in re.split(r"[,/]|\band\b", location_clean):
+                    name = segment.strip()
+                    if name:
+                        countries.append(name)
         return disease, countries if countries else ["EU"]

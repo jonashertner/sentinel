@@ -27,13 +27,38 @@ export const RISK_COLORS = {
 
 export const SOURCE_LABELS: Record<
   string,
-  { label: string; short: string }
+  { label: string; short: string; description: string; url: string }
 > = {
-  WHO_DON: { label: "WHO Disease Outbreak News", short: "WHO" },
-  WHO_EIOS: { label: "WHO EIOS", short: "EIOS" },
-  PROMED: { label: "ProMED-mail", short: "ProMED" },
-  ECDC: { label: "European CDC", short: "ECDC" },
-  WOAH: { label: "World Organisation for Animal Health", short: "WOAH" },
+  WHO_DON: {
+    label: "WHO Disease Outbreak News",
+    short: "WHO",
+    description: "Official WHO disease outbreak reports via the WHO public API",
+    url: "https://www.who.int/emergencies/disease-outbreak-news",
+  },
+  WHO_EIOS: {
+    label: "ECDC Epidemiological Updates",
+    short: "EIOS",
+    description: "ECDC epidemiological publications and surveillance reports",
+    url: "https://www.ecdc.europa.eu/en/publications-data",
+  },
+  PROMED: {
+    label: "WHO Health News",
+    short: "WHO News",
+    description: "WHO news items filtered for disease-relevant content",
+    url: "https://www.who.int/news",
+  },
+  ECDC: {
+    label: "European CDC",
+    short: "ECDC",
+    description: "ECDC communicable disease threats reports and publications",
+    url: "https://www.ecdc.europa.eu",
+  },
+  WOAH: {
+    label: "World Organisation for Animal Health",
+    short: "WOAH",
+    description: "WOAH news feed filtered for disease notifications",
+    url: "https://www.woah.org",
+  },
 };
 
 export const COUNTRY_NAMES: Record<string, string> = {

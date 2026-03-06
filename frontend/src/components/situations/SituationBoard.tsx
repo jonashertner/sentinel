@@ -20,13 +20,13 @@ export function SituationBoard({ situations }: SituationBoardProps) {
   const router = useRouter();
 
   return (
-    <div className="flex h-full gap-4 overflow-x-auto p-4">
+    <div className="flex h-full flex-col gap-4 overflow-y-auto p-4 md:flex-row md:overflow-x-auto md:overflow-y-hidden">
       {COLUMNS.map(({ status, label, color }) => {
         const items = situations.filter((s) => s.status === status);
         return (
           <div
             key={status}
-            className="flex w-80 shrink-0 flex-col rounded-lg border border-sentinel-border bg-sentinel-bg"
+            className="flex w-full shrink-0 flex-col rounded-lg border border-sentinel-border bg-sentinel-bg md:w-80"
           >
             {/* Column header */}
             <div className="flex items-center gap-2.5 border-b border-sentinel-border px-4 py-3">

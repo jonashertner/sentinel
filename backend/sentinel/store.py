@@ -1,10 +1,14 @@
 import json
+import re
 from datetime import date
 from pathlib import Path
 
 from sentinel.models.annotation import Annotation
 from sentinel.models.event import HealthEvent
 from sentinel.models.situation import Situation
+
+# Annotation IDs must be safe for use in filenames
+_SAFE_ID_RE = re.compile(r"^[a-zA-Z0-9_-]+$")
 
 
 class DataStore:
@@ -58,7 +62,12 @@ class DataStore:
         return situations
 
     def save_annotation(self, annotation: Annotation) -> None:
+        if not _SAFE_ID_RE.match(annotation.id):
+            raise ValueError(f"Invalid annotation ID: {annotation.id!r}")
         path = self.annotations_dir / f"{annotation.id}.json"
+        # Ensure resolved path stays within annotations directory
+        if not path.resolve().is_relative_to(self.annotations_dir.resolve()):
+            raise ValueError(f"Invalid annotation ID: {annotation.id!r}")
         path.write_text(annotation.model_dump_json(indent=2))
 
     def load_annotations(self) -> list[Annotation]:
@@ -66,3 +75,33 @@ class DataStore:
         for path in sorted(self.annotations_dir.glob("*.json")):
             annotations.append(Annotation.model_validate_json(path.read_text()))
         return annotations
+
+    def write_manifest(self) -> None:
+        """Write a manifest.json listing available dates and situation IDs."""
+        event_dates = sorted(
+            p.stem for p in self.events_dir.glob("*.json")
+        )
+        situation_ids = sorted(
+            p.stem for p in self.situations_dir.glob("*.json")
+        )
+        report_dates = sorted(
+            p.stem.replace("-daily", "") for p in self.reports_dir.glob("*-daily.md")
+        )
+        total_events = 0
+        latest_collection = ""
+        for d in reversed(event_dates):
+            path = self.events_dir / f"{d}.json"
+            data = json.loads(path.read_text())
+            total_events += len(data)
+            if not latest_collection and data:
+                latest_collection = data[0].get("date_collected", d)
+
+        manifest = {
+            "event_dates": event_dates,
+            "situation_ids": situation_ids,
+            "report_dates": report_dates,
+            "total_events": total_events,
+            "latest_collection": latest_collection or event_dates[-1] if event_dates else "",
+        }
+        path = self.base / "manifest.json"
+        path.write_text(json.dumps(manifest, indent=2))

@@ -32,14 +32,7 @@ const RISK_ORDER: Record<RiskCategory, number> = {
   LOW: 1,
 };
 
-const DATES = [
-  "2026-03-01",
-  "2026-03-02",
-  "2026-03-03",
-  "2026-03-04",
-  "2026-03-05",
-  "2026-03-06",
-];
+// DATES is now derived from events in the component
 
 /* ---------- Types ---------- */
 
@@ -68,6 +61,12 @@ export function GlobalMap({
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const [animationsEnabled, setAnimationsEnabled] = useState(true);
   const svgRef = useRef<SVGSVGElement>(null);
+
+  // Derive available dates from events
+  const DATES = useMemo(() => {
+    const dateSet = new Set(events.map((e) => e.date_reported));
+    return [...dateSet].sort();
+  }, [events]);
 
   // --- Zoom / Pan state ---
   const [zoom, setZoom] = useState(1);
@@ -691,8 +690,8 @@ export function GlobalMap({
               )}
             </div>
 
-            {/* Top-left stats overlay */}
-            <div className="absolute left-4 top-4 flex flex-col gap-2">
+            {/* Top-left stats overlay — offset below hamburger on mobile */}
+            <div className="absolute left-3 sm:left-4 top-14 md:top-4 flex flex-col gap-2">
               <div className="rounded border border-sentinel-border bg-sentinel-surface/90 px-3 py-2 backdrop-blur-sm">
                 <div className="text-[9px] font-semibold uppercase tracking-[0.15em] text-sentinel-text-muted">
                   Global Events
@@ -733,9 +732,9 @@ export function GlobalMap({
           </div>
 
           {/* Bottom bar: legend + date selector + animation toggle */}
-          <div className="flex items-center justify-between border-t border-sentinel-border bg-sentinel-surface px-4 py-2.5">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-sentinel-border bg-sentinel-surface px-3 sm:px-4 py-2">
             <MapLegend />
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Animation toggle */}
               <button
                 onClick={() => setAnimationsEnabled(!animationsEnabled)}
@@ -751,13 +750,13 @@ export function GlobalMap({
               </button>
               <div className="h-4 w-px bg-sentinel-border" />
               {/* Date selector */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5 sm:gap-1">
                 {DATES.map((d) => (
                   <button
                     key={d}
                     onClick={() => onDateChange(d)}
                     className={clsx(
-                      "rounded px-2 py-1 font-mono text-[10px] tabular-nums",
+                      "rounded px-1.5 sm:px-2 py-1 font-mono text-[9px] sm:text-[10px] tabular-nums",
                       d === selectedDate
                         ? "bg-sentinel-text text-sentinel-bg"
                         : "text-sentinel-text-muted hover:bg-sentinel-surface-hover hover:text-sentinel-text-secondary",

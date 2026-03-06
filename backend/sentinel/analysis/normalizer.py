@@ -142,7 +142,10 @@ def normalize_disease(name: str) -> str:
 def normalize_country(text: str) -> list[str]:
     """Normalize a country name or code to ISO 3166 alpha-2 code(s)."""
     key = text.lower().strip()
-    if len(key) == 2 and key.upper() != "XX":
+    if not key:
+        return ["XX"]
+    # Already a valid 2-letter code (but not XX)
+    if len(key) == 2 and key.upper() != "XX" and key.upper() in WHO_REGIONS:
         return [key.upper()]
     if key in COUNTRY_CODES:
         return [COUNTRY_CODES[key]]
@@ -150,7 +153,7 @@ def normalize_country(text: str) -> list[str]:
     for name, code in COUNTRY_CODES.items():
         if name in key or key in name:
             return [code]
-    return [text.strip()[:2].upper()] if text.strip() else ["XX"]
+    return ["XX"]
 
 
 def assign_who_regions(countries: list[str]) -> list[str]:

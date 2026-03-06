@@ -20,10 +20,12 @@ export default function TriagePage() {
   const [filterCountry, setFilterCountry] = useState("");
 
   useEffect(() => {
-    loadAllEvents().then((evts) => {
-      setEvents(evts);
-      setLoading(false);
-    });
+    loadAllEvents()
+      .then((evts) => {
+        setEvents(evts);
+      })
+      .catch(() => setEvents([]))
+      .finally(() => setLoading(false));
   }, []);
 
   const diseases = useMemo(() => {
@@ -136,9 +138,9 @@ export default function TriagePage() {
   }
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-5 pt-14 md:pt-6">
+    <div className="min-h-screen p-4 sm:p-6 space-y-4 sm:space-y-5 pt-4 md:pt-6">
       {/* Header */}
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between pl-12 md:pl-0">
         <div>
           <h1 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-sentinel-text-muted">
             Triage Queue

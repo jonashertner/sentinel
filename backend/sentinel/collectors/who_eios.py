@@ -26,7 +26,7 @@ class WHOEIOSCollector(BaseCollector):
 
     source_name = "WHO_EIOS"
 
-    def __init__(self, api_url: str = ECDC_EPID_FEED, api_key: str | None = None):
+    def __init__(self, api_url: str = ECDC_EPID_FEED):
         self.api_url = api_url
 
     async def collect(self) -> list[HealthEvent]:
