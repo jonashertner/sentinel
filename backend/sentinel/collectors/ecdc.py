@@ -67,9 +67,18 @@ class ECDCCollector(BaseCollector):
         )
 
     def _extract_disease_and_countries(self, title: str) -> tuple[str, list[str]]:
-        parts = re.split(r"\s*[–—-]\s*", title, maxsplit=1)
+        # ECDC titles: "Report name, date range, week N" or "Disease - Country"
+        parts = re.split(r"\s*[–—]\s*", title, maxsplit=1)
         disease = parts[0].strip() if parts else title
-        countries = []
+
+        # Remove trailing date/week info from disease name
+        disease = re.sub(r",\s*\d{1,2}\s+\w+\s*$", "", disease)
+        disease = re.sub(r",\s*week\s+\d+\s*$", "", disease, flags=re.IGNORECASE)
+
+        countries: list[str] = []
         if len(parts) > 1:
-            countries = [parts[1].strip()[:2].upper()]
+            location = parts[1].strip()
+            location_clean = re.sub(r",?\s*week\s+\d+.*$", "", location, flags=re.IGNORECASE).strip()
+            if location_clean and len(location_clean) >= 2:
+                countries = [location_clean[:2].upper()]
         return disease, countries if countries else ["EU"]
