@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from sentinel.api.deps import require_write_access
+from sentinel.audit import log_audit
 
 router = APIRouter()
 
@@ -31,6 +32,7 @@ async def create_watchlist(
     _auth: None = Depends(require_write_access),
 ):
     _watchlists[body.id] = body
+    log_audit("CREATE", "watchlist", body.id, new_value=body.model_dump(mode="json"))
     return body
 
 
@@ -41,4 +43,5 @@ async def delete_watchlist(
 ):
     if watchlist_id not in _watchlists:
         raise HTTPException(status_code=404, detail="Watchlist not found")
+    log_audit("DELETE", "watchlist", watchlist_id)
     del _watchlists[watchlist_id]

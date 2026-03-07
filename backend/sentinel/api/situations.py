@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from sentinel.api.deps import get_store, require_write_access
+from sentinel.audit import log_audit
 from sentinel.models.situation import Priority, Situation, SituationStatus
 from sentinel.store import DataStore
 
@@ -47,6 +48,7 @@ async def create_situation(
 ):
     situation = Situation(**body.model_dump())
     store.save_situation(situation)
+    log_audit("CREATE", "situation", situation.id, new_value=situation.model_dump(mode="json"))
     return situation
 
 
@@ -68,11 +70,16 @@ async def update_situation(
     situations = store.load_situations()
     for s in situations:
         if s.id == situation_id:
+            old = s.model_dump(mode="json")
             updates = body.model_dump(exclude_none=True)
             for key, value in updates.items():
                 setattr(s, key, value)
             s.updated = datetime.now(UTC)
             store.save_situation(s)
+            log_audit(
+                "UPDATE", "situation", s.id,
+                old_value=old, new_value=s.model_dump(mode="json"),
+            )
             return s
     raise HTTPException(status_code=404, detail="Situation not found")
 
@@ -87,10 +94,16 @@ async def link_events(
     situations = store.load_situations()
     for s in situations:
         if s.id == situation_id:
+            old_events = list(s.events)
             for eid in body.event_ids:
                 if eid not in s.events:
                     s.events.append(eid)
             s.updated = datetime.now(UTC)
             store.save_situation(s)
+            log_audit(
+                "LINK_EVENTS", "situation", s.id,
+                old_value={"events": old_events},
+                new_value={"events": s.events},
+            )
             return s
     raise HTTPException(status_code=404, detail="Situation not found")

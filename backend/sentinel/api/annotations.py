@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from sentinel.api.deps import get_store, require_write_access
+from sentinel.audit import log_audit
 from sentinel.models.annotation import Annotation, AnnotationType, EventStatus, Visibility
 from sentinel.models.event import (
     EscalationLevel,
@@ -46,6 +47,7 @@ async def create_annotation(
         store.save_annotation(annotation)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    log_audit("CREATE", "annotation", annotation.id, new_value=annotation.model_dump(mode="json"))
     return annotation
 
 
