@@ -4,6 +4,13 @@ from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
+from sentinel.models.event import (
+    EscalationLevel,
+    OperationalPriority,
+    PlaybookType,
+    VerificationStatus,
+)
+
 
 class AnnotationType(StrEnum):
     ASSESSMENT = "ASSESSMENT"
@@ -39,3 +46,9 @@ class Annotation(BaseModel):
     status_change: EventStatus | None = None
     linked_event_ids: list[str] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)
+    verification_override: VerificationStatus | None = None
+    operational_priority_override: OperationalPriority | None = None
+    playbook_override: PlaybookType | None = None
+    playbook_sla_override_hours: int | None = Field(default=None, ge=1, le=720)
+    escalation_level_override: EscalationLevel | None = None
+    override_reason: str = ""

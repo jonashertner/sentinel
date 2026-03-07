@@ -145,3 +145,27 @@ def test_create_annotation_enforces_write_key_when_configured(tmp_path):
     finally:
         settings.api_write_key = original_key
         app.dependency_overrides.clear()
+
+
+def test_create_annotation_with_playbook_override(tmp_path):
+    store = DataStore(data_dir=str(tmp_path))
+    _seed_events(store)
+    app.dependency_overrides[get_store] = lambda: store
+    client = TestClient(app)
+
+    resp = client.post(
+        "/api/annotations",
+        json=_annotation_body(
+            playbook_override="VECTOR_CONTROL",
+            playbook_sla_override_hours=24,
+            escalation_level_override="INTERAGENCY_COORDINATION",
+            override_reason="Cantonal vector signal upgrade",
+        ),
+    )
+    assert resp.status_code == 201
+    data = resp.json()
+    assert data["playbook_override"] == "VECTOR_CONTROL"
+    assert data["playbook_sla_override_hours"] == 24
+    assert data["escalation_level_override"] == "INTERAGENCY_COORDINATION"
+
+    app.dependency_overrides.clear()

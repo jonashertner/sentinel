@@ -81,14 +81,16 @@ graph LR
 
 ### Automated Daily Intelligence Pipeline
 
-The pipeline runs unattended on GitHub Actions, collecting from all five sources in parallel, then processing events through a six-stage analysis chain:
+The pipeline runs unattended on GitHub Actions, collecting from all five sources in parallel, then processing events through an eight-stage analysis chain:
 
 1. **Collect** -- RSS feeds (WHO DON, ProMED, ECDC), REST APIs (WOAH/WAHIS, WHO EIOS)
 2. **Normalize** -- Canonical disease names (40+ aliases), ISO 3166 country codes, WHO region assignment
 3. **Deduplicate** -- Cross-source merge using disease + country + 3-day window grouping
 4. **Rule Engine** -- Deterministic scoring: geographic proximity, disease severity, zoonotic flags, case fatality, source authority
 5. **Swiss Relevance** -- Border countries, trade partners, vector habitat, zoonotic/foodborne tags
-6. **LLM Analysis** -- Claude Haiku for bulk screening, Claude Sonnet for high-risk events. Produces structured risk narratives with Switzerland-specific recommendations
+6. **Executive Ops Layer** -- Confidence scoring, probability/impact decomposition, IMS activation level, lead authority (BAG/BLV/Joint), decision window, and action flags
+7. **Decision Playbooks** -- Hazard-class assignment (pandemic respiratory, zoonotic spillover, foodborne, vector-borne), SLA timers, and escalation workflows
+8. **LLM Analysis** -- Claude Haiku for bulk screening, Claude Sonnet for high-risk events. Produces structured risk narratives with Switzerland-specific recommendations
 
 ### Seven-View Dashboard
 

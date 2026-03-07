@@ -3,6 +3,12 @@ from pydantic import BaseModel, Field
 
 from sentinel.api.deps import get_store, require_write_access
 from sentinel.models.annotation import Annotation, AnnotationType, EventStatus, Visibility
+from sentinel.models.event import (
+    EscalationLevel,
+    OperationalPriority,
+    PlaybookType,
+    VerificationStatus,
+)
 from sentinel.store import DataStore
 
 router = APIRouter()
@@ -18,6 +24,12 @@ class AnnotationCreate(BaseModel):
     status_change: EventStatus | None = None
     linked_event_ids: list[str] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)
+    verification_override: VerificationStatus | None = None
+    operational_priority_override: OperationalPriority | None = None
+    playbook_override: PlaybookType | None = None
+    playbook_sla_override_hours: int | None = Field(default=None, ge=1, le=720)
+    escalation_level_override: EscalationLevel | None = None
+    override_reason: str = ""
 
 
 @router.post("", response_model=Annotation, status_code=201)

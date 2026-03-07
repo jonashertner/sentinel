@@ -68,6 +68,15 @@ class TestDeduplicate:
         assert result[0].case_count == 50
         assert result[0].death_count == 5
 
+    def test_merged_tracks_provenance_graph(self):
+        e1 = _make_event(source=Source.WHO_DON, summary="A")
+        e2 = _make_event(source=Source.PROMED, date_reported=date(2026, 3, 2), summary="B")
+        result = deduplicate([e1, e2])
+        merged = result[0]
+        assert len(merged.merged_from) == 2
+        assert len(merged.source_evidence) == 2
+        assert merged.provenance_hash
+
     def test_single_event_passthrough(self):
         e1 = _make_event()
         result = deduplicate([e1])

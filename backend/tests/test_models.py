@@ -24,6 +24,9 @@ class TestHealthEvent:
         assert event.id
         assert event.risk_score == 0.0
         assert event.risk_category == RiskCategory.LOW
+        assert event.merged_from == [event.id]
+        assert len(event.source_evidence) == 1
+        assert event.provenance_hash
 
     def test_deterministic_id(self):
         kwargs = dict(

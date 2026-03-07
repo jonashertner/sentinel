@@ -76,6 +76,12 @@ export function SituationDetail({ id }: SituationDetailProps) {
       status_change: null,
       linked_event_ids: [],
       tags: [],
+      verification_override: null,
+      operational_priority_override: null,
+      playbook_override: null,
+      playbook_sla_override_hours: null,
+      escalation_level_override: null,
+      override_reason: "",
     };
     const updated = [...localAnnotations, annotation];
     setLocalAnnotations(updated);

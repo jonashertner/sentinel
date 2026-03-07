@@ -67,6 +67,12 @@ def _format_event(event: HealthEvent) -> list[str]:
         f"- **Source:** {event.source} | **Disease:** {event.disease} | "
         f"**Countries:** {', '.join(event.countries)}",
         f"- **Swiss Relevance:** {event.swiss_relevance:.1f}",
+        f"- **Operations:** {event.operational_priority} | Lead: {event.lead_agency} | "
+        f"Decision Window: {event.decision_window_hours}h",
+        f"- **Playbook:** {event.playbook} | SLA: {event.playbook_sla_hours}h | "
+        f"Escalation: {event.escalation_level}",
+        f"- **Provenance:** {len(event.source_evidence)} sources | "
+        f"Graph: {event.provenance_hash}",
     ]
     if event.case_count:
         lines.append(
@@ -77,6 +83,8 @@ def _format_event(event: HealthEvent) -> list[str]:
         lines.append(f"- **Analysis:** {event.analysis[:500]}")
     if event.one_health_tags:
         lines.append(f"- **Tags:** {', '.join(event.one_health_tags)}")
+    if event.recommended_actions:
+        lines.append(f"- **Priority Action:** {event.recommended_actions[0]}")
     lines.extend(["", f"[Source]({event.url})", ""])
     return lines
 

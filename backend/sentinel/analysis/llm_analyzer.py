@@ -56,6 +56,13 @@ Summary: {event.summary[:1000]}
 Current risk score: {event.risk_score}
 Current Swiss relevance: {event.swiss_relevance}
 One Health tags: {', '.join(event.one_health_tags) or 'None'}
+Operational priority: {event.operational_priority}
+IMS activation: {event.ims_activation}
+Lead agency: {event.lead_agency}
+Decision window (hours): {event.decision_window_hours}
+Playbook: {event.playbook}
+Playbook SLA (hours): {event.playbook_sla_hours}
+Escalation level: {event.escalation_level}
 """
 
         response = await client.messages.create(

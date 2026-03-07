@@ -52,6 +52,16 @@ export function EventCard({ event, expanded, onToggle }: EventCardProps) {
               </span>
             )}
             <Badge label={event.disease} variant="tag" />
+            {event.playbook && (
+              <span className="inline-flex items-center rounded border border-sentinel-border bg-sentinel-surface px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
+                {event.playbook.split("_").join(" ")}
+              </span>
+            )}
+            {event.analyst_overrides.length > 0 && (
+              <span className="inline-flex items-center rounded border border-sentinel-border bg-sentinel-surface px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-amber-300">
+                Analyst Override
+              </span>
+            )}
             {event.countries.map((c) => (
               <span
                 key={c}
@@ -63,6 +73,9 @@ export function EventCard({ event, expanded, onToggle }: EventCardProps) {
           </div>
           <p className="mt-1.5 text-[11px] leading-relaxed text-sentinel-text-secondary line-clamp-2">
             {event.summary}
+          </p>
+          <p className="mt-1 text-[10px] text-sentinel-text-muted">
+            SLA {event.playbook_sla_hours}h • Escalation {event.escalation_level.replace("_", " ")}
           </p>
           {event.one_health_tags.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1.5">

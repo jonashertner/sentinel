@@ -23,8 +23,10 @@ graph TB
         DEDUP["3. Deduplicator<br/>Cross-source merge"]
         RULE["4. Rule Engine<br/>Deterministic scoring"]
         SWISS["5. Swiss Relevance<br/>CH-specific factors"]
-        LLM["6. LLM Analyzer<br/>Claude risk narratives"]
-        BRIEF["7. Daily Brief<br/>Markdown report"]
+        EXEC["6. Executive Ops<br/>Confidence, urgency, lead authority"]
+        PLAY["7. Playbooks<br/>SLA timers, escalation workflows"]
+        LLM["8. LLM Analyzer<br/>Claude risk narratives"]
+        BRIEF["9. Daily Brief<br/>Markdown report"]
     end
 
     subgraph Store["Data Store (Git-committed JSON)"]
@@ -49,7 +51,9 @@ graph TB
     NORM --> DEDUP
     DEDUP --> RULE
     RULE --> SWISS
-    SWISS --> LLM
+    SWISS --> EXEC
+    EXEC --> PLAY
+    PLAY --> LLM
     LLM --> BRIEF
     LLM --> EVENTS
     BRIEF --> REPORTS
@@ -132,7 +136,36 @@ A separate 0--10 score measuring how directly relevant an event is to Switzerlan
 
 **File:** `backend/sentinel/analysis/swiss_relevance.py`
 
-### Stage 6: LLM Analysis
+### Stage 6: Executive Operations Layer
+
+This deterministic layer translates epidemiological data into executive operations signals:
+
+- Confidence score (0.00--1.00) based on source authority and data completeness
+- Probability and impact scores (0.0--5.0 each)
+- Operational priority (ROUTINE, ELEVATED, HIGH, CRITICAL)
+- Incident management activation level (MONITORING to FULL_ACTIVATION)
+- Lead Swiss authority (BAG, BLV, JOINT)
+- Decision window in hours and trigger-based recommended actions
+
+**File:** `backend/sentinel/analysis/executive_ops.py`
+
+### Stage 7: Decision Playbooks
+
+This layer assigns standardized operational playbooks by hazard class:
+
+- Pandemic respiratory
+- Zoonotic spillover
+- Foodborne containment
+- Vector control
+
+Each playbook provides:
+- SLA timer targets in hours by operational priority
+- Escalation level assignment
+- Explicit escalation workflow steps
+
+**File:** `backend/sentinel/analysis/playbooks.py`
+
+### Stage 8: LLM Analysis
 
 Events scoring >= 4.0 (MEDIUM or above) are sent to Claude for structured analysis. The model selection is automatic:
 
@@ -148,7 +181,7 @@ The LLM produces a structured JSON response containing:
 
 **File:** `backend/sentinel/analysis/llm_analyzer.py`
 
-### Stage 7: Persistence and Reporting
+### Stage 9: Persistence and Reporting
 
 - Events are serialized to `data/events/YYYY-MM-DD.json`
 - A Markdown daily brief is generated and saved to `data/reports/YYYY-MM-DD-daily.md`
@@ -170,6 +203,8 @@ pipeline.py
     │   ├── deduplicator.py
     │   ├── rule_engine.py
     │   ├── swiss_relevance.py
+    │   ├── executive_ops.py
+    │   ├── playbooks.py
     │   └── llm_analyzer.py ---> Anthropic Claude API
     ├── reports/
     │   └── daily_brief.py

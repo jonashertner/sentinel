@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 from sentinel.api.deps import get_store
 from sentinel.main import app
+from sentinel.models.annotation import Annotation, AnnotationType, Visibility
 from sentinel.models.event import HealthEvent, Source, Species
 from sentinel.store import DataStore
 
@@ -94,6 +95,47 @@ class TestEventsAPI:
     def test_get_event_not_found(self, client):
         resp = client.get("/api/events/nonexistent")
         assert resp.status_code == 404
+
+    def test_get_event_applies_annotation_overrides(self, tmp_path):
+        store = DataStore(data_dir=str(tmp_path))
+        event = _make_event()
+        store.save_events(date(2026, 3, 6), [event])
+        store.save_annotation(
+            Annotation(
+                event_id=event.id,
+                author="analyst@bag.ch",
+                type=AnnotationType.ASSESSMENT,
+                content="Override risk and playbook",
+                visibility=Visibility.INTERNAL,
+                risk_override=9.5,
+                playbook_override="PANDEMIC_RESPIRATORY",
+                playbook_sla_override_hours=8,
+                override_reason="Executive decision",
+            )
+        )
+        app.dependency_overrides[get_store] = lambda: store
+        local_client = TestClient(app)
+
+        resp = local_client.get(f"/api/events/{event.id}")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["risk_score"] == 9.5
+        assert data["playbook"] == "PANDEMIC_RESPIRATORY"
+        assert data["playbook_sla_hours"] == 8
+        assert len(data["analyst_overrides"]) == 1
+
+        app.dependency_overrides.clear()
+
+    def test_event_provenance_endpoint(self, client):
+        events = client.get("/api/events").json()
+        event_id = events[0]["id"]
+
+        resp = client.get(f"/api/events/{event_id}/provenance")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["event_id"] == event_id
+        assert data["source_evidence_count"] >= 1
+        assert data["provenance_hash"]
 
     def test_health_check(self, client):
         resp = client.get("/api/health")

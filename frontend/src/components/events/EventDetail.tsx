@@ -86,6 +86,73 @@ export function EventDetail({ event }: EventDetailProps) {
         </div>
       </div>
 
+      {/* Decision Playbook */}
+      <div>
+        <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
+          Decision Playbook
+        </h4>
+        <div className="rounded-md border border-sentinel-border-subtle bg-sentinel-surface p-3 space-y-2">
+          <div className="flex flex-wrap items-center gap-2 text-[11px]">
+            <span className="rounded bg-sentinel-bg px-2 py-1 font-semibold uppercase tracking-wider text-sentinel-text-secondary">
+              {event.playbook.split("_").join(" ")}
+            </span>
+            <span className="text-sentinel-text-muted">Hazard: {event.hazard_class.split("_").join(" ")}</span>
+            <span className="text-sentinel-text-muted">SLA: {event.playbook_sla_hours}h</span>
+            <span className="text-sentinel-text-muted">Escalation: {event.escalation_level.split("_").join(" ")}</span>
+          </div>
+          {event.escalation_workflow.length > 0 && (
+            <ol className="space-y-1 text-[11px] text-sentinel-text-secondary">
+              {event.escalation_workflow.map((step, idx) => (
+                <li key={`${event.id}-wf-${idx}`} className="flex gap-1.5">
+                  <span className="font-mono text-sentinel-text-muted">{idx + 1}.</span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </div>
+
+      {/* Provenance Graph */}
+      <div>
+        <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
+          Source Provenance
+        </h4>
+        <div className="rounded-md border border-sentinel-border-subtle bg-sentinel-surface p-3 space-y-2">
+          <div className="text-[11px] text-sentinel-text-muted">
+            Graph {event.provenance_hash} • {event.source_evidence.length} source nodes • merged from{" "}
+            {event.merged_from.length} event IDs
+          </div>
+          <div className="space-y-1.5">
+            {event.source_evidence.map((evidence) => (
+              <div
+                key={`${evidence.source}-${evidence.event_id}-${evidence.url}`}
+                className="rounded border border-sentinel-border-subtle bg-sentinel-bg px-2 py-1.5"
+              >
+                <div className="flex flex-wrap items-center gap-2 text-[10px]">
+                  <span className="font-semibold text-sentinel-text-secondary">{evidence.source}</span>
+                  <span className="font-mono text-sentinel-text-muted">{evidence.event_id}</span>
+                  <span className="text-sentinel-text-muted">{Math.round(evidence.confidence * 100)}% confidence</span>
+                </div>
+                <a
+                  href={evidence.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 block truncate text-[10px] text-sentinel-accent hover:underline"
+                >
+                  {evidence.title}
+                </a>
+              </div>
+            ))}
+          </div>
+          {event.analyst_overrides.length > 0 && (
+            <div className="text-[10px] text-amber-300">
+              {event.analyst_overrides.length} analyst override(s) applied to this event.
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Full Summary */}
       <div>
         <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
@@ -107,6 +174,32 @@ export function EventDetail({ event }: EventDetailProps) {
               <p key={i} className={i > 0 ? "mt-2" : ""}>
                 {para}
               </p>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Analyst Overrides */}
+      {event.analyst_overrides.length > 0 && (
+        <div>
+          <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
+            Analyst Overrides
+          </h4>
+          <div className="space-y-1.5">
+            {event.analyst_overrides.map((override) => (
+              <div
+                key={override.annotation_id}
+                className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2"
+              >
+                <div className="flex flex-wrap items-center gap-2 text-[10px] text-amber-200">
+                  <span className="font-semibold">{override.author}</span>
+                  <span className="font-mono">{override.timestamp.slice(0, 16).replace("T", " ")}</span>
+                  <span>{override.fields.join(", ")}</span>
+                </div>
+                {override.note && (
+                  <div className="mt-1 text-[11px] text-amber-100/90">{override.note}</div>
+                )}
+              </div>
             ))}
           </div>
         </div>
