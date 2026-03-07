@@ -9,7 +9,7 @@ from sentinel.models.event import HealthEvent, Source, Species
 
 logger = logging.getLogger(__name__)
 
-WOAH_API_URL = "https://wahis.woah.org/api/v1/pi/getReport/list"
+WOAH_API_URL = "https://wahis.woah.org/api/v1/pi/event/filtered-list"
 
 
 class WOAHCollector(BaseCollector):
@@ -24,10 +24,9 @@ class WOAHCollector(BaseCollector):
                 WOAH_API_URL,
                 json={
                     "pageNumber": 0,
-                    "pageSize": 20,
-                    "searchText": "",
-                    "sortColName": "eventDate",
-                    "sortColOrder": "DESC",
+                    "pageSize": 30,
+                    "sortBy": "eventDate",
+                    "sortOrder": "DESC",
                 },
             )
             resp.raise_for_status()
@@ -36,7 +35,10 @@ class WOAHCollector(BaseCollector):
     def parse_response(self, data: dict | list) -> list[HealthEvent]:
         """Parse the WOAH WAHIS API response into HealthEvents."""
         events = []
-        reports = data if isinstance(data, list) else data.get("content", data.get("items", []))
+        reports = data if isinstance(data, list) else data.get(
+            "list",
+            data.get("content", data.get("items", [])),
+        )
         if isinstance(reports, dict):
             reports = reports.get("content", [])
         for report in reports:
@@ -51,7 +53,13 @@ class WOAHCollector(BaseCollector):
         title = report.get("title", f"{disease} - {country}")
         url = report.get("url", report.get("reportId", ""))
         summary = report.get("summary", report.get("description", title))
-        report_date = report.get("eventDate", report.get("reportDate", ""))
+        report_date = report.get(
+            "eventDate",
+            report.get(
+                "eventStartDate",
+                report.get("reportDate", report.get("submissionDate", "")),
+            ),
+        )
 
         if not disease and not title:
             return None

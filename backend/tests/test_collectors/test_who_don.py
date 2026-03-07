@@ -4,7 +4,7 @@ import httpx
 import pytest
 import respx
 
-from sentinel.collectors.who_don import WHO_DON_FEED, WHODONCollector
+from sentinel.collectors.who_don import WHO_DON_API_URL, WHODONCollector
 from sentinel.models.event import Source
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
@@ -52,6 +52,6 @@ class TestWHODONCollector:
     @respx.mock
     async def test_collect_raises_on_network_error(self):
         """collect() propagates exceptions so pipeline records structured status."""
-        respx.get(WHO_DON_FEED).mock(return_value=httpx.Response(500))
+        respx.get(WHO_DON_API_URL).mock(return_value=httpx.Response(500))
         with pytest.raises(Exception):
             await self.collector.collect()

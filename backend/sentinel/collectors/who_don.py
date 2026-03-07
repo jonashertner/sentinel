@@ -12,6 +12,7 @@ from sentinel.models.event import HealthEvent, Source, Species
 logger = logging.getLogger(__name__)
 
 WHO_DON_FEED = "https://www.who.int/feeds/entity/don/en/rss.xml"
+WHO_DON_API_URL = "https://www.who.int/api/emergencies/diseaseoutbreaknews"
 
 
 class WHODONCollector(BaseCollector):
@@ -22,9 +23,89 @@ class WHODONCollector(BaseCollector):
             timeout=30,
             headers={"User-Agent": "SENTINEL/1.0"},
         ) as client:
-            resp = await client.get(WHO_DON_FEED)
+            resp = await client.get(
+                WHO_DON_API_URL,
+                params={
+                    "sf_provider": "dynamicProvider372",
+                    "sf_culture": "en",
+                    "$orderby": "PublicationDateAndTime desc",
+                    "$top": 40,
+                },
+            )
             resp.raise_for_status()
-        return self.parse_feed(resp.text)
+        return self.parse_api_response(resp.json())
+
+    def parse_api_response(self, data: dict | list) -> list[HealthEvent]:
+        items = data if isinstance(data, list) else data.get("value", [])
+        events: list[HealthEvent] = []
+        for item in items:
+            event = self._parse_api_item(item)
+            if event:
+                events.append(event)
+        return events
+
+    def _parse_api_item(self, item: dict) -> HealthEvent | None:
+        title = str(item.get("OverrideTitle") or item.get("Title") or "").strip()
+        if not title:
+            return None
+
+        summary = str(
+            item.get("Summary")
+            or item.get("Overview")
+            or item.get("Assessment")
+            or item.get("Advice")
+            or ""
+        ).strip()
+
+        report_date = str(
+            item.get("PublicationDateAndTime")
+            or item.get("PublicationDate")
+            or item.get("DateCreated")
+            or ""
+        )
+        try:
+            date_reported = date.fromisoformat(report_date[:10]) if report_date else date.today()
+        except (ValueError, TypeError):
+            date_reported = date.today()
+
+        disease, countries = self._extract_disease_and_countries(title)
+        if countries == ["XX"] and summary:
+            countries = self._extract_countries_from_text(summary)
+
+        species = self._detect_species(title, summary)
+
+        item_url = str(item.get("ItemDefaultUrl", "")).strip()
+        if item_url and not item_url.startswith("http"):
+            item_url = (
+                f"https://www.who.int/emergencies/disease-outbreak-news{item_url}"
+            )
+        if not item_url:
+            item_url = "https://www.who.int/emergencies/disease-outbreak-news"
+
+        raw_content_parts = [
+            str(item.get("Summary", "")).strip(),
+            str(item.get("Overview", "")).strip(),
+            str(item.get("Assessment", "")).strip(),
+            str(item.get("Advice", "")).strip(),
+            str(item.get("Epidemiology", "")).strip(),
+            str(item.get("Response", "")).strip(),
+            str(item.get("FurtherInformation", "")).strip(),
+        ]
+        raw_content = "\n\n".join(part for part in raw_content_parts if part)
+
+        return HealthEvent(
+            source=Source.WHO_DON,
+            title=title,
+            date_reported=date_reported,
+            date_collected=date.today(),
+            disease=disease,
+            countries=countries,
+            regions=[],
+            species=species,
+            summary=summary[:2000] if summary else title,
+            url=item_url,
+            raw_content=raw_content or summary or title,
+        )
 
     def parse_feed(self, xml: str) -> list[HealthEvent]:
         feed = feedparser.parse(xml)
@@ -97,3 +178,13 @@ class WHODONCollector(BaseCollector):
                     country_codes.append(code)
 
         return disease, sorted(set(country_codes)) if country_codes else ["XX"]
+
+    def _extract_countries_from_text(self, text: str) -> list[str]:
+        countries: list[str] = []
+        for token in re.findall(r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", text):
+            for code in normalize_country(token):
+                if code != "XX" and code not in countries:
+                    countries.append(code)
+            if len(countries) >= 5:
+                break
+        return countries if countries else ["XX"]

@@ -30,10 +30,13 @@ class WHOEIOSCollector(BaseCollector):
     async def collect(self) -> list[HealthEvent]:
         """Fetch signals from EIOS.
 
-        Raises on failure so the pipeline can record structured error status.
-        Environments without EIOS credentials will see this collector marked
-        as failed in the pipeline result.
+        EIOS access requires credentials. If no API key is configured, this
+        source is treated as intentionally unavailable and returns no events.
         """
+        if not self.api_key:
+            logger.info("WHO EIOS API key not configured; skipping collection")
+            return []
+
         headers = {}
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
@@ -41,6 +44,7 @@ class WHOEIOSCollector(BaseCollector):
         async with httpx.AsyncClient(
             timeout=30,
             headers={"User-Agent": "SENTINEL/1.0"},
+            follow_redirects=False,
         ) as client:
             resp = await client.get(self.api_url, headers=headers)
             resp.raise_for_status()

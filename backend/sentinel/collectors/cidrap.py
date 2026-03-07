@@ -12,6 +12,10 @@ from sentinel.models.event import HealthEvent, Source, Species
 logger = logging.getLogger(__name__)
 
 CIDRAP_FEED = "https://www.cidrap.umn.edu/feed/news.xml"
+CIDRAP_NEWS_FALLBACK = (
+    "https://news.google.com/rss/search?q=site:cidrap.umn.edu+infectious+disease"
+    "&hl=en-US&gl=US&ceid=US:en"
+)
 
 
 class CIDRAPCollector(BaseCollector):
@@ -21,10 +25,22 @@ class CIDRAPCollector(BaseCollector):
         async with httpx.AsyncClient(
             timeout=30,
             headers={"User-Agent": "SENTINEL/1.0"},
+            follow_redirects=True,
         ) as client:
             resp = await client.get(CIDRAP_FEED)
-            resp.raise_for_status()
-        return self.parse_feed(resp.text)
+            if resp.status_code < 400:
+                events = self.parse_feed(resp.text)
+                if events:
+                    return events
+
+            # CIDRAP may geo/IP block RSS in some environments.
+            fallback = await client.get(CIDRAP_NEWS_FALLBACK)
+            if fallback.status_code < 400:
+                events = self.parse_google_news(fallback.text)
+                if events:
+                    return events
+
+        raise RuntimeError("CIDRAP source unavailable: feed and fallback returned no events")
 
     def parse_feed(self, xml: str) -> list[HealthEvent]:
         feed = feedparser.parse(xml)
@@ -67,6 +83,25 @@ class CIDRAPCollector(BaseCollector):
             url=link,
             raw_content=summary,
         )
+
+    def parse_google_news(self, xml: str) -> list[HealthEvent]:
+        feed = feedparser.parse(xml)
+        events: list[HealthEvent] = []
+        for entry in feed.entries:
+            title = entry.get("title", "")
+            if " - " in title:
+                title = title.rsplit(" - ", 1)[0]
+            event = self._parse_entry(
+                {
+                    "title": title,
+                    "link": entry.get("link", "https://www.cidrap.umn.edu/"),
+                    "summary": entry.get("summary", ""),
+                    "published_parsed": entry.get("published_parsed"),
+                }
+            )
+            if event:
+                events.append(event)
+        return events
 
     def _extract_disease(self, title: str) -> str:
         """Extract disease name from CIDRAP headline."""

@@ -1,6 +1,6 @@
 import logging
 import re
-from datetime import date
+from datetime import date, datetime
 
 import feedparser
 import httpx
@@ -12,6 +12,7 @@ from sentinel.models.event import HealthEvent, Source, Species
 logger = logging.getLogger(__name__)
 
 BEACON_FEED = "https://beacon.healthmap.org/feed/"
+HEALTHMAP_ALERTS_URL = "https://www.healthmap.org/getAlerts.php"
 
 
 class BeaconCollector(BaseCollector):
@@ -22,9 +23,60 @@ class BeaconCollector(BaseCollector):
             timeout=30,
             headers={"User-Agent": "SENTINEL/1.0"},
         ) as client:
-            resp = await client.get(BEACON_FEED)
+            # Legacy Beacon host is frequently unavailable; use HealthMap alerts API.
+            resp = await client.get(HEALTHMAP_ALERTS_URL)
             resp.raise_for_status()
-        return self.parse_feed(resp.text)
+        return self.parse_alerts_response(resp.json())
+
+    def parse_alerts_response(self, data: dict | list) -> list[HealthEvent]:
+        markers = data if isinstance(data, list) else data.get("markers", [])
+        events: list[HealthEvent] = []
+        for marker in markers:
+            event = self._parse_marker(marker)
+            if event:
+                events.append(event)
+        return events[:120]
+
+    def _parse_marker(self, marker: dict) -> HealthEvent | None:
+        disease = str(marker.get("label", "")).strip()
+        place = str(marker.get("place_name", "")).strip()
+        html = str(marker.get("html", "")).strip()
+        if not disease and not place:
+            return None
+
+        title = f"{disease} - {place}" if disease and place else disease or place
+        countries = [code for code in normalize_country(place) if code != "XX"] if place else []
+        if not countries:
+            countries = self._extract_countries_from_html(html)
+        if not countries:
+            countries = ["XX"]
+
+        date_reported = self._extract_date_from_html(html)
+        summary = re.sub(r"<[^>]+>", " ", html)
+        summary = re.sub(r"\s+", " ", summary).strip()
+        if not summary:
+            summary = title
+
+        place_id = marker.get("place_id")
+        url = "https://www.healthmap.org/en/"
+        if place_id is not None:
+            url = f"{url}?loc={place_id}"
+
+        species = self._detect_species(title, summary)
+
+        return HealthEvent(
+            source=Source.BEACON,
+            title=title,
+            date_reported=date_reported,
+            date_collected=date.today(),
+            disease=disease or "Unknown",
+            countries=countries,
+            regions=[],
+            species=species,
+            summary=summary[:2000],
+            url=url,
+            raw_content=html or summary,
+        )
 
     def parse_feed(self, xml: str) -> list[HealthEvent]:
         feed = feedparser.parse(xml)
@@ -115,3 +167,23 @@ class BeaconCollector(BaseCollector):
         if "zoonotic" in text or "spillover" in text:
             return Species.BOTH
         return Species.HUMAN
+
+    def _extract_date_from_html(self, html: str) -> date:
+        match = re.search(r"(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})", html)
+        if match:
+            try:
+                return datetime.strptime(match.group(1), "%d %b %Y").date()
+            except (ValueError, TypeError):
+                pass
+        return date.today()
+
+    def _extract_countries_from_html(self, html: str) -> list[str]:
+        countries: list[str] = []
+        text = re.sub(r"<[^>]+>", " ", html)
+        for token in re.findall(r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", text):
+            for code in normalize_country(token):
+                if code != "XX" and code not in countries:
+                    countries.append(code)
+            if len(countries) >= 5:
+                break
+        return countries

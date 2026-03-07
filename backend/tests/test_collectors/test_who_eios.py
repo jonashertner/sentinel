@@ -62,9 +62,13 @@ class TestWHOEIOSCollector:
         for event in events:
             assert event.species == Species.HUMAN
 
+    async def test_collect_without_api_key_returns_empty(self):
+        events = await self.collector.collect()
+        assert events == []
+
     @respx.mock
-    async def test_collect_raises_on_network_error(self):
-        """collect() propagates exceptions so pipeline records structured status."""
+    async def test_collect_with_api_key_raises_on_network_error(self):
+        collector = WHOEIOSCollector(api_key="test-key")
         respx.get(EIOS_API_URL).mock(return_value=httpx.Response(403))
         with pytest.raises(Exception):
-            await self.collector.collect()
+            await collector.collect()

@@ -12,6 +12,16 @@ from sentinel.models.event import HealthEvent, Source, Species
 logger = logging.getLogger(__name__)
 
 PROMED_FEED = "https://promedmail.org/feed/"
+PROMED_FEEDS = (
+    "https://www.promedmail.org/feed",
+    "https://www.promedmail.org/feed/",
+    PROMED_FEED,
+)
+PROMED_NEWS_FALLBACK = (
+    "https://news.google.com/rss/search?q=site:promedmail.org+infectious+disease"
+    "&hl=en-US&gl=US&ceid=US:en"
+)
+PROMED_POSTS_SITEMAP = "https://www.promedmail.org/posts-sitemap.xml"
 
 
 class ProMEDCollector(BaseCollector):
@@ -21,10 +31,32 @@ class ProMEDCollector(BaseCollector):
         async with httpx.AsyncClient(
             timeout=30,
             headers={"User-Agent": "SENTINEL/1.0"},
+            follow_redirects=True,
         ) as client:
-            resp = await client.get(PROMED_FEED)
-            resp.raise_for_status()
-        return self.parse_feed(resp.text)
+            # Try legacy/new feed URLs first.
+            for url in PROMED_FEEDS:
+                resp = await client.get(url)
+                if resp.status_code >= 400:
+                    continue
+                events = self.parse_feed(resp.text)
+                if events:
+                    return events
+
+            # Fallback 1: Google News RSS scoped to promedmail.org.
+            news_resp = await client.get(PROMED_NEWS_FALLBACK)
+            if news_resp.status_code < 400:
+                events = self.parse_google_news(news_resp.text)
+                if events:
+                    return events
+
+            # Fallback 2: posts sitemap if feed access is unavailable.
+            sitemap_resp = await client.get(PROMED_POSTS_SITEMAP)
+            if sitemap_resp.status_code < 400:
+                events = self.parse_posts_sitemap(sitemap_resp.text)
+                if events:
+                    return events
+
+        raise RuntimeError("ProMED source unavailable: feed and fallbacks returned no events")
 
     def parse_feed(self, xml: str) -> list[HealthEvent]:
         feed = feedparser.parse(xml)
@@ -66,6 +98,59 @@ class ProMEDCollector(BaseCollector):
             url=link,
             raw_content=summary,
         )
+
+    def parse_google_news(self, xml: str) -> list[HealthEvent]:
+        feed = feedparser.parse(xml)
+        events: list[HealthEvent] = []
+        for entry in feed.entries:
+            title = entry.get("title", "")
+            # Common format: "<headline> - <source>"
+            if " - " in title:
+                title = title.rsplit(" - ", 1)[0]
+
+            event = self._parse_entry(
+                {
+                    "title": title,
+                    "link": entry.get("link", "https://www.promedmail.org"),
+                    "summary": entry.get("summary", ""),
+                    "published_parsed": entry.get("published_parsed"),
+                }
+            )
+            if event:
+                events.append(event)
+        return events
+
+    def parse_posts_sitemap(self, xml: str) -> list[HealthEvent]:
+        events: list[HealthEvent] = []
+        for loc, lastmod in re.findall(r"<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>", xml):
+            url = loc.strip()
+            if not url.startswith("http"):
+                url = f"https://{url.lstrip('/')}"
+            slug = url.rstrip("/").rsplit("/", 1)[-1]
+            title = slug.replace("-", " ").strip().title()
+
+            try:
+                date_reported = date.fromisoformat(lastmod[:10])
+            except (ValueError, TypeError):
+                date_reported = date.today()
+
+            disease, countries = self._extract_disease_and_countries(title)
+            event = HealthEvent(
+                source=Source.PROMED,
+                title=title,
+                date_reported=date_reported,
+                date_collected=date.today(),
+                disease=disease,
+                countries=countries,
+                regions=[],
+                species=self._detect_species(title),
+                summary="ProMED post metadata (fallback source).",
+                url=url,
+                raw_content=f"{title}\n{url}",
+            )
+            events.append(event)
+
+        return events
 
     def _detect_species(self, title: str) -> Species:
         """Detect species from ProMED subject line prefix."""
