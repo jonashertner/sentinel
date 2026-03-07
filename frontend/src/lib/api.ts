@@ -50,6 +50,22 @@ function deriveSourceEvidence(event: HealthEvent): HealthEvent["source_evidence"
   ];
 }
 
+function normalizeEventUrl(event: HealthEvent): string {
+  if (event.source !== "ECDC") return event.url;
+  try {
+    const parsed = new URL(event.url);
+    if (parsed.hostname.toLowerCase() !== "www.ecdc.europa.eu") return event.url;
+    const parts = parsed.pathname.split("/").filter(Boolean);
+    if (parts.length >= 4 && parts[0] === "en" && parts[parts.length - 2] === "threats") {
+      const slug = parts[parts.length - 1];
+      return `https://www.ecdc.europa.eu/en/news-events/${slug}`;
+    }
+  } catch {
+    return event.url;
+  }
+  return event.url;
+}
+
 function deriveConfidence(event: Pick<HealthEvent, "source" | "verification_status">): number {
   const sourceBase: Record<HealthEvent["source"], number> = {
     WHO_DON: 0.95,
@@ -80,9 +96,11 @@ function enrichEvent(event: HealthEvent): HealthEvent {
   const playbookSLA = event.playbook_sla_hours ?? event.sla_timer_hours ?? 168;
   const escalationWorkflow = event.escalation_workflow ?? [];
   const decisionWindow = event.decision_window_hours ?? 168;
+  const url = normalizeEventUrl(event);
 
   return {
     ...event,
+    url,
     risk_category: riskCategory,
     verification_status: verificationStatus,
     ihr_unusual: event.ihr_unusual ?? null,
@@ -99,7 +117,9 @@ function enrichEvent(event: HealthEvent): HealthEvent {
     trigger_flags: event.trigger_flags || [],
     recommended_actions: event.recommended_actions || [],
     merged_from: event.merged_from || [event.id],
-    source_evidence: event.source_evidence || deriveSourceEvidence(event),
+    source_evidence: (event.source_evidence || deriveSourceEvidence(event)).map((e) => (
+      e.source === "ECDC" ? { ...e, url } : e
+    )),
     provenance_hash: event.provenance_hash || `legacy-${event.id}`,
     analyst_overrides: event.analyst_overrides || [],
     hazard_class: hazardClass,

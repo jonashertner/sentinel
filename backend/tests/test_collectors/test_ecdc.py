@@ -45,6 +45,22 @@ class TestECDCCollector:
         for event in events:
             assert "EURO" in event.regions
 
+    def test_normalizes_legacy_threats_link(self):
+        xml = """
+        <rss version="2.0">
+          <channel>
+            <item>
+              <title>Avian influenza – Europe</title>
+              <link>https://www.ecdc.europa.eu/en/avian-influenza/threats/h5n1-threat-assessment-march2026</link>
+              <description>Threat update</description>
+              <pubDate>Fri, 06 Mar 2026 00:00:00 GMT</pubDate>
+            </item>
+          </channel>
+        </rss>
+        """
+        events = self.collector.parse_feed(xml)
+        assert events[0].url == "https://www.ecdc.europa.eu/en/news-events/h5n1-threat-assessment-march2026"
+
     @respx.mock
     async def test_collect_raises_on_network_error(self):
         """collect() propagates exceptions so pipeline records structured status."""

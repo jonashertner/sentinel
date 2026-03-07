@@ -1,6 +1,7 @@
 import logging
 import re
 from datetime import date
+from urllib.parse import urlparse
 
 import feedparser
 import httpx
@@ -34,7 +35,7 @@ class ECDCCollector(BaseCollector):
 
     def _parse_entry(self, entry) -> HealthEvent | None:
         title = entry.get("title", "")
-        link = entry.get("link", "")
+        link = self._normalize_link(entry.get("link", ""))
         summary = entry.get("summary", "")
         published = entry.get("published_parsed")
 
@@ -62,6 +63,21 @@ class ECDCCollector(BaseCollector):
             url=link,
             raw_content=summary,
         )
+
+    def _normalize_link(self, url: str) -> str:
+        """Canonicalize known legacy ECDC article URL patterns."""
+        try:
+            parsed = urlparse(url)
+        except Exception:
+            return url
+        if parsed.netloc.lower() != "www.ecdc.europa.eu":
+            return url
+        parts = [p for p in parsed.path.split("/") if p]
+        # Legacy pattern seen in feeds: /en/<topic>/threats/<slug>
+        if len(parts) >= 4 and parts[0] == "en" and parts[-2] == "threats":
+            slug = parts[-1]
+            return f"https://www.ecdc.europa.eu/en/news-events/{slug}"
+        return url
 
     def _extract_disease_and_countries(self, title: str) -> tuple[str, list[str]]:
         # ECDC titles are mixed ("Disease – context" or reports without countries).
