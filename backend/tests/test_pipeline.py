@@ -71,6 +71,11 @@ class TestPipeline:
             mock_settings.enable_who_eios = True
             mock_settings.enable_beacon = True
             mock_settings.enable_cidrap = True
+            mock_settings.enable_nnsid = False
+            mock_settings.enable_sentinella = False
+            mock_settings.enable_bag_bulletin = False
+            mock_settings.enable_rasff = False
+            mock_settings.enable_wastewater = False
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 
@@ -120,6 +125,11 @@ class TestPipeline:
             mock_settings.enable_who_eios = True
             mock_settings.enable_beacon = True
             mock_settings.enable_cidrap = True
+            mock_settings.enable_nnsid = False
+            mock_settings.enable_sentinella = False
+            mock_settings.enable_bag_bulletin = False
+            mock_settings.enable_rasff = False
+            mock_settings.enable_wastewater = False
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 
@@ -175,6 +185,11 @@ class TestPipeline:
             mock_settings.enable_who_eios = True
             mock_settings.enable_beacon = True
             mock_settings.enable_cidrap = True
+            mock_settings.enable_nnsid = False
+            mock_settings.enable_sentinella = False
+            mock_settings.enable_bag_bulletin = False
+            mock_settings.enable_rasff = False
+            mock_settings.enable_wastewater = False
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 

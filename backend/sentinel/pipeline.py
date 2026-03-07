@@ -11,10 +11,15 @@ from sentinel.analysis.normalizer import normalize_event
 from sentinel.analysis.playbooks import apply_playbooks
 from sentinel.analysis.rule_engine import score_event
 from sentinel.analysis.swiss_relevance import compute_swiss_relevance
+from sentinel.collectors.bag_bulletin import BAGBulletinCollector
 from sentinel.collectors.beacon import BeaconCollector
 from sentinel.collectors.cidrap import CIDRAPCollector
 from sentinel.collectors.ecdc import ECDCCollector
+from sentinel.collectors.nnsid import NNSIDCollector
 from sentinel.collectors.promed import ProMEDCollector
+from sentinel.collectors.rasff import RASFFCollector
+from sentinel.collectors.sentinella import SentinellaCollector
+from sentinel.collectors.wastewater import WastewaterCollector
 from sentinel.collectors.who_don import WHODONCollector
 from sentinel.collectors.who_eios import WHOEIOSCollector
 from sentinel.collectors.woah import WOAHCollector
@@ -68,6 +73,16 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
         collectors.append(BeaconCollector())
     if settings.enable_cidrap:
         collectors.append(CIDRAPCollector())
+    if settings.enable_nnsid:
+        collectors.append(NNSIDCollector())
+    if settings.enable_sentinella:
+        collectors.append(SentinellaCollector())
+    if settings.enable_bag_bulletin:
+        collectors.append(BAGBulletinCollector())
+    if settings.enable_rasff:
+        collectors.append(RASFFCollector())
+    if settings.enable_wastewater:
+        collectors.append(WastewaterCollector())
 
     all_events = []
     for collector in collectors:

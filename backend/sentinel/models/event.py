@@ -14,6 +14,11 @@ class Source(StrEnum):
     WOAH = "WOAH"
     BEACON = "BEACON"
     CIDRAP = "CIDRAP"
+    NNSID = "NNSID"
+    SENTINELLA = "SENTINELLA"
+    BAG_BULLETIN = "BAG_BULLETIN"
+    RASFF = "RASFF"
+    WASTEWATER = "WASTEWATER"
 
 
 class Species(StrEnum):
