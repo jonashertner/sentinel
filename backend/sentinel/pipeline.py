@@ -4,10 +4,14 @@ from dataclasses import dataclass, field
 from datetime import date
 
 from sentinel.analysis.deduplicator import deduplicate
+from sentinel.analysis.executive_ops import assess_events
 from sentinel.analysis.llm_analyzer import analyze_events
 from sentinel.analysis.normalizer import normalize_event
+from sentinel.analysis.playbooks import apply_playbooks
 from sentinel.analysis.rule_engine import score_event
 from sentinel.analysis.swiss_relevance import compute_swiss_relevance
+from sentinel.collectors.beacon import BeaconCollector
+from sentinel.collectors.cidrap import CIDRAPCollector
 from sentinel.collectors.ecdc import ECDCCollector
 from sentinel.collectors.promed import ProMEDCollector
 from sentinel.collectors.who_don import WHODONCollector
@@ -49,6 +53,10 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
         collectors.append(WOAHCollector())
     if settings.enable_who_eios:
         collectors.append(WHOEIOSCollector(api_key=settings.who_eios_api_key or None))
+    if settings.enable_beacon:
+        collectors.append(BeaconCollector())
+    if settings.enable_cidrap:
+        collectors.append(CIDRAPCollector())
 
     all_events = []
     for collector in collectors:
@@ -77,23 +85,29 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     # 5. Swiss relevance
     all_events = [compute_swiss_relevance(e) for e in all_events]
 
-    # 6. LLM analysis (events >= 4.0)
+    # 6. Executive operations scoring (confidence, urgency, lead authority)
+    all_events = assess_events(all_events)
+
+    # 7. Decision playbooks (hazard class, SLA timer, escalation workflow)
+    all_events = apply_playbooks(all_events)
+
+    # 8. LLM analysis (events >= 4.0)
     all_events = await analyze_events(all_events, threshold=4.0)
     result.events_analyzed = sum(1 for e in all_events if e.analysis)
 
-    # 7. Count by risk category
+    # 9. Count by risk category
     for e in all_events:
         cat = e.risk_category.value
         result.by_risk[cat] = result.by_risk.get(cat, 0) + 1
 
-    # 8. Save events
+    # 10. Save events
     store.save_events(today, all_events)
 
-    # 9. Generate and save daily report
+    # 11. Generate and save daily report
     report = generate_daily_brief(today, all_events)
     store.save_report(today, report)
 
-    # 10. Update manifest for frontend
+    # 12. Update manifest for frontend
     store.write_manifest()
 
     logger.info(

@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     enable_promed: bool = True
     enable_ecdc: bool = True
     enable_woah: bool = True
+    enable_beacon: bool = True
+    enable_cidrap: bool = True
 
     model_config = {"env_prefix": "SENTINEL_"}
 

@@ -61,17 +61,19 @@ def score_event(event: HealthEvent) -> HealthEvent:
     # Source authority (0-1)
     if event.source in (Source.ECDC, Source.WHO_DON):
         score += 1.0
+    elif event.source in (Source.CIDRAP, Source.WOAH):
+        score += 0.75
 
     event.risk_score = min(score, 10.0)
     event.one_health_tags = sorted(tags)
 
     # Verification status based on source authority
-    if event.source in (Source.WHO_DON, Source.ECDC):
+    if event.source in (Source.WHO_DON, Source.ECDC, Source.WOAH):
         event.verification_status = VerificationStatus.CONFIRMED
-    elif event.source == Source.WOAH:
-        event.verification_status = VerificationStatus.CONFIRMED
-    elif event.source == Source.WHO_EIOS:
+    elif event.source in (Source.WHO_EIOS, Source.CIDRAP):
         event.verification_status = VerificationStatus.PENDING
+    elif event.source in (Source.PROMED, Source.BEACON):
+        event.verification_status = VerificationStatus.UNVERIFIED
     else:
         event.verification_status = VerificationStatus.UNVERIFIED
 

@@ -19,6 +19,10 @@ const SOURCE_STYLES: Record<string, string> = {
     "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   WOAH:
     "bg-violet-500/10 text-violet-400 border-violet-500/20",
+  BEACON:
+    "bg-rose-500/10 text-rose-400 border-rose-500/20",
+  CIDRAP:
+    "bg-teal-500/10 text-teal-400 border-teal-500/20",
 };
 
 export function Badge({ label, variant = "tag", className }: BadgeProps) {
