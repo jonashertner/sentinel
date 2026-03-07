@@ -1,7 +1,7 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
-from sentinel.api import analytics, annotations, events, exports, situations, watchlists
+from sentinel.api import alerts, analytics, annotations, events, exports, situations, watchlists
 from sentinel.config import settings
 from sentinel.ws import manager
 
@@ -33,6 +33,7 @@ app.include_router(annotations.router, prefix="/api/annotations", tags=["annotat
 app.include_router(watchlists.router, prefix="/api/watchlists", tags=["watchlists"])
 app.include_router(analytics.router, prefix="/api/analytics", tags=["analytics"])
 app.include_router(exports.router, prefix="/api/exports", tags=["exports"])
+app.include_router(alerts.router, prefix="/api/alerts", tags=["alerts"])
 
 
 @app.get("/api/health")
