@@ -199,3 +199,44 @@ class TestSituationsAPI:
         assert resp.status_code == 422
         detail = resp.json()["detail"]
         assert detail["missing_event_ids"] == ["evt-404"]
+
+
+def test_link_historical_event_id_succeeds(tmp_path):
+    store = DataStore(data_dir=str(tmp_path))
+    store.save_events(
+        date(2025, 1, 5),
+        [
+            HealthEvent(
+                id="evt-historical-001",
+                title="Historical signal",
+                source=Source.WHO_DON,
+                date_reported=date(2025, 1, 5),
+                date_collected=date(2025, 1, 5),
+                disease="H5N1",
+                countries=["DE"],
+                regions=["EURO"],
+                species=Species.ANIMAL,
+                summary="Historical event used for situation continuity",
+                url="https://www.who.int/test-historical",
+                raw_content="seed",
+            )
+        ],
+    )
+    app.dependency_overrides[get_store] = lambda: store
+    client = TestClient(app)
+
+    create_resp = client.post(
+        "/api/situations",
+        json={
+            "title": "Historical continuity",
+            "diseases": ["H5N1"],
+            "countries": ["DE"],
+            "lead_analyst": "analyst@bag.ch",
+            "summary": "Preserve historical links",
+            "events": ["evt-historical-001"],
+        },
+    )
+    assert create_resp.status_code == 201
+    assert "evt-historical-001" in create_resp.json()["events"]
+
+    app.dependency_overrides.clear()

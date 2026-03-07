@@ -21,8 +21,8 @@
   --color-sentinel-resolved: var(--sentinel-resolved);
   --color-sentinel-clear: var(--sentinel-clear);
   --color-sentinel-accent: var(--sentinel-accent);
-  --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-sans: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "Fira Code", monospace;
 }
 
 /* ── Dark theme (default) ── */

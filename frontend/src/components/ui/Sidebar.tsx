@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getManifest } from "@/lib/api";
+import { clearApiWriteKey, getManifest, hasApiWriteKey, setApiWriteKey } from "@/lib/api";
 import type { Manifest } from "@/lib/api";
 import {
   LayoutDashboard,
@@ -53,13 +53,48 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [manifest, setManifest] = useState<Manifest | null>(null);
+  const [writeKeyConfigured, setWriteKeyConfigured] = useState<boolean>(() => hasApiWriteKey());
 
   useEffect(() => {
     getManifest().then(setManifest).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMobileOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [mobileOpen]);
   const [agency, setAgency] = useState<(typeof AGENCIES)[number]>("Joint");
   const [agencyOpen, setAgencyOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+
+  function configureWriteKey() {
+    const input = window.prompt(t("sidebar.writeKeyPrompt"));
+    if (input === null) return;
+    if (!input.trim()) {
+      clearApiWriteKey();
+      setWriteKeyConfigured(false);
+      return;
+    }
+    setApiWriteKey(input, false);
+    setWriteKeyConfigured(true);
+  }
 
   const sidebarContent = (isMobile: boolean) => {
     const showLabels = isMobile || !collapsed;
@@ -242,6 +277,29 @@ export function Sidebar() {
           )}
         </div>
 
+        {/* API write key */}
+        <div className="border-t border-sentinel-border px-2 py-2">
+          {showLabels ? (
+            <button
+              onClick={configureWriteKey}
+              className="flex w-full items-center justify-between rounded-md px-3 py-2 text-[12px] font-medium text-sentinel-text-muted hover:bg-sentinel-surface-hover hover:text-sentinel-text-secondary"
+            >
+              <span>{t("sidebar.writeKey")}</span>
+              <span className={writeKeyConfigured ? "text-sentinel-clear" : "text-sentinel-text-muted"}>
+                {writeKeyConfigured ? t("sidebar.writeKeySet") : t("sidebar.writeKeyMissing")}
+              </span>
+            </button>
+          ) : (
+            <button
+              onClick={configureWriteKey}
+              className="flex w-full items-center justify-center py-2 text-sentinel-text-muted hover:text-sentinel-text-secondary"
+              title={t("sidebar.writeKey")}
+            >
+              <Shield className="h-3.5 w-3.5" strokeWidth={1.5} />
+            </button>
+          )}
+        </div>
+
         {/* Status bar */}
         <div className="border-t border-sentinel-border-subtle px-3 py-2">
           {showLabels ? (
@@ -282,8 +340,13 @@ export function Sidebar() {
       {/* Mobile hamburger button */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-lg border border-sentinel-border bg-sentinel-surface/95 backdrop-blur-sm md:hidden"
+        className={clsx(
+          "fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-lg border border-sentinel-border bg-sentinel-surface/95 backdrop-blur-sm md:hidden",
+          mobileOpen && "pointer-events-none opacity-0",
+        )}
         aria-label={t("sidebar.openNav")}
+        aria-expanded={mobileOpen}
+        aria-controls="sentinel-mobile-sidebar"
       >
         <Menu className="h-5 w-5 text-sentinel-text" strokeWidth={1.5} />
       </button>
@@ -298,9 +361,13 @@ export function Sidebar() {
 
       {/* Mobile sidebar */}
       <aside
+        id="sentinel-mobile-sidebar"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!mobileOpen}
         className={clsx(
           "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-sentinel-border bg-sentinel-surface transition-transform duration-200 ease-in-out md:hidden",
-          mobileOpen ? "translate-x-0" : "-translate-x-full",
+          mobileOpen ? "translate-x-0" : "-translate-x-full pointer-events-none",
         )}
       >
         {sidebarContent(true)}

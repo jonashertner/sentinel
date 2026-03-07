@@ -38,6 +38,7 @@ export function EventDetail({ event }: EventDetailProps) {
   const [annotation, setAnnotation] = useState("");
   const [savedAnnotation, setSavedAnnotation] = useState("");
   const [stateSource, setStateSource] = useState<"api" | "local">("local");
+  const [syncMessage, setSyncMessage] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -49,6 +50,7 @@ export function EventDetail({ event }: EventDetailProps) {
         setAnnotation(remote.note || "");
         setSavedAnnotation(remote.note || "");
         setStateSource("api");
+        setSyncMessage(t("detail.sharedSynced"));
         return;
       }
       const local = loadLocalEventState(event.id);
@@ -56,12 +58,13 @@ export function EventDetail({ event }: EventDetailProps) {
       setAnnotation(local.note);
       setSavedAnnotation(local.note);
       setStateSource("local");
+      setSyncMessage(t("detail.localFallback"));
     });
 
     return () => {
       cancelled = true;
     };
-  }, [event.id]);
+  }, [event.id, t]);
 
   async function persistState(nextStatus: TriageStatus | null, nextNote: string) {
     const remote = await saveEventOpsState(event.id, {
@@ -69,16 +72,22 @@ export function EventDetail({ event }: EventDetailProps) {
       note: nextNote,
       updated_by: "analyst@bag.ch",
     });
-    if (remote) {
+    if (remote.ok && remote.data) {
       setStateSource("api");
-      setStatus(remote.triage_status);
-      setAnnotation(remote.note || "");
-      setSavedAnnotation(remote.note || "");
+      setStatus(remote.data.triage_status);
+      setAnnotation(remote.data.note || "");
+      setSavedAnnotation(remote.data.note || "");
+      setSyncMessage(t("detail.sharedSynced"));
       return;
     }
     saveLocalEventState(event.id, nextStatus, nextNote);
     setStateSource("local");
     setSavedAnnotation(nextNote);
+    setSyncMessage(
+      remote.status === 401 || remote.status === 503
+        ? t("detail.localFallbackAuth")
+        : t("detail.localFallback"),
+    );
   }
 
   function handleStatus(s: TriageStatus) {
@@ -304,7 +313,7 @@ export function EventDetail({ event }: EventDetailProps) {
           )}
         </div>
         <p className="mt-1 text-[10px] text-sentinel-text-muted">
-          {stateSource === "api" ? "Shared state synced" : "Local fallback mode"}
+          {syncMessage || (stateSource === "api" ? t("detail.sharedSynced") : t("detail.localFallback"))}
         </p>
       </div>
 

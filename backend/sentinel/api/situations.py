@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from sentinel.api.deps import get_store, require_write_access
 from sentinel.audit import log_audit
 from sentinel.models.situation import Priority, Situation, SituationStatus
-from sentinel.projection import deduplicate_by_latest, load_projected_events
+from sentinel.projection import deduplicate_by_latest, load_trusted_events
 from sentinel.store import DataStore
 
 router = APIRouter()
@@ -39,7 +39,12 @@ class EventLink(BaseModel):
 def _assert_events_exist(store: DataStore, event_ids: list[str]) -> None:
     if not event_ids:
         return
-    valid_ids = {event.id for event in deduplicate_by_latest(load_projected_events(store))}
+    valid_ids = {
+        event.id
+        for event in deduplicate_by_latest(
+            load_trusted_events(store, apply_recency_gate=False)
+        )
+    }
     missing = sorted({event_id for event_id in event_ids if event_id not in valid_ids})
     if missing:
         raise HTTPException(

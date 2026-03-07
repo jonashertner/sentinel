@@ -109,5 +109,7 @@ def canonicalize_event_urls(event: HealthEvent) -> HealthEvent:
     canonical_url = canonicalize_source_url(event.source, event.url)
     evidence = []
     for item in event.source_evidence:
-        evidence.append(item.model_copy(update={"url": canonicalize_source_url(item.source, item.url)}))
+        evidence.append(
+            item.model_copy(update={"url": canonicalize_source_url(item.source, item.url)})
+        )
     return event.model_copy(update={"url": canonical_url, "source_evidence": evidence})

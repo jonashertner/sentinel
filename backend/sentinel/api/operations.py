@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 from sentinel.api.deps import get_store, require_write_access
 from sentinel.audit import log_audit
-from sentinel.projection import deduplicate_by_latest, load_projected_events
+from sentinel.projection import deduplicate_by_latest, load_trusted_events
 from sentinel.store import DataStore
 
 router = APIRouter()
@@ -55,7 +55,12 @@ class SituationOpsState(BaseModel):
 
 
 def _require_event(store: DataStore, event_id: str) -> None:
-    valid_ids = {event.id for event in deduplicate_by_latest(load_projected_events(store))}
+    valid_ids = {
+        event.id
+        for event in deduplicate_by_latest(
+            load_trusted_events(store, apply_recency_gate=False)
+        )
+    }
     if event_id not in valid_ids:
         raise HTTPException(status_code=404, detail="Event not found")
 
@@ -172,7 +177,10 @@ async def add_situation_note(
     _auth: None = Depends(require_write_access),
 ):
     _require_situation(store, situation_id)
-    note = SituationNote(author=body.author.strip() or "analyst@bag.ch", content=body.content.strip())
+    note = SituationNote(
+        author=body.author.strip() or "analyst@bag.ch",
+        content=body.content.strip(),
+    )
     state = store.load_ops_state()
     notes = state.setdefault("situation_notes", {}).setdefault(situation_id, [])
     if not isinstance(notes, list):

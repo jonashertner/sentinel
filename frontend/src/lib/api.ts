@@ -13,9 +13,9 @@ import type {
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const DATA_BASE = process.env.NEXT_PUBLIC_DATA_PATH || `${BASE_PATH}/data`;
 const API_ROOT = (process.env.NEXT_PUBLIC_API_BASE || BASE_PATH || "").replace(/\/$/, "");
-const API_WRITE_KEY = process.env.NEXT_PUBLIC_API_WRITE_KEY || "";
 const MAX_EVENT_AGE_DAYS = Number(process.env.NEXT_PUBLIC_MAX_EVENT_AGE_DAYS || "30");
 const ALLOW_WHO_EIOS = process.env.NEXT_PUBLIC_ALLOW_WHO_EIOS === "true";
+const API_WRITE_KEY_STORAGE_KEY = "sentinel:api_write_key";
 const ECDC_LEGACY_URL_OVERRIDES: Record<string, string> = {
   "h5n1-threat-assessment-march2026": "https://www.ecdc.europa.eu/en/avian-influenza",
 };
@@ -50,6 +50,13 @@ interface IngestionDeltaSnapshot {
   delta: IngestionDelta;
 }
 
+export interface ApiMutationResult<T> {
+  ok: boolean;
+  data: T | null;
+  status: number | null;
+  error: string | null;
+}
+
 let _manifestCache: Manifest | null = null;
 
 async function fetchJson<T>(path: string): Promise<T> {
@@ -58,25 +65,118 @@ async function fetchJson<T>(path: string): Promise<T> {
   return res.json();
 }
 
+class ApiRequestError extends Error {
+  status: number;
+  path: string;
+
+  constructor(path: string, status: number, message: string) {
+    super(message);
+    this.name = "ApiRequestError";
+    this.path = path;
+    this.status = status;
+  }
+}
+
+function runtimeApiWriteKey(): string {
+  if (typeof window === "undefined") return "";
+  let fromSession = "";
+  let fromLocal = "";
+  try {
+    fromSession = sessionStorage.getItem(API_WRITE_KEY_STORAGE_KEY) || "";
+  } catch {}
+  try {
+    fromLocal = localStorage.getItem(API_WRITE_KEY_STORAGE_KEY) || "";
+  } catch {}
+  if (fromSession) return fromSession.trim();
+  return fromLocal.trim();
+}
+
+export function setApiWriteKey(key: string, persist = false): void {
+  if (typeof window === "undefined") return;
+  const normalized = key.trim();
+  if (!normalized) {
+    clearApiWriteKey();
+    return;
+  }
+  try {
+    sessionStorage.setItem(API_WRITE_KEY_STORAGE_KEY, normalized);
+  } catch {}
+  if (persist) {
+    try {
+      localStorage.setItem(API_WRITE_KEY_STORAGE_KEY, normalized);
+    } catch {}
+  } else {
+    try {
+      localStorage.removeItem(API_WRITE_KEY_STORAGE_KEY);
+    } catch {}
+  }
+}
+
+export function clearApiWriteKey(): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.removeItem(API_WRITE_KEY_STORAGE_KEY);
+  } catch {}
+  try {
+    localStorage.removeItem(API_WRITE_KEY_STORAGE_KEY);
+  } catch {}
+}
+
+export function hasApiWriteKey(): boolean {
+  return runtimeApiWriteKey().length > 0;
+}
+
 function apiHeaders(withJson = false): HeadersInit {
   const headers: Record<string, string> = {};
   if (withJson) headers["Content-Type"] = "application/json";
-  if (API_WRITE_KEY) headers["X-API-Key"] = API_WRITE_KEY;
+  const writeKey = runtimeApiWriteKey();
+  if (writeKey) headers["X-API-Key"] = writeKey;
   return headers;
 }
 
-async function fetchApiJson<T>(path: string, init?: RequestInit): Promise<T> {
+async function fetchApiJson<T>(
+  path: string,
+  init?: RequestInit,
+): Promise<{ data: T; status: number }> {
   const res = await fetch(`${API_ROOT}${path}`, init);
-  if (!res.ok) throw new Error(`API request failed: ${path}`);
-  return res.json();
+  if (!res.ok) {
+    throw new ApiRequestError(path, res.status, `API request failed: ${path} (${res.status})`);
+  }
+  return { data: await res.json(), status: res.status };
+}
+
+async function tryApiJsonDetailed<T>(path: string, init?: RequestInit): Promise<ApiMutationResult<T>> {
+  try {
+    const { data, status } = await fetchApiJson<T>(path, init);
+    return {
+      ok: true,
+      data,
+      status,
+      error: null,
+    };
+  } catch (error) {
+    if (error instanceof ApiRequestError) {
+      console.warn(`API fallback for ${path}: ${error.status}`);
+      return {
+        ok: false,
+        data: null,
+        status: error.status,
+        error: error.message,
+      };
+    }
+    console.warn(`API fallback for ${path}: network error`);
+    return {
+      ok: false,
+      data: null,
+      status: null,
+      error: error instanceof Error ? error.message : "Unknown API error",
+    };
+  }
 }
 
 async function tryApiJson<T>(path: string, init?: RequestInit): Promise<T | null> {
-  try {
-    return await fetchApiJson<T>(path, init);
-  } catch {
-    return null;
-  }
+  const result = await tryApiJsonDetailed<T>(path, init);
+  return result.data;
 }
 
 async function getManifest(): Promise<Manifest> {
@@ -301,22 +401,44 @@ export async function loadWatchlists(): Promise<Watchlist[]> {
 }
 
 export async function createWatchlist(watchlist: Watchlist): Promise<Watchlist | null> {
-  return tryApiJson<Watchlist>("/api/watchlists", {
+  const result = await tryApiJsonDetailed<Watchlist>("/api/watchlists", {
+    method: "POST",
+    headers: apiHeaders(true),
+    body: JSON.stringify(watchlist),
+  });
+  return result.data;
+}
+
+export async function createWatchlistShared(watchlist: Watchlist): Promise<ApiMutationResult<Watchlist>> {
+  return tryApiJsonDetailed<Watchlist>("/api/watchlists", {
     method: "POST",
     headers: apiHeaders(true),
     body: JSON.stringify(watchlist),
   });
 }
 
-export async function deleteWatchlist(watchlistId: string): Promise<boolean> {
+export async function deleteWatchlist(watchlistId: string): Promise<ApiMutationResult<null>> {
   try {
     const res = await fetch(`${API_ROOT}/api/watchlists/${watchlistId}`, {
       method: "DELETE",
       headers: apiHeaders(),
     });
-    return res.ok;
-  } catch {
-    return false;
+    if (res.ok) {
+      return { ok: true, data: null, status: res.status, error: null };
+    }
+    return {
+      ok: false,
+      data: null,
+      status: res.status,
+      error: `API delete failed: /api/watchlists/${watchlistId} (${res.status})`,
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      data: null,
+      status: null,
+      error: error instanceof Error ? error.message : "Unknown API error",
+    };
   }
 }
 
@@ -327,8 +449,8 @@ export async function loadEventOpsState(eventId: string): Promise<EventOpsState 
 export async function saveEventOpsState(
   eventId: string,
   input: { triage_status: TriageStatus | null; note: string; updated_by: string },
-): Promise<EventOpsState | null> {
-  return tryApiJson<EventOpsState>(`/api/operations/events/${eventId}`, {
+): Promise<ApiMutationResult<EventOpsState>> {
+  return tryApiJsonDetailed<EventOpsState>(`/api/operations/events/${eventId}`, {
     method: "PUT",
     headers: apiHeaders(true),
     body: JSON.stringify(input),
@@ -342,8 +464,8 @@ export async function loadSituationOpsState(situationId: string): Promise<Situat
 export async function addSituationAnnotation(
   situationId: string,
   input: { author: string; content: string },
-): Promise<SituationOpsState | null> {
-  return tryApiJson<SituationOpsState>(`/api/operations/situations/${situationId}/annotations`, {
+): Promise<ApiMutationResult<SituationOpsState>> {
+  return tryApiJsonDetailed<SituationOpsState>(`/api/operations/situations/${situationId}/annotations`, {
     method: "POST",
     headers: apiHeaders(true),
     body: JSON.stringify(input),
@@ -353,8 +475,8 @@ export async function addSituationAnnotation(
 export async function saveSituationActions(
   situationId: string,
   input: { checked_action_indices: number[]; updated_by: string },
-): Promise<SituationOpsState | null> {
-  return tryApiJson<SituationOpsState>(`/api/operations/situations/${situationId}/actions`, {
+): Promise<ApiMutationResult<SituationOpsState>> {
+  return tryApiJsonDetailed<SituationOpsState>(`/api/operations/situations/${situationId}/actions`, {
     method: "PUT",
     headers: apiHeaders(true),
     body: JSON.stringify(input),

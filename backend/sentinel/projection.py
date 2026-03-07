@@ -6,6 +6,7 @@ to get events with analyst overrides applied and dependent fields reconciled.
 
 from collections import defaultdict
 from datetime import date, timedelta
+
 from sentinel.analysis.executive_ops import (
     BASE_DECISION_WINDOW_HOURS,
     PRIORITY_TO_IMS,
@@ -75,6 +76,7 @@ def _filter_recent_events(events: list[HealthEvent]) -> list[HealthEvent]:
     today = date.today()
     cutoff = today - timedelta(days=max_age_days)
     return [event for event in events if cutoff <= event.date_reported <= today]
+
 
 def _filter_trusted_sources(events: list[HealthEvent]) -> list[HealthEvent]:
     who_eios_enabled = bool(settings.who_eios_api_key.strip())
@@ -155,7 +157,23 @@ def load_projected_events(store: DataStore) -> list[HealthEvent]:
 
     All API routes, exports, analytics, and reports should use this.
     """
-    events = [canonicalize_event_urls(event) for event in store.load_all_events()]
-    events = _filter_trusted_sources(_filter_recent_events(events))
+    events = load_trusted_events(store)
     annotations = store.load_annotations()
     return apply_annotation_overrides(events, annotations)
+
+
+def load_trusted_events(
+    store: DataStore,
+    *,
+    apply_recency_gate: bool = True,
+) -> list[HealthEvent]:
+    """Load canonicalized, trusted events.
+
+    Use apply_recency_gate=False for workflows that must reference historical
+    event IDs (e.g., situation linking and operations logs).
+    """
+    events = [canonicalize_event_urls(event) for event in store.load_all_events()]
+    events = _filter_trusted_sources(events)
+    if apply_recency_gate:
+        events = _filter_recent_events(events)
+    return events

@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Plus, X } from "lucide-react";
 import {
-  createWatchlist as createWatchlistApi,
+  createWatchlistShared as createWatchlistApi,
   deleteWatchlist as deleteWatchlistApi,
   loadAllEvents,
   loadWatchlists,
@@ -48,6 +48,7 @@ export default function WatchlistsPage() {
   const [events, setEvents] = useState<HealthEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [syncMessage, setSyncMessage] = useState("");
 
   // Form state
   const [formName, setFormName] = useState("");
@@ -91,8 +92,9 @@ export default function WatchlistsPage() {
   const deleteCustom = useCallback(
     async (id: string) => {
       const deletedRemote = await deleteWatchlistApi(id);
-      if (deletedRemote) {
+      if (deletedRemote.ok) {
         setServerWatchlists((current) => current.filter((w) => w.id !== id));
+        setSyncMessage(t("watchlists.sharedSynced"));
       }
       const updated = customWatchlists.filter((w) => w.id !== id);
       setCustomWatchlists(updated);
@@ -100,8 +102,15 @@ export default function WatchlistsPage() {
         "sentinel-custom-watchlists",
         JSON.stringify(updated),
       );
+      if (!deletedRemote.ok) {
+        setSyncMessage(
+          deletedRemote.status === 401 || deletedRemote.status === 503
+            ? t("watchlists.localFallbackAuth")
+            : t("watchlists.localFallback"),
+        );
+      }
     },
-    [customWatchlists],
+    [customWatchlists, t],
   );
 
   const createWatchlist = async () => {
@@ -116,16 +125,23 @@ export default function WatchlistsPage() {
     };
 
     const createdRemote = await createWatchlistApi(newWl);
-    if (createdRemote) {
+    if (createdRemote.ok && createdRemote.data) {
+      const remoteWatchlist = createdRemote.data;
       setServerWatchlists((current) => {
-        const next = current.filter((w) => w.id !== createdRemote.id);
-        next.push(createdRemote);
+        const next = current.filter((w) => w.id !== remoteWatchlist.id);
+        next.push(remoteWatchlist);
         return next;
       });
+      setSyncMessage(t("watchlists.sharedSynced"));
     } else {
       const updated = [...customWatchlists, newWl];
       setCustomWatchlists(updated);
       localStorage.setItem("sentinel-custom-watchlists", JSON.stringify(updated));
+      setSyncMessage(
+        createdRemote.status === 401 || createdRemote.status === 503
+          ? t("watchlists.localFallbackAuth")
+          : t("watchlists.localFallback"),
+      );
     }
 
     setShowForm(false);
@@ -163,6 +179,9 @@ export default function WatchlistsPage() {
           <p className="mt-0.5 text-[11px] text-sentinel-text-muted">
             {t("watchlists.subtitle")}
           </p>
+          {syncMessage && (
+            <p className="mt-1 text-[10px] text-sentinel-text-muted">{syncMessage}</p>
+          )}
         </div>
         <Button size="sm" onClick={() => setShowForm(!showForm)}>
           {showForm ? (

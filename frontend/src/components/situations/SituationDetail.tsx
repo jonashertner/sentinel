@@ -17,6 +17,7 @@ import {
   loadSituationOpsState,
   saveSituationActions,
 } from "@/lib/api";
+import { useI18n } from "@/lib/i18n";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Timeline } from "@/components/situations/Timeline";
@@ -72,6 +73,7 @@ function saveLocalSituationState(id: string, annotations: Annotation[], checkedA
 }
 
 export function SituationDetail({ id }: SituationDetailProps) {
+  const { t } = useI18n();
   const router = useRouter();
   const [situation, setSituation] = useState<Situation | null>(null);
   const [linkedEvents, setLinkedEvents] = useState<HealthEvent[]>([]);
@@ -80,6 +82,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
   const [localAnnotations, setLocalAnnotations] = useState<Annotation[]>([]);
   const [checkedActions, setCheckedActions] = useState<Set<number>>(new Set<number>());
   const [stateSource, setStateSource] = useState<"api" | "local">("local");
+  const [syncMessage, setSyncMessage] = useState("");
 
   useEffect(() => {
     // Fetch situation and events
@@ -101,16 +104,18 @@ export function SituationDetail({ id }: SituationDetailProps) {
           setLocalAnnotations(ops.annotations.map(mapOpsNoteToAnnotation));
           setCheckedActions(new Set(ops.checked_action_indices));
           setStateSource("api");
+          setSyncMessage(t("situations.sharedLog"));
         } else {
           const local = loadLocalSituationState(id);
           setLocalAnnotations(local.annotations);
           setCheckedActions(local.checkedActions);
           setStateSource("local");
+          setSyncMessage(t("situations.localFallback"));
         }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, t]);
 
   const addAnnotation = async () => {
     if (!noteText.trim()) return;
@@ -121,10 +126,11 @@ export function SituationDetail({ id }: SituationDetailProps) {
       author: "analyst@bag.ch",
       content,
     });
-    if (remote) {
-      setLocalAnnotations(remote.annotations.map(mapOpsNoteToAnnotation));
-      setCheckedActions(new Set(remote.checked_action_indices));
+    if (remote.ok && remote.data) {
+      setLocalAnnotations(remote.data.annotations.map(mapOpsNoteToAnnotation));
+      setCheckedActions(new Set(remote.data.checked_action_indices));
       setStateSource("api");
+      setSyncMessage(t("situations.sharedLog"));
       return;
     }
 
@@ -151,6 +157,11 @@ export function SituationDetail({ id }: SituationDetailProps) {
     setLocalAnnotations(updated);
     saveLocalSituationState(id, updated, checkedActions);
     setStateSource("local");
+    setSyncMessage(
+      remote.status === 401 || remote.status === 503
+        ? t("situations.localFallbackAuth")
+        : t("situations.localFallback"),
+    );
   };
 
   const toggleAction = async (idx: number) => {
@@ -164,21 +175,27 @@ export function SituationDetail({ id }: SituationDetailProps) {
       checked_action_indices: checkedActionIndices,
       updated_by: "analyst@bag.ch",
     });
-    if (remote) {
-      setLocalAnnotations(remote.annotations.map(mapOpsNoteToAnnotation));
-      setCheckedActions(new Set(remote.checked_action_indices));
+    if (remote.ok && remote.data) {
+      setLocalAnnotations(remote.data.annotations.map(mapOpsNoteToAnnotation));
+      setCheckedActions(new Set(remote.data.checked_action_indices));
       setStateSource("api");
+      setSyncMessage(t("situations.sharedLog"));
       return;
     }
 
     saveLocalSituationState(id, localAnnotations, next);
     setStateSource("local");
+    setSyncMessage(
+      remote.status === 401 || remote.status === 503
+        ? t("situations.localFallbackAuth")
+        : t("situations.localFallback"),
+    );
   };
 
   if (loading) {
     return (
       <div className="flex h-full items-center justify-center text-[12px] text-sentinel-text-muted">
-        Loading situation...
+        {t("loading.situations")}...
       </div>
     );
   }
@@ -187,10 +204,10 @@ export function SituationDetail({ id }: SituationDetailProps) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-3">
         <div className="text-[12px] text-sentinel-text-muted">
-          Situation not found
+          {t("situations.notFound")}
         </div>
         <Button size="sm" onClick={() => router.push("/situations")}>
-          Back to Situations
+          {t("situations.back")}
         </Button>
       </div>
     );
@@ -208,7 +225,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
           className="mb-3 flex items-center gap-1.5 text-[11px] font-medium text-sentinel-text-muted hover:text-sentinel-text-secondary"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Back to Situations
+          {t("situations.back")}
         </button>
 
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
@@ -268,13 +285,13 @@ export function SituationDetail({ id }: SituationDetailProps) {
           {/* Timeline */}
           <div>
             <div className="mb-4 text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Event Timeline ({linkedEvents.length} events)
+              {t("situations.eventTimeline")} ({linkedEvents.length} {t("metric.events")})
             </div>
             {linkedEvents.length > 0 ? (
               <Timeline events={linkedEvents} />
             ) : (
               <div className="py-8 text-center text-[11px] text-sentinel-text-muted">
-                No linked events found in loaded data
+                {t("situations.noLinkedEvents")}
               </div>
             )}
           </div>
@@ -282,10 +299,10 @@ export function SituationDetail({ id }: SituationDetailProps) {
           {/* Annotations */}
           <div className="mt-8 border-t border-sentinel-border pt-6">
             <div className="mb-4 text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Annotations ({allAnnotations.length})
+              {t("situations.annotations")} ({allAnnotations.length})
             </div>
             <div className="mb-3 text-[10px] text-sentinel-text-muted">
-              {stateSource === "api" ? "Shared operations log" : "Local fallback mode"}
+              {syncMessage || (stateSource === "api" ? t("situations.sharedLog") : t("situations.localFallback"))}
             </div>
 
             {allAnnotations.length > 0 && (
@@ -321,12 +338,12 @@ export function SituationDetail({ id }: SituationDetailProps) {
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addAnnotation()}
-                placeholder="Add an annotation..."
+                placeholder={t("detail.addAnnotation")}
                 className="flex-1 rounded-md border border-sentinel-border bg-sentinel-surface px-3 py-2 text-[12px] text-sentinel-text placeholder:text-sentinel-text-muted outline-none focus:border-sentinel-text-muted"
               />
               <Button size="sm" onClick={addAnnotation} disabled={!noteText.trim()}>
                 <Send className="h-3 w-3" />
-                Add
+                {t("situations.add")}
               </Button>
             </div>
           </div>
@@ -340,7 +357,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
           {/* Swiss Impact Assessment */}
           <div className="mt-6">
             <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Swiss Impact Assessment
+              {t("situations.swissImpact")}
             </div>
             <div className="rounded-lg border border-sentinel-border bg-sentinel-bg p-3">
               <div className="text-[11px] leading-relaxed text-sentinel-text-secondary">
@@ -352,7 +369,7 @@ export function SituationDetail({ id }: SituationDetailProps) {
           {/* Recommended Actions */}
           <div className="mt-6">
             <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Recommended Actions
+              {t("situations.recommendedActions")}
             </div>
             <div className="space-y-1">
               {situation.recommended_actions.map((action, idx) => (

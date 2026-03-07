@@ -184,9 +184,10 @@ export function GlobalMap({
   );
 
   // --- Selected country events ---
-  const detailEvents = selectedCountry
-    ? countryEvents[selectedCountry] || []
-    : [];
+  const detailEvents = useMemo(
+    () => (selectedCountry ? countryEvents[selectedCountry] || [] : []),
+    [countryEvents, selectedCountry],
+  );
 
   // --- Disease summary for selected country ---
   const diseaseSummary = useMemo(() => {

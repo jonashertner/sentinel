@@ -276,21 +276,21 @@ export default function CommandCenter() {
     if (collectorStatuses.length === 0) {
       return {
         dotClass: "bg-sentinel-text-muted",
-        label: "Pipeline status unavailable",
+        label: t("cc.pipelineUnavailable"),
       };
     }
     const failed = collectorStatuses.filter((s) => !s.ok);
     if (failed.length === 0) {
       return {
         dotClass: "bg-sentinel-clear",
-        label: `Pipeline healthy • ${collectorStatuses.length} sources OK`,
+        label: `${t("cc.pipelineHealthy")} • ${collectorStatuses.length} ${t("cc.pipelineSourcesOk")}`,
       };
     }
     return {
       dotClass: failed.length === collectorStatuses.length ? "bg-sentinel-critical" : "bg-sentinel-high",
-      label: `${failed.length}/${collectorStatuses.length} source collectors failed`,
+      label: `${failed.length}/${collectorStatuses.length} ${t("cc.pipelineSourcesFailed")}`,
     };
-  }, [collectorStatuses]);
+  }, [collectorStatuses, t]);
 
   function riskColor(score: number): string {
     if (score >= 8) return RISK_COLORS.CRITICAL.dot;

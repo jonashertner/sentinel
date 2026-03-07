@@ -98,3 +98,44 @@ def test_situation_operations_state_round_trip(tmp_path):
     assert payload["checked_action_indices"] == [0, 2]
 
     app.dependency_overrides.clear()
+
+
+def test_event_operations_accepts_historical_event_ids(tmp_path):
+    store = DataStore(data_dir=str(tmp_path))
+    store.save_events(
+        date(2025, 1, 5),
+        [
+            HealthEvent(
+                id="evt-ops-old",
+                title="Historical event",
+                source=Source.WHO_DON,
+                date_reported=date(2025, 1, 5),
+                date_collected=date(2025, 1, 5),
+                disease="H5N1",
+                countries=["DE"],
+                regions=["EURO"],
+                species=Species.ANIMAL,
+                summary="Historical test event",
+                url="https://www.who.int/test-ops-old",
+                raw_content="test",
+            )
+        ],
+    )
+    app.dependency_overrides[get_store] = lambda: store
+    client = TestClient(app)
+
+    get_state = client.get("/api/operations/events/evt-ops-old")
+    assert get_state.status_code == 200
+
+    saved = client.put(
+        "/api/operations/events/evt-ops-old",
+        json={
+            "triage_status": "MONITOR",
+            "note": "Historical reference retained",
+            "updated_by": "analyst@bag.ch",
+        },
+    )
+    assert saved.status_code == 200
+    assert saved.json()["triage_status"] == "MONITOR"
+
+    app.dependency_overrides.clear()
