@@ -19,7 +19,7 @@
     "case_count": null,
     "death_count": null,
     "summary": "ECDC has raised the H5N1 avian influenza threat level for animal health in Europe to HIGH, citing the rapid geographic spread of clade 2.3.4.4b across the Netherlands, Germany, and France within one week. The assessment notes the Rhine corridor as a high-risk zone for further spread. Human infection risk remains LOW but is under review. ECDC recommends enhanced surveillance in all EU/EEA countries bordering the Rhine.",
-    "url": "https://www.ecdc.europa.eu/en/news-events/h5n1-threat-assessment-march2026",
+    "url": "https://www.ecdc.europa.eu/en/avian-influenza",
     "raw_content": "ECDC Threat Assessment: Avian influenza A(H5N1) clade 2.3.4.4b — Europe, March 2026. Risk level: HIGH (animal health), LOW (human health). Affected: NL, DE, FR. Rhine corridor identified as high-risk zone. Recommendations: enhanced wild bird and poultry surveillance, cross-border coordination, PPE for poultry workers.",
     "risk_score": 8.5,
     "swiss_relevance": 9.5,

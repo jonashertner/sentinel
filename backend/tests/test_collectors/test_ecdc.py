@@ -59,7 +59,7 @@ class TestECDCCollector:
         </rss>
         """
         events = self.collector.parse_feed(xml)
-        assert events[0].url == "https://www.ecdc.europa.eu/en/news-events/h5n1-threat-assessment-march2026"
+        assert events[0].url == "https://www.ecdc.europa.eu/en/avian-influenza"
 
     @respx.mock
     async def test_collect_raises_on_network_error(self):

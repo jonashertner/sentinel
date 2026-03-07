@@ -4,6 +4,9 @@ const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const DATA_BASE = process.env.NEXT_PUBLIC_DATA_PATH || `${BASE_PATH}/data`;
 const MAX_EVENT_AGE_DAYS = Number(process.env.NEXT_PUBLIC_MAX_EVENT_AGE_DAYS || "30");
 const ALLOW_WHO_EIOS = process.env.NEXT_PUBLIC_ALLOW_WHO_EIOS === "true";
+const ECDC_LEGACY_URL_OVERRIDES: Record<string, string> = {
+  "h5n1-threat-assessment-march2026": "https://www.ecdc.europa.eu/en/avian-influenza",
+};
 
 interface Manifest {
   event_dates: string[];
@@ -56,8 +59,10 @@ function normalizeEventUrl(event: HealthEvent): string {
     const parsed = new URL(event.url);
     if (parsed.hostname.toLowerCase() !== "www.ecdc.europa.eu") return event.url;
     const parts = parsed.pathname.split("/").filter(Boolean);
+    const slug = parts[parts.length - 1];
+    const override = ECDC_LEGACY_URL_OVERRIDES[slug];
+    if (override) return override;
     if (parts.length >= 4 && parts[0] === "en" && parts[parts.length - 2] === "threats") {
-      const slug = parts[parts.length - 1];
       return `https://www.ecdc.europa.eu/en/news-events/${slug}`;
     }
   } catch {
