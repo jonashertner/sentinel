@@ -28,6 +28,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "61f68f8d716e056f"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "61f68f8d716e056f",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-28-february-6-march-2026-week-10",
+        "title": "Communicable disease threats report, 28 February – 6 March 2026 , week 10",
+        "date_reported": "2026-03-06",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "bb88ec868dca4a0e03be",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -59,6 +100,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "3102f2b327e9e703"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "3102f2b327e9e703",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-9-march-2026",
+        "title": "Weekly respiratory virus update, week 9, March 2026",
+        "date_reported": "2026-03-06",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "6de4f2bf8e26b64b211d",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -90,6 +172,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "749d4554a6fe7525"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "749d4554a6fe7525",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-21-27-february-2026-week-9",
+        "title": "Communicable disease threats report, 21 - 27 February 2026, week 9",
+        "date_reported": "2026-02-27",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "8f2c2a9e9cd401a8cc31",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -121,6 +244,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "af2ae71f814199d2"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "af2ae71f814199d2",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-8-february-2026",
+        "title": "Weekly respiratory virus update, week 8, February 2026",
+        "date_reported": "2026-02-27",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "990ac3a3c0b527598fab",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -152,6 +316,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "70507a655f1ec4fc"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "70507a655f1ec4fc",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-14-20-february-2026-week-8",
+        "title": "Communicable disease threats report, 14 - 20 February 2026, week 8",
+        "date_reported": "2026-02-20",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "96fddd4407a9777d122a",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -183,6 +388,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "f9fbe8b0e4ea05a3"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "f9fbe8b0e4ea05a3",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-7-february-2026",
+        "title": "Weekly respiratory virus update, week 7, February 2026",
+        "date_reported": "2026-02-20",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "0516f9716465c7e75ec6",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -214,6 +460,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "89a3d8f74fa739b7"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "89a3d8f74fa739b7",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-7-13-february-2026-week-7",
+        "title": "Communicable disease threats report, 7 - 13 February 2026, week 7",
+        "date_reported": "2026-02-13",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "685aed4c46667a8b702c",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -245,6 +532,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "e5fd1019c867beba"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "e5fd1019c867beba",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-6-january-2026",
+        "title": "Weekly respiratory virus update, week 6, January 2026",
+        "date_reported": "2026-02-13",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "e979c2e6b570e364a664",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -276,6 +604,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "25854b495af78317"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "25854b495af78317",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-31-january-6-february-2026-week-6",
+        "title": "Communicable disease threats report, 31 January - 6 February 2026, week 6",
+        "date_reported": "2026-02-06",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "b3ba8080474282fa66d6",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   },
   {
@@ -307,6 +676,47 @@
     "ihr_serious_impact": false,
     "ihr_international_spread": false,
     "ihr_trade_travel_risk": false,
+    "confidence_score": 0.86,
+    "probability_score": 1.0,
+    "impact_score": 0.5,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "5f1b788f67dadf96"
+    ],
+    "source_evidence": [
+      {
+        "source": "ECDC",
+        "event_id": "5f1b788f67dadf96",
+        "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-5-january-2026",
+        "title": "Weekly respiratory virus update, week 5, January 2026",
+        "date_reported": "2026-02-06",
+        "confidence": 0.95
+      }
+    ],
+    "provenance_hash": "0984b26dc65f2d6c5a20",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
     "risk_category": "LOW"
   }
 ]
