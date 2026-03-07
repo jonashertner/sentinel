@@ -56,6 +56,12 @@ class TestPipeline:
             patch("sentinel.pipeline.WHOEIOSCollector", return_value=AsyncMock(
                 source_name="WHO_EIOS", collect=AsyncMock(return_value=[])
             )),
+            patch("sentinel.pipeline.BeaconCollector", return_value=AsyncMock(
+                source_name="BEACON", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.CIDRAPCollector", return_value=AsyncMock(
+                source_name="CIDRAP", collect=AsyncMock(return_value=[])
+            )),
             patch("sentinel.analysis.llm_analyzer.settings") as mock_llm_settings,
         ):
             mock_settings.enable_who_don = True
@@ -63,6 +69,8 @@ class TestPipeline:
             mock_settings.enable_ecdc = True
             mock_settings.enable_woah = True
             mock_settings.enable_who_eios = True
+            mock_settings.enable_beacon = True
+            mock_settings.enable_cidrap = True
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 
@@ -71,6 +79,9 @@ class TestPipeline:
         assert result.events_collected == 2
         assert result.events_after_dedup == 2  # Different diseases, not merged
         assert len(result.errors) == 0
+        # Structured collector status is populated for every source
+        assert len(result.collector_statuses) == 7
+        assert all(s.ok for s in result.collector_statuses)
 
     @pytest.mark.asyncio
     async def test_pipeline_handles_collector_error(self):
@@ -94,6 +105,12 @@ class TestPipeline:
             patch("sentinel.pipeline.WHOEIOSCollector", return_value=AsyncMock(
                 source_name="WHO_EIOS", collect=AsyncMock(return_value=[])
             )),
+            patch("sentinel.pipeline.BeaconCollector", return_value=AsyncMock(
+                source_name="BEACON", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.CIDRAPCollector", return_value=AsyncMock(
+                source_name="CIDRAP", collect=AsyncMock(return_value=[])
+            )),
             patch("sentinel.analysis.llm_analyzer.settings") as mock_llm_settings,
         ):
             mock_settings.enable_who_don = True
@@ -101,6 +118,8 @@ class TestPipeline:
             mock_settings.enable_ecdc = True
             mock_settings.enable_woah = True
             mock_settings.enable_who_eios = True
+            mock_settings.enable_beacon = True
+            mock_settings.enable_cidrap = True
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 
@@ -108,6 +127,11 @@ class TestPipeline:
 
         assert len(result.errors) == 1
         assert "WHO_DON" in result.errors[0]
+        # Structured status: WHO_DON failed, others ok
+        failed = [s for s in result.collector_statuses if not s.ok]
+        assert len(failed) == 1
+        assert failed[0].source == "WHO_DON"
+        assert failed[0].error == "Network error"
 
     @pytest.mark.asyncio
     async def test_pipeline_result_stats(self):
@@ -136,6 +160,12 @@ class TestPipeline:
             patch("sentinel.pipeline.WHOEIOSCollector", return_value=AsyncMock(
                 source_name="WHO_EIOS", collect=AsyncMock(return_value=[])
             )),
+            patch("sentinel.pipeline.BeaconCollector", return_value=AsyncMock(
+                source_name="BEACON", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.CIDRAPCollector", return_value=AsyncMock(
+                source_name="CIDRAP", collect=AsyncMock(return_value=[])
+            )),
             patch("sentinel.analysis.llm_analyzer.settings") as mock_llm_settings,
         ):
             mock_settings.enable_who_don = True
@@ -143,6 +173,8 @@ class TestPipeline:
             mock_settings.enable_ecdc = True
             mock_settings.enable_woah = True
             mock_settings.enable_who_eios = True
+            mock_settings.enable_beacon = True
+            mock_settings.enable_cidrap = True
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 

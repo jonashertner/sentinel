@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import time
 from dataclasses import dataclass, field
 from datetime import date
 
@@ -25,6 +26,15 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
+class CollectorStatus:
+    source: str
+    ok: bool
+    event_count: int
+    latency_seconds: float
+    error: str | None = None
+
+
+@dataclass
 class PipelineResult:
     date: date
     events_collected: int = 0
@@ -33,6 +43,7 @@ class PipelineResult:
     by_source: dict[str, int] = field(default_factory=dict)
     by_risk: dict[str, int] = field(default_factory=dict)
     errors: list[str] = field(default_factory=list)
+    collector_statuses: list[CollectorStatus] = field(default_factory=list)
 
 
 async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
@@ -60,15 +71,38 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
 
     all_events = []
     for collector in collectors:
+        t0 = time.monotonic()
         try:
             events = await collector.collect()
+            latency = time.monotonic() - t0
             all_events.extend(events)
             result.by_source[collector.source_name] = len(events)
-            logger.info("Collected %d events from %s", len(events), collector.source_name)
+            result.collector_statuses.append(
+                CollectorStatus(
+                    source=collector.source_name,
+                    ok=True,
+                    event_count=len(events),
+                    latency_seconds=round(latency, 2),
+                )
+            )
+            logger.info(
+                "Collected %d events from %s in %.1fs",
+                len(events), collector.source_name, latency,
+            )
         except Exception as e:
+            latency = time.monotonic() - t0
             error_msg = f"Collector {collector.source_name} failed: {e}"
             logger.error(error_msg)
             result.errors.append(error_msg)
+            result.collector_statuses.append(
+                CollectorStatus(
+                    source=collector.source_name,
+                    ok=False,
+                    event_count=0,
+                    latency_seconds=round(latency, 2),
+                    error=str(e),
+                )
+            )
 
     result.events_collected = len(all_events)
 

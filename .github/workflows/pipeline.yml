@@ -1,9 +1,10 @@
-name: Twice-Daily Pipeline
+name: Thrice-Daily Pipeline
 
 on:
   schedule:
     - cron: "0 6 * * *"   # 06:00 UTC (morning collection)
-    - cron: "0 18 * * *"  # 18:00 UTC (evening collection)
+    - cron: "0 14 * * *"  # 14:00 UTC (midday collection)
+    - cron: "0 22 * * *"  # 22:00 UTC (evening collection)
   workflow_dispatch:  # Manual trigger
 
 permissions:

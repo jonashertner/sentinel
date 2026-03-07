@@ -1,6 +1,10 @@
 from pathlib import Path
 
-from sentinel.collectors.who_don import WHODONCollector
+import httpx
+import pytest
+import respx
+
+from sentinel.collectors.who_don import WHO_DON_FEED, WHODONCollector
 from sentinel.models.event import Source
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
@@ -45,8 +49,9 @@ class TestWHODONCollector:
         assert events[0].date_reported.year == 2026
         assert events[0].date_reported.month == 3
 
-    async def test_collect_handles_network_error(self):
-        """collect() returns empty list on network error (no real HTTP)."""
-        events = await self.collector.collect()
-        # Will fail to connect, should return empty list gracefully
-        assert isinstance(events, list)
+    @respx.mock
+    async def test_collect_raises_on_network_error(self):
+        """collect() propagates exceptions so pipeline records structured status."""
+        respx.get(WHO_DON_FEED).mock(return_value=httpx.Response(500))
+        with pytest.raises(Exception):
+            await self.collector.collect()

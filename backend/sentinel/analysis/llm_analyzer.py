@@ -9,6 +9,28 @@ from sentinel.models.event import HealthEvent
 
 logger = logging.getLogger(__name__)
 
+_TRUTHY = {"true", "yes", "1"}
+_FALSY = {"false", "no", "0"}
+
+
+def _parse_bool(value: object) -> bool | None:
+    """Strictly parse a boolean from LLM output.
+
+    bool("false") is True in Python — this function handles string booleans
+    correctly. Returns None if the value cannot be interpreted.
+    """
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    if isinstance(value, str):
+        lower = value.strip().lower()
+        if lower in _TRUTHY:
+            return True
+        if lower in _FALSY:
+            return False
+    return None
+
 SYSTEM_PROMPT = (
     "You are a senior epidemiologist advising the Swiss Federal Office of Public Health "
     "(BAG) and the Federal Food Safety and Veterinary Office (BLV). Analyze disease "
@@ -112,13 +134,13 @@ Escalation level: {event.escalation_level}
         if "ihr_annex2" in data and isinstance(data["ihr_annex2"], dict):
             a2 = data["ihr_annex2"]
             if "unusual" in a2:
-                event.ihr_unusual = bool(a2["unusual"])
+                event.ihr_unusual = _parse_bool(a2["unusual"])
             if "serious_impact" in a2:
-                event.ihr_serious_impact = bool(a2["serious_impact"])
+                event.ihr_serious_impact = _parse_bool(a2["serious_impact"])
             if "international_spread" in a2:
-                event.ihr_international_spread = bool(a2["international_spread"])
+                event.ihr_international_spread = _parse_bool(a2["international_spread"])
             if "trade_travel_risk" in a2:
-                event.ihr_trade_travel_risk = bool(a2["trade_travel_risk"])
+                event.ihr_trade_travel_risk = _parse_bool(a2["trade_travel_risk"])
 
     except Exception:
         logger.exception("LLM analysis failed for event %s", event.id)

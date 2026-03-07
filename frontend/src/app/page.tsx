@@ -5,6 +5,7 @@ import Link from "next/link";
 import { loadAllEvents, loadSituations } from "@/lib/api";
 import type { HealthEvent, Situation, Source } from "@/lib/types";
 import { RISK_COLORS, SOURCE_LABELS } from "@/lib/constants";
+import { useI18n } from "@/lib/i18n";
 import { KPICard } from "@/components/ui/KPICard";
 import { RiskPill } from "@/components/ui/RiskPill";
 import { SourceBadge } from "@/components/ui/Badge";
@@ -70,14 +71,10 @@ const REGION_COLORS: Record<string, string> = {
   "Western Pacific": "#06b6d4",
 };
 
-const OPERATIONAL_PRIORITY_ORDER = {
-  CRITICAL: 4,
-  HIGH: 3,
-  ELEVATED: 2,
-  ROUTINE: 1,
-};
+
 
 export default function CommandCenter() {
+  const { t } = useI18n();
   const [events, setEvents] = useState<HealthEvent[]>([]);
   const [situations, setSituations] = useState<Situation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -161,76 +158,6 @@ export default function CommandCenter() {
       activeSituations,
     };
   }, [events, situations, latestDate, previousDate]);
-
-  const executiveOps = useMemo(() => {
-    const byLead: Record<"BAG" | "BLV" | "JOINT", number> = {
-      BAG: 0,
-      BLV: 0,
-      JOINT: 0,
-    };
-
-    const byActivation: Record<
-      "FULL_ACTIVATION" | "PARTIAL_ACTIVATION" | "ENHANCED_MONITORING" | "MONITORING",
-      number
-    > = {
-      FULL_ACTIVATION: 0,
-      PARTIAL_ACTIVATION: 0,
-      ENHANCED_MONITORING: 0,
-      MONITORING: 0,
-    };
-
-    for (const event of events) {
-      byLead[event.lead_agency] = (byLead[event.lead_agency] || 0) + 1;
-      byActivation[event.ims_activation] = (byActivation[event.ims_activation] || 0) + 1;
-    }
-
-    const queue = [...events]
-      .filter(
-        (event) =>
-          event.operational_priority === "CRITICAL" ||
-          event.operational_priority === "HIGH" ||
-          event.decision_window_hours <= 24,
-      )
-      .sort((a, b) => {
-        const priorityDelta =
-          OPERATIONAL_PRIORITY_ORDER[b.operational_priority] -
-          OPERATIONAL_PRIORITY_ORDER[a.operational_priority];
-        if (priorityDelta !== 0) return priorityDelta;
-        if (a.decision_window_hours !== b.decision_window_hours) {
-          return a.decision_window_hours - b.decision_window_hours;
-        }
-        if (b.swiss_relevance !== a.swiss_relevance) {
-          return b.swiss_relevance - a.swiss_relevance;
-        }
-        return b.risk_score - a.risk_score;
-      })
-      .slice(0, 8);
-
-    const due24h = events.filter((event) => event.decision_window_hours <= 24).length;
-    const lowConfidenceHighRisk = events.filter(
-      (event) => event.risk_score >= 6.0 && event.confidence_score < 0.65,
-    ).length;
-    const activationHot = events.filter(
-      (event) =>
-        event.ims_activation === "FULL_ACTIVATION" ||
-        event.ims_activation === "PARTIAL_ACTIVATION",
-    ).length;
-
-    const avgConfidence =
-      events.length > 0
-        ? events.reduce((sum, event) => sum + event.confidence_score, 0) / events.length
-        : 0;
-
-    return {
-      queue,
-      due24h,
-      lowConfidenceHighRisk,
-      activationHot,
-      avgConfidence,
-      byLead,
-      byActivation,
-    };
-  }, [events]);
 
   // Disease-centric threat landscape
   const diseaseThreats = useMemo(() => {
@@ -327,20 +254,13 @@ export default function CommandCenter() {
     return "rgba(59,130,246,0.08)";
   }
 
-  function operationalPriorityStyles(priority: HealthEvent["operational_priority"]): string {
-    if (priority === "CRITICAL") return "text-sentinel-critical bg-sentinel-critical-bg";
-    if (priority === "HIGH") return "text-sentinel-high bg-sentinel-high-bg";
-    if (priority === "ELEVATED") return "text-amber-300 bg-amber-500/10";
-    return "text-sentinel-text-muted bg-sentinel-surface";
-  }
-
   if (loading) {
     return (
       <div className="flex h-full items-center justify-center">
         <div className="space-y-3 text-center">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-sentinel-border border-t-sentinel-text" />
           <p className="text-[11px] uppercase tracking-wider text-sentinel-text-muted">
-            Loading intelligence data
+            {t("loading.intelligence")}
           </p>
         </div>
       </div>
@@ -353,16 +273,16 @@ export default function CommandCenter() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pl-12 md:pl-0">
         <div>
           <h1 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-sentinel-text-muted">
-            Command Center
+            {t("nav.commandCenter")}
           </h1>
           <p className="mt-0.5 text-[11px] text-sentinel-text-muted">
-            Global threat landscape — {latestDate}
+            {t("cc.subtitle")} — {latestDate}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-sentinel-clear" />
           <span className="text-[10px] text-sentinel-text-muted">
-            Pipeline active — Collecting 06:00 &amp; 18:00 UTC
+            {t("cc.pipeline")}
           </span>
         </div>
       </div>
@@ -370,7 +290,7 @@ export default function CommandCenter() {
       {/* KPI Strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <KPICard
-          label="New Events (24h)"
+          label={t("cc.newEvents24h")}
           value={todayEvents.length}
           delta={
             todayEvents.length -
@@ -379,12 +299,12 @@ export default function CommandCenter() {
           sparkData={dailyCounts}
         />
         <KPICard
-          label="Active Situations"
+          label={t("cc.activeSituations")}
           value={situations.length}
           sparkData={[1, 1, 2, 3, 3, 3]}
         />
         <KPICard
-          label="Critical Alerts"
+          label={t("cc.criticalAlerts")}
           value={criticalCount}
           delta={
             criticalCount -
@@ -403,7 +323,7 @@ export default function CommandCenter() {
           )}
         />
         <KPICard
-          label="Swiss-Relevant"
+          label={t("cc.swissRelevant")}
           value={swissRelevantCount}
           delta={
             swissRelevantCount -
@@ -421,135 +341,22 @@ export default function CommandCenter() {
         />
       </div>
 
-      {/* Executive Operations Board */}
-      <Card className="p-0 overflow-hidden border-sentinel-text-muted/20">
-        <div className="border-b border-sentinel-border px-5 py-2.5 flex items-center justify-between">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-            Executive Operations Board
-          </h2>
-          <span className="text-[10px] text-sentinel-text-muted">
-            Decision-oriented queue for BAG/BLV leadership
-          </span>
-        </div>
-        <div className="grid grid-cols-1 xl:grid-cols-3 divide-y xl:divide-y-0 xl:divide-x divide-sentinel-border-subtle">
-          <div className="xl:col-span-1 p-4 space-y-4">
-            <div className="grid grid-cols-2 gap-2">
-              <div className="rounded border border-sentinel-border bg-sentinel-surface px-3 py-2">
-                <div className="text-[9px] uppercase tracking-wider text-sentinel-text-muted">
-                  Decisions &lt;=24h
-                </div>
-                <div className="mt-0.5 text-lg font-mono tabular-nums text-sentinel-text">
-                  {executiveOps.due24h}
-                </div>
-              </div>
-              <div className="rounded border border-sentinel-border bg-sentinel-surface px-3 py-2">
-                <div className="text-[9px] uppercase tracking-wider text-sentinel-text-muted">
-                  IMS Hot
-                </div>
-                <div className="mt-0.5 text-lg font-mono tabular-nums text-sentinel-text">
-                  {executiveOps.activationHot}
-                </div>
-              </div>
-              <div className="rounded border border-sentinel-border bg-sentinel-surface px-3 py-2">
-                <div className="text-[9px] uppercase tracking-wider text-sentinel-text-muted">
-                  Low Confidence / High Risk
-                </div>
-                <div className="mt-0.5 text-lg font-mono tabular-nums text-sentinel-text">
-                  {executiveOps.lowConfidenceHighRisk}
-                </div>
-              </div>
-              <div className="rounded border border-sentinel-border bg-sentinel-surface px-3 py-2">
-                <div className="text-[9px] uppercase tracking-wider text-sentinel-text-muted">
-                  Avg Confidence
-                </div>
-                <div className="mt-0.5 text-lg font-mono tabular-nums text-sentinel-text">
-                  {(executiveOps.avgConfidence * 100).toFixed(0)}%
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-                Lead Authority Mix
-              </div>
-              <div className="mt-2 space-y-1.5">
-                {(["BAG", "BLV", "JOINT"] as const).map((agency) => (
-                  <div key={agency} className="flex items-center justify-between text-[11px]">
-                    <span className="text-sentinel-text-secondary">{agency}</span>
-                    <span className="font-mono tabular-nums text-sentinel-text-muted">
-                      {executiveOps.byLead[agency]}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="xl:col-span-2">
-            {executiveOps.queue.length > 0 ? (
-              <div className="divide-y divide-sentinel-border-subtle">
-                {executiveOps.queue.map((event) => (
-                  <div key={event.id} className="px-4 py-3 hover:bg-sentinel-surface-hover">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        className={`rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${operationalPriorityStyles(event.operational_priority)}`}
-                      >
-                        {event.operational_priority}
-                      </span>
-                      <span className="rounded bg-sentinel-surface px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-                        {event.lead_agency}
-                      </span>
-                      <span className="text-[10px] font-mono text-sentinel-text-muted">
-                        T-{event.decision_window_hours}h
-                      </span>
-                      <span className="text-[10px] font-mono text-sentinel-text-muted">
-                        Conf {Math.round(event.confidence_score * 100)}%
-                      </span>
-                    </div>
-                    <div className="mt-1 text-[12px] font-medium text-sentinel-text">
-                      {shortenDisease(event.disease)}
-                    </div>
-                    <div className="mt-0.5 text-[11px] text-sentinel-text-muted">
-                      {event.countries.join(", ")} · Risk {event.risk_score.toFixed(1)} · CH{" "}
-                      {event.swiss_relevance.toFixed(1)}
-                    </div>
-                    <div className="mt-0.5 text-[10px] text-sentinel-text-muted">
-                      {event.playbook.split("_").join(" ")} · SLA {event.playbook_sla_hours}h ·
-                      Provenance {event.source_evidence.length} sources
-                    </div>
-                    {event.recommended_actions.length > 0 && (
-                      <div className="mt-1.5 text-[11px] leading-snug text-sentinel-text-secondary">
-                        {event.recommended_actions[0]}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="px-4 py-6 text-[12px] text-sentinel-text-muted">
-                No high-urgency executive decisions in the current window.
-              </div>
-            )}
-          </div>
-        </div>
-      </Card>
-
       {/* What Changed Overnight */}
       {latestDate && (
         <Card className="p-0 overflow-hidden border-sentinel-text-muted/20">
           <div className="border-b border-sentinel-border px-5 py-2.5 flex items-center justify-between">
             <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              What Changed — {latestDate}
+              {t("cc.whatChanged")} — {latestDate}
             </h2>
             <span className="text-[10px] text-sentinel-text-muted">
-              vs. {previousDate || "—"}
+              {t("cc.vs")} {previousDate || "—"}
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-sentinel-border-subtle">
             {/* New events */}
             <div className="px-4 py-3">
               <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-                New Events
+                {t("cc.newEvents")}
               </div>
               <div className="mt-1 flex items-baseline gap-2">
                 <span className="text-xl font-mono font-bold tabular-nums text-sentinel-text">
@@ -566,7 +373,7 @@ export default function CommandCenter() {
             {/* Elevated signals */}
             <div className="px-4 py-3">
               <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-                Elevated Signals
+                {t("cc.elevatedSignals")}
               </div>
               <div className="mt-1 space-y-1">
                 {overnightChanges.escalatedNew.length > 0 ? (
@@ -587,7 +394,7 @@ export default function CommandCenter() {
                   ))
                 ) : (
                   <span className="text-[11px] text-sentinel-text-muted">
-                    No elevated signals
+                    {t("cc.noElevated")}
                   </span>
                 )}
               </div>
@@ -596,25 +403,25 @@ export default function CommandCenter() {
             {/* New diseases / countries */}
             <div className="px-4 py-3">
               <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-                New This Period
+                {t("cc.newThisPeriod")}
               </div>
               <div className="mt-1 space-y-1">
                 {overnightChanges.uniqueNewDiseases.length > 0 && (
                   <div className="text-[11px] text-sentinel-text-secondary">
-                    <span className="text-sentinel-text-muted">Diseases: </span>
+                    <span className="text-sentinel-text-muted">{t("cc.diseases")}: </span>
                     {overnightChanges.uniqueNewDiseases.join(", ")}
                   </div>
                 )}
                 {overnightChanges.uniqueNewCountries.length > 0 && (
                   <div className="text-[11px] text-sentinel-text-secondary">
-                    <span className="text-sentinel-text-muted">Countries: </span>
+                    <span className="text-sentinel-text-muted">{t("cc.countries")}: </span>
                     {overnightChanges.uniqueNewCountries.join(", ")}
                   </div>
                 )}
                 {overnightChanges.uniqueNewDiseases.length === 0 &&
                   overnightChanges.uniqueNewCountries.length === 0 && (
                     <span className="text-[11px] text-sentinel-text-muted">
-                      No new diseases or countries
+                      {t("cc.noNewDiseaseCountry")}
                     </span>
                   )}
               </div>
@@ -623,7 +430,7 @@ export default function CommandCenter() {
             {/* Active situations */}
             <div className="px-4 py-3">
               <div className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-                Active Situations
+                {t("cc.activeSituations")}
               </div>
               <div className="mt-1 space-y-1">
                 {overnightChanges.activeSituations.length > 0 ? (
@@ -639,7 +446,7 @@ export default function CommandCenter() {
                   ))
                 ) : (
                   <span className="text-[11px] text-sentinel-text-muted">
-                    No active situations
+                    {t("cc.noActiveSituations")}
                   </span>
                 )}
               </div>
@@ -652,13 +459,13 @@ export default function CommandCenter() {
       <Card className="p-0 overflow-hidden">
         <div className="border-b border-sentinel-border px-5 py-3 flex items-center justify-between">
           <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-            Active Threats — by Disease
+            {t("cc.activeThreats")}
           </h2>
           <Link
             href="/triage"
             className="text-[10px] font-medium uppercase tracking-wider text-sentinel-text-muted hover:text-sentinel-text-secondary"
           >
-            Full Triage
+            {t("cc.fullTriage")}
           </Link>
         </div>
         <div className="divide-y divide-sentinel-border-subtle">
@@ -718,7 +525,7 @@ export default function CommandCenter() {
                       )}
                       {threat.hasConfirmed && (
                         <span className="text-[9px] font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 rounded px-1.5 py-0.5">
-                          Confirmed
+                          {t("metric.confirmed")}
                         </span>
                       )}
                       {threat.ihrFlags >= 3 && (
@@ -735,7 +542,7 @@ export default function CommandCenter() {
                         <span className="font-mono font-semibold tabular-nums text-sentinel-text">
                           {threat.events.length}
                         </span>{" "}
-                        events
+                        {t("metric.events")}
                       </span>
 
                       {/* Cases / deaths */}
@@ -743,13 +550,13 @@ export default function CommandCenter() {
                         <span className="text-sentinel-text-muted">
                           {threat.totalCases > 0 && (
                             <span>
-                              <span className="font-mono tabular-nums">{threat.totalCases.toLocaleString()}</span> cases
+                              <span className="font-mono tabular-nums">{threat.totalCases.toLocaleString()}</span> {t("metric.cases")}
                             </span>
                           )}
                           {threat.totalCases > 0 && threat.totalDeaths > 0 && " · "}
                           {threat.totalDeaths > 0 && (
                             <span className="text-sentinel-critical">
-                              <span className="font-mono tabular-nums">{threat.totalDeaths.toLocaleString()}</span> deaths
+                              <span className="font-mono tabular-nums">{threat.totalDeaths.toLocaleString()}</span> {t("metric.deaths")}
                             </span>
                           )}
                         </span>
@@ -811,10 +618,10 @@ export default function CommandCenter() {
       <Card className="p-0 overflow-hidden">
         <div className="border-b border-sentinel-border px-5 py-3 flex items-center justify-between">
           <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-            Data Sources
+            {t("cc.dataSources")}
           </h2>
           <span className="text-[10px] text-sentinel-text-muted">
-            {events.length} total events from {Object.keys(sourceCounts).length} sources
+            {events.length} {t("cc.totalEventsFrom")} {Object.keys(sourceCounts).length} {t("cc.sources")}
           </span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
@@ -834,11 +641,11 @@ export default function CommandCenter() {
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-mono font-semibold text-sentinel-text-secondary">
-                    {stats?.total ?? 0} events
+                    {stats?.total ?? 0} {t("metric.events")}
                   </span>
                   {stats && (
                     <span className="text-[10px] text-sentinel-text-muted">
-                      Last: {stats.latest}
+                      {t("cc.last")}: {stats.latest}
                     </span>
                   )}
                 </div>

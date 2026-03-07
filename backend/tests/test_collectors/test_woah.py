@@ -1,7 +1,11 @@
 import json
 from pathlib import Path
 
-from sentinel.collectors.woah import WOAHCollector
+import httpx
+import pytest
+import respx
+
+from sentinel.collectors.woah import WOAH_API_URL, WOAHCollector
 from sentinel.models.event import Source, Species
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
@@ -61,6 +65,9 @@ class TestWOAHCollector:
         events = self.collector.parse_response(data)
         assert "wahis.woah.org" in events[0].url
 
-    async def test_collect_handles_network_error(self):
-        events = await self.collector.collect()
-        assert isinstance(events, list)
+    @respx.mock
+    async def test_collect_raises_on_network_error(self):
+        """collect() propagates exceptions so pipeline records structured status."""
+        respx.post(WOAH_API_URL).mock(return_value=httpx.Response(500))
+        with pytest.raises(Exception):
+            await self.collector.collect()

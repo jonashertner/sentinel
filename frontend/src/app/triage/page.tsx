@@ -8,8 +8,10 @@ import { FilterBar } from "@/components/ui/FilterBar";
 import type { FilterConfig } from "@/components/ui/FilterBar";
 import { EventCard } from "@/components/events/EventCard";
 import { EventDetail } from "@/components/events/EventDetail";
+import { useI18n } from "@/lib/i18n";
 
 export default function TriagePage() {
+  const { t } = useI18n();
   const [events, setEvents] = useState<HealthEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -47,7 +49,7 @@ export default function TriagePage() {
   const filters: FilterConfig[] = [
     {
       key: "source",
-      label: "Source",
+      label: t("triage.source"),
       options: sources.map((s) => ({
         value: s,
         label: SOURCE_LABELS[s]?.short || s,
@@ -56,13 +58,13 @@ export default function TriagePage() {
     },
     {
       key: "disease",
-      label: "Disease",
+      label: t("triage.disease"),
       options: diseases.map((d) => ({ value: d, label: d })),
       value: filterDisease,
     },
     {
       key: "risk",
-      label: "Risk Level",
+      label: t("triage.riskLevel"),
       options: (["CRITICAL", "HIGH", "MEDIUM", "LOW"] as RiskCategory[]).map(
         (r) => ({ value: r, label: r }),
       ),
@@ -70,7 +72,7 @@ export default function TriagePage() {
     },
     {
       key: "country",
-      label: "Country",
+      label: t("triage.country"),
       options: countries.map((c) => ({
         value: c,
         label: COUNTRY_NAMES[c] || c,
@@ -79,7 +81,7 @@ export default function TriagePage() {
     },
     {
       key: "verification",
-      label: "Verification",
+      label: t("triage.verification"),
       options: (["UNVERIFIED", "PENDING", "CONFIRMED", "REFUTED"] as VerificationStatus[]).map(
         (v) => ({ value: v, label: VERIFICATION_STYLES[v]?.label || v }),
       ),
@@ -147,7 +149,7 @@ export default function TriagePage() {
         <div className="space-y-3 text-center">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-sentinel-border border-t-sentinel-text" />
           <p className="text-[11px] uppercase tracking-wider text-sentinel-text-muted">
-            Loading triage queue
+            {t("loading.triage")}
           </p>
         </div>
       </div>
@@ -160,10 +162,10 @@ export default function TriagePage() {
       <div className="flex items-end justify-between pl-12 md:pl-0">
         <div>
           <h1 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-sentinel-text-muted">
-            Triage Queue
+            {t("triage.title")}
           </h1>
           <p className="mt-0.5 text-[11px] text-sentinel-text-muted">
-            {filteredEvents.length} events sorted by Swiss relevance
+            {filteredEvents.length} {t("triage.subtitle")}
           </p>
         </div>
       </div>
@@ -193,7 +195,7 @@ export default function TriagePage() {
         {filteredEvents.length === 0 && (
           <div className="py-16 text-center">
             <p className="text-[12px] text-sentinel-text-muted">
-              No events match the current filters.
+              {t("triage.noMatch")}
             </p>
           </div>
         )}

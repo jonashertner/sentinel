@@ -18,17 +18,13 @@ class CIDRAPCollector(BaseCollector):
     source_name = "CIDRAP"
 
     async def collect(self) -> list[HealthEvent]:
-        try:
-            async with httpx.AsyncClient(
-                timeout=30,
-                headers={"User-Agent": "SENTINEL/1.0"},
-            ) as client:
-                resp = await client.get(CIDRAP_FEED)
-                resp.raise_for_status()
-            return self.parse_feed(resp.text)
-        except Exception:
-            logger.exception("Failed to collect CIDRAP feed")
-            return []
+        async with httpx.AsyncClient(
+            timeout=30,
+            headers={"User-Agent": "SENTINEL/1.0"},
+        ) as client:
+            resp = await client.get(CIDRAP_FEED)
+            resp.raise_for_status()
+        return self.parse_feed(resp.text)
 
     def parse_feed(self, xml: str) -> list[HealthEvent]:
         feed = feedparser.parse(xml)

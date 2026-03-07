@@ -16,26 +16,22 @@ class WOAHCollector(BaseCollector):
     source_name = "WOAH"
 
     async def collect(self) -> list[HealthEvent]:
-        try:
-            async with httpx.AsyncClient(
-                timeout=30,
-                headers={"User-Agent": "SENTINEL/1.0"},
-            ) as client:
-                resp = await client.post(
-                    WOAH_API_URL,
-                    json={
-                        "pageNumber": 0,
-                        "pageSize": 20,
-                        "searchText": "",
-                        "sortColName": "eventDate",
-                        "sortColOrder": "DESC",
-                    },
-                )
-                resp.raise_for_status()
-            return self.parse_response(resp.json())
-        except Exception:
-            logger.exception("Failed to collect WOAH data")
-            return []
+        async with httpx.AsyncClient(
+            timeout=30,
+            headers={"User-Agent": "SENTINEL/1.0"},
+        ) as client:
+            resp = await client.post(
+                WOAH_API_URL,
+                json={
+                    "pageNumber": 0,
+                    "pageSize": 20,
+                    "searchText": "",
+                    "sortColName": "eventDate",
+                    "sortColOrder": "DESC",
+                },
+            )
+            resp.raise_for_status()
+        return self.parse_response(resp.json())
 
     def parse_response(self, data: dict | list) -> list[HealthEvent]:
         """Parse the WOAH WAHIS API response into HealthEvents."""

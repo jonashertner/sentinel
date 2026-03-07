@@ -22,18 +22,20 @@ import {
   Monitor,
   Menu,
   X,
+  Languages,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { useTheme } from "@/lib/theme-context";
+import { useI18n, LOCALE_LABELS, type Locale } from "@/lib/i18n";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Command Center", icon: LayoutDashboard },
-  { href: "/map", label: "Global Map", icon: Globe },
-  { href: "/triage", label: "Triage Queue", icon: ListFilter },
-  { href: "/situations", label: "Situations", icon: AlertTriangle },
-  { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/watchlists", label: "Watchlists", icon: Eye },
-  { href: "/exports", label: "Exports", icon: Download },
+  { href: "/", labelKey: "nav.commandCenter", icon: LayoutDashboard },
+  { href: "/map", labelKey: "nav.globalMap", icon: Globe },
+  { href: "/triage", labelKey: "nav.triageQueue", icon: ListFilter },
+  { href: "/situations", labelKey: "nav.situations", icon: AlertTriangle },
+  { href: "/analytics", labelKey: "nav.analytics", icon: BarChart3 },
+  { href: "/watchlists", labelKey: "nav.watchlists", icon: Eye },
+  { href: "/exports", labelKey: "nav.exports", icon: Download },
 ] as const;
 
 const AGENCIES = ["BLV", "BAG", "Joint"] as const;
@@ -41,12 +43,13 @@ const AGENCIES = ["BLV", "BAG", "Joint"] as const;
 export function Sidebar() {
   const pathname = usePathname();
   const { theme, mode, setMode } = useTheme();
+  const { locale, setLocale, t } = useI18n();
   const cycleTheme = () => {
     const next = mode === "system" ? "light" : mode === "light" ? "dark" : "system";
     setMode(next);
   };
   const ThemeIcon = mode === "system" ? Monitor : theme === "dark" ? Sun : Moon;
-  const themeLabel = mode === "system" ? "System" : mode === "light" ? "Light" : "Dark";
+  const themeLabel = mode === "system" ? t("theme.system") : mode === "light" ? t("theme.light") : t("theme.dark");
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [manifest, setManifest] = useState<Manifest | null>(null);
@@ -56,6 +59,7 @@ export function Sidebar() {
   }, []);
   const [agency, setAgency] = useState<(typeof AGENCIES)[number]>("Joint");
   const [agencyOpen, setAgencyOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
 
   const sidebarContent = (isMobile: boolean) => {
     const showLabels = isMobile || !collapsed;
@@ -84,8 +88,9 @@ export function Sidebar() {
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto py-3">
           <ul className="space-y-0.5 px-2">
-            {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+            {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => {
               const active = pathname === href;
+              const label = t(labelKey);
               return (
                 <li key={href}>
                   <Link
@@ -185,14 +190,66 @@ export function Sidebar() {
           )}
         </div>
 
+        {/* Language switcher */}
+        <div className="border-t border-sentinel-border px-2 py-2">
+          {showLabels ? (
+            <div className="relative">
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                className="flex w-full items-center justify-between rounded-md bg-sentinel-surface-hover px-3 py-2 text-[12px] font-medium text-sentinel-text-secondary hover:text-sentinel-text"
+              >
+                <span className="flex items-center gap-2">
+                  <Languages className="h-3.5 w-3.5" strokeWidth={1.5} />
+                  {LOCALE_LABELS[locale]}
+                </span>
+                <ChevronDown
+                  className={clsx(
+                    "h-3.5 w-3.5 transition-transform",
+                    langOpen && "rotate-180",
+                  )}
+                />
+              </button>
+              {langOpen && (
+                <div className="absolute bottom-full left-0 mb-1 w-full rounded-md border border-sentinel-border bg-sentinel-surface py-1 shadow-lg">
+                  {(Object.keys(LOCALE_LABELS) as Locale[]).map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => {
+                        setLocale(l);
+                        setLangOpen(false);
+                      }}
+                      className={clsx(
+                        "flex w-full px-3 py-1.5 text-left text-[12px]",
+                        l === locale
+                          ? "text-sentinel-text font-medium"
+                          : "text-sentinel-text-muted hover:text-sentinel-text-secondary",
+                      )}
+                    >
+                      {LOCALE_LABELS[l]}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="flex w-full items-center justify-center py-2 text-sentinel-text-muted hover:text-sentinel-text-secondary"
+              title={LOCALE_LABELS[locale]}
+            >
+              <Languages className="h-3.5 w-3.5" strokeWidth={1.5} />
+            </button>
+          )}
+        </div>
+
         {/* Status bar */}
         <div className="border-t border-sentinel-border-subtle px-3 py-2">
           {showLabels ? (
             <div className="space-y-0.5 text-[10px] leading-tight text-sentinel-text-muted">
-              <div>Last collection: {manifest?.latest_collection ?? "—"}</div>
+              <div>{t("sidebar.lastCollection")}: {manifest?.latest_collection ?? "—"}</div>
               <div className="flex items-center gap-1.5">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-sentinel-clear" />
-                Events: {manifest?.total_events ?? "—"}
+                {t("sidebar.events")}: {manifest?.total_events ?? "—"}
               </div>
             </div>
           ) : (
@@ -207,7 +264,7 @@ export function Sidebar() {
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="flex items-center justify-center border-t border-sentinel-border py-2.5 text-sentinel-text-muted hover:text-sentinel-text-secondary"
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={collapsed ? t("sidebar.expandSidebar") : t("sidebar.collapseSidebar")}
           >
             {collapsed ? (
               <ChevronRight className="h-4 w-4" />
@@ -226,7 +283,7 @@ export function Sidebar() {
       <button
         onClick={() => setMobileOpen(true)}
         className="fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-lg border border-sentinel-border bg-sentinel-surface/95 backdrop-blur-sm md:hidden"
-        aria-label="Open navigation"
+        aria-label={t("sidebar.openNav")}
       >
         <Menu className="h-5 w-5 text-sentinel-text" strokeWidth={1.5} />
       </button>

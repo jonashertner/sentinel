@@ -1,7 +1,11 @@
 import json
 from pathlib import Path
 
-from sentinel.collectors.who_eios import WHOEIOSCollector
+import httpx
+import pytest
+import respx
+
+from sentinel.collectors.who_eios import EIOS_API_URL, WHOEIOSCollector
 from sentinel.models.event import Source, Species
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
@@ -58,7 +62,9 @@ class TestWHOEIOSCollector:
         for event in events:
             assert event.species == Species.HUMAN
 
-    async def test_collect_handles_missing_credentials(self):
-        """collect() returns empty list when API is unreachable."""
-        events = await self.collector.collect()
-        assert isinstance(events, list)
+    @respx.mock
+    async def test_collect_raises_on_network_error(self):
+        """collect() propagates exceptions so pipeline records structured status."""
+        respx.get(EIOS_API_URL).mock(return_value=httpx.Response(403))
+        with pytest.raises(Exception):
+            await self.collector.collect()

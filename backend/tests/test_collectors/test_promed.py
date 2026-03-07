@@ -1,6 +1,10 @@
 from pathlib import Path
 
-from sentinel.collectors.promed import ProMEDCollector
+import httpx
+import pytest
+import respx
+
+from sentinel.collectors.promed import PROMED_FEED, ProMEDCollector
 from sentinel.models.event import Source, Species
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
@@ -46,6 +50,9 @@ class TestProMEDCollector:
         events = self.collector.parse_feed(xml)
         assert "PRO/AH/EDR>" in events[0].title
 
-    async def test_collect_handles_network_error(self):
-        events = await self.collector.collect()
-        assert isinstance(events, list)
+    @respx.mock
+    async def test_collect_raises_on_network_error(self):
+        """collect() propagates exceptions so pipeline records structured status."""
+        respx.get(PROMED_FEED).mock(return_value=httpx.Response(500))
+        with pytest.raises(Exception):
+            await self.collector.collect()

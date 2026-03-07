@@ -1,6 +1,10 @@
 from pathlib import Path
 
-from sentinel.collectors.ecdc import ECDCCollector
+import httpx
+import pytest
+import respx
+
+from sentinel.collectors.ecdc import ECDC_FEED, ECDCCollector
 from sentinel.models.event import Source, Species
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
@@ -41,6 +45,9 @@ class TestECDCCollector:
         for event in events:
             assert "EURO" in event.regions
 
-    async def test_collect_handles_network_error(self):
-        events = await self.collector.collect()
-        assert isinstance(events, list)
+    @respx.mock
+    async def test_collect_raises_on_network_error(self):
+        """collect() propagates exceptions so pipeline records structured status."""
+        respx.get(ECDC_FEED).mock(return_value=httpx.Response(500))
+        with pytest.raises(Exception):
+            await self.collector.collect()

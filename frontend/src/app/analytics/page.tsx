@@ -9,10 +9,12 @@ import { TrendChart } from "@/components/charts/TrendChart";
 import { SourceComparison } from "@/components/charts/SourceComparison";
 import { RiskTimeline } from "@/components/charts/RiskTimeline";
 import { DiseaseBreakdown } from "@/components/charts/DiseaseBreakdown";
+import { useI18n } from "@/lib/i18n";
 
 // DATES derived from loaded events in the component
 
 export default function AnalyticsPage() {
+  const { t } = useI18n();
   const [events, setEvents] = useState<HealthEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -116,7 +118,7 @@ export default function AnalyticsPage() {
         <div className="space-y-3 text-center">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-sentinel-border border-t-sentinel-text" />
           <p className="text-[11px] uppercase tracking-wider text-sentinel-text-muted">
-            Loading analytics
+            {t("loading.analytics")}
           </p>
         </div>
       </div>
@@ -128,10 +130,10 @@ export default function AnalyticsPage() {
       {/* Header */}
       <div className="pl-12 md:pl-0">
         <h1 className="text-[13px] font-semibold uppercase tracking-[0.2em] text-sentinel-text-muted">
-          Analytics
+          {t("analytics.title")}
         </h1>
         <p className="mt-0.5 text-[11px] text-sentinel-text-muted">
-          {DATES.length}-day intelligence analysis — {events.length} total events
+          {DATES.length}-day {t("analytics.subtitle")} — {events.length} {t("analytics.totalEvents")}
         </p>
       </div>
 
@@ -141,10 +143,10 @@ export default function AnalyticsPage() {
         <Card className="p-0 overflow-hidden">
           <div className="border-b border-sentinel-border px-5 py-3">
             <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Disease Trends
+              {t("analytics.diseaseTrends")}
             </h2>
             <p className="mt-0.5 text-[10px] text-sentinel-text-muted">
-              Events per day by disease
+              {t("analytics.diseaseTrendsDesc")}
             </p>
           </div>
           <div className="px-4 py-4">
@@ -185,10 +187,10 @@ export default function AnalyticsPage() {
         <Card className="p-0 overflow-hidden">
           <div className="border-b border-sentinel-border px-5 py-3">
             <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Source Comparison
+              {t("analytics.sourceComparison")}
             </h2>
             <p className="mt-0.5 text-[10px] text-sentinel-text-muted">
-              Events per intelligence source
+              {t("analytics.sourceComparisonDesc")}
             </p>
           </div>
           <div className="px-4 py-4">
@@ -200,10 +202,10 @@ export default function AnalyticsPage() {
         <Card className="p-0 overflow-hidden">
           <div className="border-b border-sentinel-border px-5 py-3">
             <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Risk Timeline
+              {t("analytics.riskTimeline")}
             </h2>
             <p className="mt-0.5 text-[10px] text-sentinel-text-muted">
-              Average risk score and Swiss relevance per day
+              {t("analytics.riskTimelineDesc")}
             </p>
           </div>
           <div className="px-4 py-4">
@@ -215,10 +217,10 @@ export default function AnalyticsPage() {
         <Card className="p-0 overflow-hidden">
           <div className="border-b border-sentinel-border px-5 py-3">
             <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              Disease Breakdown
+              {t("analytics.diseaseBreakdown")}
             </h2>
             <p className="mt-0.5 text-[10px] text-sentinel-text-muted">
-              Total events per disease
+              {t("analytics.diseaseBreakdownDesc")}
             </p>
           </div>
           <div className="px-4 py-4">

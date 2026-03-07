@@ -5,6 +5,7 @@ import { RISK_COLORS, VERIFICATION_STYLES } from "@/lib/constants";
 import type { HealthEvent } from "@/lib/types";
 import { RiskPill } from "@/components/ui/RiskPill";
 import { Badge, SourceBadge } from "@/components/ui/Badge";
+import { useI18n } from "@/lib/i18n";
 
 interface EventCardProps {
   event: HealthEvent;
@@ -13,6 +14,7 @@ interface EventCardProps {
 }
 
 export function EventCard({ event, expanded, onToggle }: EventCardProps) {
+  const { t } = useI18n();
   const borderColor = RISK_COLORS[event.risk_category]?.dot || "#71717a";
 
   return (
@@ -59,7 +61,7 @@ export function EventCard({ event, expanded, onToggle }: EventCardProps) {
             )}
             {event.analyst_overrides.length > 0 && (
               <span className="inline-flex items-center rounded border border-sentinel-border bg-sentinel-surface px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-amber-300">
-                Analyst Override
+                {t("eventCard.analystOverride")}
               </span>
             )}
             {event.countries.map((c) => (
@@ -111,7 +113,7 @@ export function EventCard({ event, expanded, onToggle }: EventCardProps) {
           <SourceBadge source={event.source} />
           <div className="text-right">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              CH Relevance
+              {t("eventCard.chRelevance")}
             </p>
             <p
               className={clsx(

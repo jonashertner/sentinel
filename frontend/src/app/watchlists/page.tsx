@@ -6,6 +6,7 @@ import { loadWatchlists, loadAllEvents } from "@/lib/api";
 import type { HealthEvent, Watchlist } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { WatchlistCard } from "@/components/watchlists/WatchlistCard";
+import { useI18n } from "@/lib/i18n";
 
 function matchesWatchlist(event: HealthEvent, wl: Watchlist): boolean {
   if (event.risk_score < wl.min_risk_score) return false;
@@ -30,6 +31,7 @@ function matchesWatchlist(event: HealthEvent, wl: Watchlist): boolean {
 }
 
 export default function WatchlistsPage() {
+  const { t } = useI18n();
   const [serverWatchlists, setServerWatchlists] = useState<Watchlist[]>([]);
   const [customWatchlists, setCustomWatchlists] = useState<Watchlist[]>(() => {
     try {
@@ -124,7 +126,7 @@ export default function WatchlistsPage() {
   if (loading) {
     return (
       <div className="flex h-full items-center justify-center text-[12px] text-sentinel-text-muted">
-        Loading watchlists...
+        {t("loading.watchlists")}…
       </div>
     );
   }
@@ -134,20 +136,20 @@ export default function WatchlistsPage() {
       <header className="flex shrink-0 items-center justify-between border-b border-sentinel-border pl-14 pr-4 sm:px-6 md:px-6 py-3">
         <div>
           <h1 className="text-sm font-semibold tracking-wide text-sentinel-text">
-            WATCHLISTS
+            {t("watchlists.title").toUpperCase()}
           </h1>
           <p className="mt-0.5 text-[11px] text-sentinel-text-muted">
-            Custom event filters and monitoring criteria
+            {t("watchlists.subtitle")}
           </p>
         </div>
         <Button size="sm" onClick={() => setShowForm(!showForm)}>
           {showForm ? (
             <>
-              <X className="h-3 w-3" /> Cancel
+              <X className="h-3 w-3" /> {t("watchlists.cancel")}
             </>
           ) : (
             <>
-              <Plus className="h-3 w-3" /> Create Watchlist
+              <Plus className="h-3 w-3" /> {t("watchlists.create")}
             </>
           )}
         </Button>
@@ -158,20 +160,20 @@ export default function WatchlistsPage() {
         {showForm && (
           <div className="mb-6 rounded-lg border border-sentinel-border bg-sentinel-surface p-4">
             <div className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-3">
-              New Watchlist
+              {t("watchlists.new")}
             </div>
 
             <div className="space-y-4">
               {/* Name */}
               <div>
                 <label className="block text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-1.5">
-                  Name
+                  {t("watchlists.name")}
                 </label>
                 <input
                   type="text"
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
-                  placeholder="Watchlist name..."
+                  placeholder={t("watchlists.namePlaceholder")}
                   className="w-full rounded-md border border-sentinel-border bg-sentinel-bg px-3 py-2 text-[12px] text-sentinel-text placeholder:text-sentinel-text-muted outline-none focus:border-sentinel-text-muted"
                 />
               </div>
@@ -179,7 +181,7 @@ export default function WatchlistsPage() {
               {/* Diseases */}
               <div>
                 <label className="block text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-1.5">
-                  Diseases
+                  {t("watchlists.diseases")}
                 </label>
                 <div className="flex flex-wrap gap-1">
                   {uniqueDiseases.map((d) => (
@@ -203,7 +205,7 @@ export default function WatchlistsPage() {
               {/* Countries */}
               <div>
                 <label className="block text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-1.5">
-                  Countries
+                  {t("watchlists.countries")}
                 </label>
                 <div className="flex flex-wrap gap-1">
                   {uniqueCountries.map((cc) => (
@@ -231,7 +233,7 @@ export default function WatchlistsPage() {
               {/* Min risk score */}
               <div>
                 <label className="block text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-1.5">
-                  Min Risk Score: {formMinRisk}
+                  {t("watchlists.minRisk")}: {formMinRisk}
                 </label>
                 <input
                   type="range"
@@ -252,7 +254,7 @@ export default function WatchlistsPage() {
               {uniqueTags.length > 0 && (
                 <div>
                   <label className="block text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-1.5">
-                    One Health Tags
+                    {t("watchlists.oneHealthTags")}
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {uniqueTags.map((t) => (
@@ -281,7 +283,7 @@ export default function WatchlistsPage() {
                 onClick={createWatchlist}
                 disabled={!formName.trim()}
               >
-                Create Watchlist
+                {t("watchlists.create")}
               </Button>
             </div>
           </div>

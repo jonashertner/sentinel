@@ -18,14 +18,10 @@ class ECDCCollector(BaseCollector):
     source_name = "ECDC"
 
     async def collect(self) -> list[HealthEvent]:
-        try:
-            async with httpx.AsyncClient(timeout=30) as client:
-                resp = await client.get(ECDC_FEED)
-                resp.raise_for_status()
-            return self.parse_feed(resp.text)
-        except Exception:
-            logger.exception("Failed to collect ECDC feed")
-            return []
+        async with httpx.AsyncClient(timeout=30) as client:
+            resp = await client.get(ECDC_FEED)
+            resp.raise_for_status()
+        return self.parse_feed(resp.text)
 
     def parse_feed(self, xml: str) -> list[HealthEvent]:
         feed = feedparser.parse(xml)

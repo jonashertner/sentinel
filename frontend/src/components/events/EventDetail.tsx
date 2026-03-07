@@ -6,6 +6,7 @@ import { clsx } from "clsx";
 import type { HealthEvent } from "@/lib/types";
 import { VERIFICATION_STYLES } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
+import { useI18n } from "@/lib/i18n";
 
 interface EventDetailProps {
   event: HealthEvent;
@@ -18,6 +19,7 @@ function getStorageKey(eventId: string, type: "status" | "annotation") {
 }
 
 export function EventDetail({ event }: EventDetailProps) {
+  const { t } = useI18n();
   const [status, setStatus] = useState<TriageStatus | null>(() => {
     const stored = localStorage.getItem(getStorageKey(event.id, "status"));
     return stored ? (stored as TriageStatus) : null;
@@ -46,7 +48,7 @@ export function EventDetail({ event }: EventDetailProps) {
         {/* Verification */}
         <div className="sm:w-40 shrink-0">
           <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-            Verification
+            {t("detail.verification")}
           </h4>
           {event.verification_status && (
             <span
@@ -64,14 +66,14 @@ export function EventDetail({ event }: EventDetailProps) {
         {/* IHR Annex 2 */}
         <div className="flex-1">
           <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-            IHR Annex 2 Assessment
+            {t("detail.ihrAssessment")}
           </h4>
           <div className="grid grid-cols-2 gap-1.5">
             {([
-              ["Unusual / unexpected", event.ihr_unusual],
-              ["Serious public health impact", event.ihr_serious_impact],
-              ["International spread risk", event.ihr_international_spread],
-              ["Trade / travel restriction risk", event.ihr_trade_travel_risk],
+              [t("detail.ihr.unusual"), event.ihr_unusual],
+              [t("detail.ihr.seriousImpact"), event.ihr_serious_impact],
+              [t("detail.ihr.internationalSpread"), event.ihr_international_spread],
+              [t("detail.ihr.tradeTravelRisk"), event.ihr_trade_travel_risk],
             ] as const).map(([label, value]) => {
               const Icon = value === true ? CheckCircle2 : value === false ? XCircle : HelpCircle;
               const color = value === true ? "text-sentinel-critical" : value === false ? "text-sentinel-clear" : "text-sentinel-text-muted";
@@ -89,16 +91,16 @@ export function EventDetail({ event }: EventDetailProps) {
       {/* Decision Playbook */}
       <div>
         <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-          Decision Playbook
+          {t("detail.playbook")}
         </h4>
         <div className="rounded-md border border-sentinel-border-subtle bg-sentinel-surface p-3 space-y-2">
           <div className="flex flex-wrap items-center gap-2 text-[11px]">
             <span className="rounded bg-sentinel-bg px-2 py-1 font-semibold uppercase tracking-wider text-sentinel-text-secondary">
               {event.playbook.split("_").join(" ")}
             </span>
-            <span className="text-sentinel-text-muted">Hazard: {event.hazard_class.split("_").join(" ")}</span>
-            <span className="text-sentinel-text-muted">SLA: {event.playbook_sla_hours}h</span>
-            <span className="text-sentinel-text-muted">Escalation: {event.escalation_level.split("_").join(" ")}</span>
+            <span className="text-sentinel-text-muted">{t("detail.hazard")}: {event.hazard_class.split("_").join(" ")}</span>
+            <span className="text-sentinel-text-muted">{t("detail.sla")}: {event.playbook_sla_hours}h</span>
+            <span className="text-sentinel-text-muted">{t("detail.escalation")}: {event.escalation_level.split("_").join(" ")}</span>
           </div>
           {event.escalation_workflow.length > 0 && (
             <ol className="space-y-1 text-[11px] text-sentinel-text-secondary">
@@ -116,12 +118,12 @@ export function EventDetail({ event }: EventDetailProps) {
       {/* Provenance Graph */}
       <div>
         <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-          Source Provenance
+          {t("detail.provenance")}
         </h4>
         <div className="rounded-md border border-sentinel-border-subtle bg-sentinel-surface p-3 space-y-2">
           <div className="text-[11px] text-sentinel-text-muted">
-            Graph {event.provenance_hash} • {event.source_evidence.length} source nodes • merged from{" "}
-            {event.merged_from.length} event IDs
+            Graph {event.provenance_hash} • {event.source_evidence.length} {t("detail.sourceNodes")} • {t("detail.mergedFrom")}{" "}
+            {event.merged_from.length} {t("detail.eventIds")}
           </div>
           <div className="space-y-1.5">
             {event.source_evidence.map((evidence) => (
@@ -147,7 +149,7 @@ export function EventDetail({ event }: EventDetailProps) {
           </div>
           {event.analyst_overrides.length > 0 && (
             <div className="text-[10px] text-amber-300">
-              {event.analyst_overrides.length} analyst override(s) applied to this event.
+              {event.analyst_overrides.length} {t("detail.overridesApplied")}
             </div>
           )}
         </div>
@@ -156,7 +158,7 @@ export function EventDetail({ event }: EventDetailProps) {
       {/* Full Summary */}
       <div>
         <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-          Summary
+          {t("detail.summary")}
         </h4>
         <p className="text-[12px] leading-relaxed text-sentinel-text-secondary">
           {event.summary}
@@ -167,7 +169,7 @@ export function EventDetail({ event }: EventDetailProps) {
       {event.analysis && (
         <div>
           <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-            LLM Analysis
+            {t("detail.analysis")}
           </h4>
           <div className="rounded-md border border-sentinel-border-subtle bg-sentinel-surface p-4 text-[12px] leading-relaxed text-sentinel-text-secondary">
             {event.analysis.split("\n").map((para, i) => (
@@ -183,7 +185,7 @@ export function EventDetail({ event }: EventDetailProps) {
       {event.analyst_overrides.length > 0 && (
         <div>
           <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-            Analyst Overrides
+            {t("detail.overrides")}
           </h4>
           <div className="space-y-1.5">
             {event.analyst_overrides.map((override) => (
@@ -208,7 +210,7 @@ export function EventDetail({ event }: EventDetailProps) {
       {/* Quick Actions */}
       <div>
         <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-          Triage Actions
+          {t("detail.triageActions")}
         </h4>
         <div className="flex items-center gap-2">
           <Button
@@ -219,7 +221,7 @@ export function EventDetail({ event }: EventDetailProps) {
               handleStatus("MONITOR");
             }}
           >
-            Monitor
+            {t("detail.monitor")}
           </Button>
           <Button
             size="sm"
@@ -234,7 +236,7 @@ export function EventDetail({ event }: EventDetailProps) {
                 : ""
             }
           >
-            Escalate
+            {t("detail.escalate")}
           </Button>
           <Button
             size="sm"
@@ -244,11 +246,11 @@ export function EventDetail({ event }: EventDetailProps) {
               handleStatus("DISMISS");
             }}
           >
-            Dismiss
+            {t("detail.dismiss")}
           </Button>
           {status && (
             <span className="text-[10px] font-medium uppercase tracking-wider text-sentinel-text-muted ml-2">
-              Status: {status}
+              {t("detail.status")}: {status}
             </span>
           )}
         </div>
@@ -257,7 +259,7 @@ export function EventDetail({ event }: EventDetailProps) {
       {/* Annotation */}
       <div>
         <h4 className="text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted mb-2">
-          Analyst Note
+          {t("detail.analystNote")}
         </h4>
         <div className="flex gap-2">
           <input
@@ -265,7 +267,7 @@ export function EventDetail({ event }: EventDetailProps) {
             value={annotation}
             onChange={(e) => setAnnotation(e.target.value)}
             onClick={(e) => e.stopPropagation()}
-            placeholder="Add annotation..."
+            placeholder={t("detail.addAnnotation")}
             className="h-8 flex-1 rounded-md border border-sentinel-border bg-sentinel-surface px-3 text-[12px] text-sentinel-text placeholder:text-sentinel-text-muted outline-none focus:border-sentinel-text-muted"
           />
           <Button
@@ -276,11 +278,11 @@ export function EventDetail({ event }: EventDetailProps) {
               handleSaveAnnotation();
             }}
           >
-            Save
+            {t("detail.save")}
           </Button>
         </div>
         {savedAnnotation && savedAnnotation === annotation && (
-          <p className="mt-1 text-[10px] text-sentinel-clear">Saved</p>
+          <p className="mt-1 text-[10px] text-sentinel-clear">{t("detail.saved")}</p>
         )}
       </div>
 
@@ -294,7 +296,7 @@ export function EventDetail({ event }: EventDetailProps) {
           className="inline-flex items-center gap-1.5 text-[11px] font-medium text-sentinel-text-secondary hover:text-sentinel-text"
         >
           <ExternalLink className="h-3 w-3" />
-          View Source
+          {t("detail.viewSource")}
         </a>
       </div>
     </div>
