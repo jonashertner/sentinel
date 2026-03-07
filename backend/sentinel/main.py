@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
 from sentinel.api import analytics, annotations, events, exports, situations, watchlists
 from sentinel.config import settings
+from sentinel.ws import manager
 
 app = FastAPI(
     title="SENTINEL API",
@@ -36,4 +37,14 @@ app.include_router(exports.router, prefix="/api/exports", tags=["exports"])
 
 @app.get("/api/health")
 async def health():
-    return {"status": "ok", "service": "sentinel"}
+    return {"status": "ok", "service": "sentinel", "ws_connections": manager.active_count}
+
+
+@app.websocket("/ws")
+async def websocket_endpoint(ws: WebSocket):
+    await manager.connect(ws)
+    try:
+        while True:
+            await ws.receive_text()
+    except WebSocketDisconnect:
+        await manager.disconnect(ws)
