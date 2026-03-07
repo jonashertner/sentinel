@@ -1,7 +1,6 @@
 import logging
 import re
 from datetime import date
-from urllib.parse import urlparse
 
 import feedparser
 import httpx
@@ -9,13 +8,11 @@ import httpx
 from sentinel.analysis.normalizer import normalize_country
 from sentinel.collectors.base import BaseCollector
 from sentinel.models.event import HealthEvent, Source, Species
+from sentinel.source_urls import canonicalize_source_url
 
 logger = logging.getLogger(__name__)
 
 ECDC_FEED = "https://www.ecdc.europa.eu/en/taxonomy/term/2942/feed"
-ECDC_LEGACY_LINK_OVERRIDES = {
-    "h5n1-threat-assessment-march2026": "https://www.ecdc.europa.eu/en/avian-influenza",
-}
 
 
 class ECDCCollector(BaseCollector):
@@ -69,23 +66,7 @@ class ECDCCollector(BaseCollector):
 
     def _normalize_link(self, url: str) -> str:
         """Canonicalize known legacy ECDC article URL patterns."""
-        try:
-            parsed = urlparse(url)
-        except Exception:
-            return url
-        if parsed.netloc.lower() != "www.ecdc.europa.eu":
-            return url
-        parts = [p for p in parsed.path.split("/") if p]
-        if len(parts) >= 3 and parts[0] == "en":
-            slug = parts[-1]
-            override = ECDC_LEGACY_LINK_OVERRIDES.get(slug)
-            if override:
-                return override
-        # Legacy pattern seen in feeds: /en/<topic>/threats/<slug>
-        if len(parts) >= 4 and parts[0] == "en" and parts[-2] == "threats":
-            slug = parts[-1]
-            return f"https://www.ecdc.europa.eu/en/news-events/{slug}"
-        return url
+        return canonicalize_source_url(Source.ECDC, url)
 
     def _extract_disease_and_countries(self, title: str) -> tuple[str, list[str]]:
         # ECDC titles are mixed ("Disease – context" or reports without countries).

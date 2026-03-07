@@ -57,3 +57,21 @@ async def risk_timeline(store: DataStore = Depends(get_store)):
             "event_count": len(scores),
         })
     return result
+
+
+@router.get("/collector-health")
+async def collector_health(store: DataStore = Depends(get_store)):
+    run_date, statuses = store.load_latest_collector_statuses()
+    return {
+        "run_date": run_date,
+        "statuses": statuses,
+    }
+
+
+@router.get("/ingestion-delta")
+async def ingestion_delta(store: DataStore = Depends(get_store)):
+    run_date, delta = store.load_latest_ingestion_delta()
+    return {
+        "run_date": run_date,
+        "delta": delta,
+    }

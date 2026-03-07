@@ -3,13 +3,11 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
-from sentinel.api.deps import require_write_access
+from sentinel.api.deps import get_store, require_write_access
 from sentinel.audit import log_audit
+from sentinel.store import DataStore
 
 router = APIRouter()
-
-# In-memory store for PoC
-_watchlists: dict[str, "Watchlist"] = {}
 
 
 class Watchlist(BaseModel):
@@ -22,16 +20,20 @@ class Watchlist(BaseModel):
 
 
 @router.get("", response_model=list[Watchlist])
-async def list_watchlists():
-    return list(_watchlists.values())
+async def list_watchlists(store: DataStore = Depends(get_store)):
+    return [Watchlist.model_validate(item) for item in store.load_watchlists()]
 
 
 @router.post("", response_model=Watchlist, status_code=201)
 async def create_watchlist(
     body: Watchlist,
+    store: DataStore = Depends(get_store),
     _auth: None = Depends(require_write_access),
 ):
-    _watchlists[body.id] = body
+    watchlists = [Watchlist.model_validate(item) for item in store.load_watchlists()]
+    by_id = {wl.id: wl for wl in watchlists}
+    by_id[body.id] = body
+    store.save_watchlists([wl.model_dump(mode="json") for wl in by_id.values()])
     log_audit("CREATE", "watchlist", body.id, new_value=body.model_dump(mode="json"))
     return body
 
@@ -39,9 +41,12 @@ async def create_watchlist(
 @router.delete("/{watchlist_id}", status_code=204)
 async def delete_watchlist(
     watchlist_id: str,
+    store: DataStore = Depends(get_store),
     _auth: None = Depends(require_write_access),
 ):
-    if watchlist_id not in _watchlists:
+    watchlists = [Watchlist.model_validate(item) for item in store.load_watchlists()]
+    updated = [wl for wl in watchlists if wl.id != watchlist_id]
+    if len(updated) == len(watchlists):
         raise HTTPException(status_code=404, detail="Watchlist not found")
     log_audit("DELETE", "watchlist", watchlist_id)
-    del _watchlists[watchlist_id]
+    store.save_watchlists([wl.model_dump(mode="json") for wl in updated])

@@ -1,44 +1,93 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ExternalLink, CheckCircle2, XCircle, HelpCircle } from "lucide-react";
 import { clsx } from "clsx";
-import type { HealthEvent } from "@/lib/types";
+import type { HealthEvent, TriageStatus } from "@/lib/types";
 import { VERIFICATION_STYLES } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
 import { useI18n } from "@/lib/i18n";
+import { loadEventOpsState, saveEventOpsState } from "@/lib/api";
 
 interface EventDetailProps {
   event: HealthEvent;
 }
 
-type TriageStatus = "MONITOR" | "ESCALATE" | "DISMISS";
-
 function getStorageKey(eventId: string, type: "status" | "annotation") {
   return `sentinel:${type}:${eventId}`;
 }
 
+function loadLocalEventState(eventId: string): { status: TriageStatus | null; note: string } {
+  if (typeof window === "undefined") return { status: null, note: "" };
+  const statusRaw = localStorage.getItem(getStorageKey(eventId, "status"));
+  const note = localStorage.getItem(getStorageKey(eventId, "annotation")) || "";
+  const status = statusRaw ? (statusRaw as TriageStatus) : null;
+  return { status, note };
+}
+
+function saveLocalEventState(eventId: string, status: TriageStatus | null, note: string) {
+  if (typeof window === "undefined") return;
+  if (status) localStorage.setItem(getStorageKey(eventId, "status"), status);
+  else localStorage.removeItem(getStorageKey(eventId, "status"));
+  localStorage.setItem(getStorageKey(eventId, "annotation"), note);
+}
+
 export function EventDetail({ event }: EventDetailProps) {
   const { t } = useI18n();
-  const [status, setStatus] = useState<TriageStatus | null>(() => {
-    const stored = localStorage.getItem(getStorageKey(event.id, "status"));
-    return stored ? (stored as TriageStatus) : null;
-  });
-  const [annotation, setAnnotation] = useState(() => {
-    return localStorage.getItem(getStorageKey(event.id, "annotation")) || "";
-  });
-  const [savedAnnotation, setSavedAnnotation] = useState(() => {
-    return localStorage.getItem(getStorageKey(event.id, "annotation")) || "";
-  });
+  const [status, setStatus] = useState<TriageStatus | null>(null);
+  const [annotation, setAnnotation] = useState("");
+  const [savedAnnotation, setSavedAnnotation] = useState("");
+  const [stateSource, setStateSource] = useState<"api" | "local">("local");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    loadEventOpsState(event.id).then((remote) => {
+      if (cancelled) return;
+      if (remote) {
+        setStatus(remote.triage_status);
+        setAnnotation(remote.note || "");
+        setSavedAnnotation(remote.note || "");
+        setStateSource("api");
+        return;
+      }
+      const local = loadLocalEventState(event.id);
+      setStatus(local.status);
+      setAnnotation(local.note);
+      setSavedAnnotation(local.note);
+      setStateSource("local");
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [event.id]);
+
+  async function persistState(nextStatus: TriageStatus | null, nextNote: string) {
+    const remote = await saveEventOpsState(event.id, {
+      triage_status: nextStatus,
+      note: nextNote,
+      updated_by: "analyst@bag.ch",
+    });
+    if (remote) {
+      setStateSource("api");
+      setStatus(remote.triage_status);
+      setAnnotation(remote.note || "");
+      setSavedAnnotation(remote.note || "");
+      return;
+    }
+    saveLocalEventState(event.id, nextStatus, nextNote);
+    setStateSource("local");
+    setSavedAnnotation(nextNote);
+  }
 
   function handleStatus(s: TriageStatus) {
     setStatus(s);
-    localStorage.setItem(getStorageKey(event.id, "status"), s);
+    void persistState(s, annotation);
   }
 
   function handleSaveAnnotation() {
-    localStorage.setItem(getStorageKey(event.id, "annotation"), annotation);
-    setSavedAnnotation(annotation);
+    void persistState(status, annotation);
   }
 
   return (
@@ -254,6 +303,9 @@ export function EventDetail({ event }: EventDetailProps) {
             </span>
           )}
         </div>
+        <p className="mt-1 text-[10px] text-sentinel-text-muted">
+          {stateSource === "api" ? "Shared state synced" : "Local fallback mode"}
+        </p>
       </div>
 
       {/* Annotation */}

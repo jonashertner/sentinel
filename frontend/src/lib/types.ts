@@ -191,3 +191,49 @@ export interface Watchlist {
   min_risk_score: number;
   one_health_tags: string[];
 }
+
+export type TriageStatus = "MONITOR" | "ESCALATE" | "DISMISS";
+
+export interface EventOpsState {
+  event_id: string;
+  triage_status: TriageStatus | null;
+  note: string;
+  updated_by: string;
+  updated_at: string; // ISO datetime
+}
+
+export interface SituationNote {
+  id: string;
+  author: string;
+  content: string;
+  timestamp: string; // ISO datetime
+}
+
+export interface SituationOpsState {
+  situation_id: string;
+  annotations: SituationNote[];
+  checked_action_indices: number[];
+  updated_by: string;
+  updated_at: string | null; // ISO datetime
+}
+
+export interface CollectorStatus {
+  source: string;
+  ok: boolean;
+  event_count: number;
+  latency_seconds: number;
+  error: string | null;
+}
+
+export interface IngestionDelta {
+  latest_collection: string;
+  previous_collection: string | null;
+  new_count: number;
+  changed_count: number;
+  retired_count: number;
+  new_event_ids?: string[];
+  changed_event_ids?: string[];
+  retired_event_ids?: string[];
+  new_by_source?: Record<string, number>;
+  changed_by_source?: Record<string, number>;
+}

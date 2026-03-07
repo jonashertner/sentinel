@@ -2,8 +2,15 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { loadAllEvents, loadSituations } from "@/lib/api";
-import type { HealthEvent, Situation, Source } from "@/lib/types";
+import {
+  getManifest,
+  loadAllEvents,
+  loadCollectorHealth,
+  loadIngestionDelta,
+  loadSituations,
+  type Manifest,
+} from "@/lib/api";
+import type { CollectorStatus, HealthEvent, IngestionDelta, Situation, Source } from "@/lib/types";
 import { RISK_COLORS, SOURCE_LABELS } from "@/lib/constants";
 import { useI18n } from "@/lib/i18n";
 import { KPICard } from "@/components/ui/KPICard";
@@ -77,13 +84,25 @@ export default function CommandCenter() {
   const { t } = useI18n();
   const [events, setEvents] = useState<HealthEvent[]>([]);
   const [situations, setSituations] = useState<Situation[]>([]);
+  const [manifest, setManifest] = useState<Manifest | null>(null);
+  const [collectorStatuses, setCollectorStatuses] = useState<CollectorStatus[]>([]);
+  const [ingestionDelta, setIngestionDelta] = useState<IngestionDelta | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([loadAllEvents(), loadSituations()])
-      .then(([evts, sits]) => {
+    Promise.all([
+      loadAllEvents(),
+      loadSituations(),
+      getManifest(),
+      loadCollectorHealth(),
+      loadIngestionDelta(),
+    ])
+      .then(([evts, sits, manifestData, healthData, deltaData]) => {
         setEvents(evts);
         setSituations(sits);
+        setManifest(manifestData);
+        setCollectorStatuses(healthData?.statuses || []);
+        setIngestionDelta(deltaData);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -228,17 +247,50 @@ export default function CommandCenter() {
   // Source statistics for transparency panel
   const sourceCounts = useMemo(() => {
     const counts: Record<string, { total: number; latest: string }> = {};
-    for (const evt of events) {
-      if (!counts[evt.source]) {
-        counts[evt.source] = { total: 0, latest: "" };
-      }
-      counts[evt.source].total++;
-      if (evt.date_collected > (counts[evt.source].latest || "")) {
-        counts[evt.source].latest = evt.date_collected;
+    const projected = manifest?.projected_source_totals || {};
+    for (const [source, total] of Object.entries(projected)) {
+      counts[source] = {
+        total,
+        latest: manifest?.latest_collection || "",
+      };
+    }
+    if (Object.keys(counts).length === 0) {
+      for (const evt of events) {
+        if (!counts[evt.source]) {
+          counts[evt.source] = { total: 0, latest: "" };
+        }
+        counts[evt.source].total++;
+        if (evt.date_collected > (counts[evt.source].latest || "")) {
+          counts[evt.source].latest = evt.date_collected;
+        }
       }
     }
     return counts;
-  }, [events]);
+  }, [events, manifest]);
+
+  const ingestionNewCount = ingestionDelta?.new_count ?? todayEvents.length;
+  const ingestionChangedCount = ingestionDelta?.changed_count ?? 0;
+  const ingestionRetiredCount = ingestionDelta?.retired_count ?? 0;
+
+  const pipelineSummary = useMemo(() => {
+    if (collectorStatuses.length === 0) {
+      return {
+        dotClass: "bg-sentinel-text-muted",
+        label: "Pipeline status unavailable",
+      };
+    }
+    const failed = collectorStatuses.filter((s) => !s.ok);
+    if (failed.length === 0) {
+      return {
+        dotClass: "bg-sentinel-clear",
+        label: `Pipeline healthy • ${collectorStatuses.length} sources OK`,
+      };
+    }
+    return {
+      dotClass: failed.length === collectorStatuses.length ? "bg-sentinel-critical" : "bg-sentinel-high",
+      label: `${failed.length}/${collectorStatuses.length} source collectors failed`,
+    };
+  }, [collectorStatuses]);
 
   function riskColor(score: number): string {
     if (score >= 8) return RISK_COLORS.CRITICAL.dot;
@@ -280,9 +332,9 @@ export default function CommandCenter() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-sentinel-clear" />
+          <span className={`inline-block h-1.5 w-1.5 rounded-full ${pipelineSummary.dotClass}`} />
           <span className="text-[10px] text-sentinel-text-muted">
-            {t("cc.pipeline")}
+            {pipelineSummary.label}
           </span>
         </div>
       </div>
@@ -291,17 +343,17 @@ export default function CommandCenter() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <KPICard
           label={t("cc.newEvents24h")}
-          value={todayEvents.length}
-          delta={
-            todayEvents.length -
-            events.filter((e) => e.date_reported === previousDate).length
-          }
+          value={ingestionNewCount}
+          delta={ingestionDelta
+            ? ingestionChangedCount
+            : todayEvents.length -
+              events.filter((e) => e.date_reported === previousDate).length}
           sparkData={dailyCounts}
         />
         <KPICard
           label={t("cc.activeSituations")}
           value={situations.length}
-          sparkData={[1, 1, 2, 3, 3, 3]}
+          sparkData={dailyCounts.map(() => situations.length)}
         />
         <KPICard
           label={t("cc.criticalAlerts")}
@@ -346,10 +398,10 @@ export default function CommandCenter() {
         <Card className="p-0 overflow-hidden border-sentinel-text-muted/20">
           <div className="border-b border-sentinel-border px-5 py-2.5 flex items-center justify-between">
             <h2 className="text-[11px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
-              {t("cc.whatChanged")} — {latestDate}
+              {t("cc.whatChanged")} — {ingestionDelta?.latest_collection || latestDate}
             </h2>
             <span className="text-[10px] text-sentinel-text-muted">
-              {t("cc.vs")} {previousDate || "—"}
+              {t("cc.vs")} {ingestionDelta?.previous_collection || previousDate || "—"}
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-sentinel-border-subtle">
@@ -360,11 +412,11 @@ export default function CommandCenter() {
               </div>
               <div className="mt-1 flex items-baseline gap-2">
                 <span className="text-xl font-mono font-bold tabular-nums text-sentinel-text">
-                  {overnightChanges.newCount}
+                  {ingestionNewCount}
                 </span>
-                {overnightChanges.previousCount > 0 && (
+                {(ingestionChangedCount > 0 || ingestionRetiredCount > 0) && (
                   <span className="text-[10px] text-sentinel-text-muted">
-                    (prev: {overnightChanges.previousCount})
+                    (changed: {ingestionChangedCount}, retired: {ingestionRetiredCount})
                   </span>
                 )}
               </div>
@@ -621,18 +673,20 @@ export default function CommandCenter() {
             {t("cc.dataSources")}
           </h2>
           <span className="text-[10px] text-sentinel-text-muted">
-            {events.length} {t("cc.totalEventsFrom")} {Object.keys(sourceCounts).length} {t("cc.sources")}
+            {(manifest?.total_events ?? events.length)} {t("cc.totalEventsFrom")} {Object.keys(sourceCounts).length} {t("cc.sources")}
           </span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
           {(Object.keys(SOURCE_LABELS) as Source[]).map((src) => {
             const meta = SOURCE_LABELS[src];
             const stats = sourceCounts[src];
+            const health = collectorStatuses.find((status) => status.source === src);
+            const indicatorClass = health ? (health.ok ? "bg-sentinel-clear" : "bg-sentinel-critical") : stats ? "bg-sentinel-high" : "bg-sentinel-text-muted opacity-40";
             return (
               <div key={src} className="border-t sm:border-t-0 sm:border-l first:border-t-0 first:sm:border-l-0 border-sentinel-border-subtle px-4 py-3 space-y-1.5">
                 <div className="flex items-center gap-2">
                   <span
-                    className={`inline-block h-1.5 w-1.5 rounded-full ${stats ? "bg-sentinel-clear" : "bg-sentinel-text-muted opacity-40"}`}
+                    className={`inline-block h-1.5 w-1.5 rounded-full ${indicatorClass}`}
                   />
                   <SourceBadge source={src} />
                 </div>
@@ -649,6 +703,13 @@ export default function CommandCenter() {
                     </span>
                   )}
                 </div>
+                {health && (
+                  <div className="text-[10px] text-sentinel-text-muted">
+                    {health.ok
+                      ? `Latency ${health.latency_seconds.toFixed(1)}s`
+                      : `Collector error: ${health.error || "unknown"}`}
+                  </div>
+                )}
                 <a
                   href={meta.url}
                   target="_blank"

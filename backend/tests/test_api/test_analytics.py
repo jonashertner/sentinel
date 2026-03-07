@@ -48,3 +48,50 @@ class TestAnalyticsAPI:
         total = sum(sum(day["sources"].values()) for day in payload)
         assert total == 1
         app.dependency_overrides.clear()
+
+    def test_collector_health_returns_latest_snapshot(self, tmp_path):
+        store = DataStore(data_dir=str(tmp_path))
+        store.save_collector_statuses(
+            date(2026, 3, 7),
+            [
+                {
+                    "source": "WHO_DON",
+                    "ok": True,
+                    "event_count": 3,
+                    "latency_seconds": 1.5,
+                    "error": None,
+                }
+            ],
+        )
+
+        app.dependency_overrides[get_store] = lambda: store
+        client = TestClient(app)
+        resp = client.get("/api/analytics/collector-health")
+        assert resp.status_code == 200
+        payload = resp.json()
+        assert payload["run_date"] == "2026-03-07"
+        assert payload["statuses"][0]["source"] == "WHO_DON"
+        app.dependency_overrides.clear()
+
+    def test_ingestion_delta_returns_latest_snapshot(self, tmp_path):
+        store = DataStore(data_dir=str(tmp_path))
+        store.save_ingestion_delta(
+            date(2026, 3, 7),
+            {
+                "latest_collection": "2026-03-07",
+                "previous_collection": "2026-03-06",
+                "new_count": 5,
+                "changed_count": 2,
+                "retired_count": 1,
+            },
+        )
+
+        app.dependency_overrides[get_store] = lambda: store
+        client = TestClient(app)
+        resp = client.get("/api/analytics/ingestion-delta")
+        assert resp.status_code == 200
+        payload = resp.json()
+        assert payload["run_date"] == "2026-03-07"
+        assert payload["delta"]["new_count"] == 5
+        assert payload["delta"]["changed_count"] == 2
+        app.dependency_overrides.clear()

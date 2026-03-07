@@ -2,7 +2,12 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Plus, X } from "lucide-react";
-import { loadWatchlists, loadAllEvents } from "@/lib/api";
+import {
+  createWatchlist as createWatchlistApi,
+  deleteWatchlist as deleteWatchlistApi,
+  loadAllEvents,
+  loadWatchlists,
+} from "@/lib/api";
 import type { HealthEvent, Watchlist } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { WatchlistCard } from "@/components/watchlists/WatchlistCard";
@@ -62,10 +67,12 @@ export default function WatchlistsPage() {
 
   }, []);
 
-  const allWatchlists = useMemo(
-    () => [...serverWatchlists, ...customWatchlists],
-    [serverWatchlists, customWatchlists],
-  );
+  const allWatchlists = useMemo(() => {
+    const byId = new Map<string, Watchlist>();
+    for (const wl of serverWatchlists) byId.set(wl.id, wl);
+    for (const wl of customWatchlists) byId.set(wl.id, wl);
+    return [...byId.values()];
+  }, [serverWatchlists, customWatchlists]);
 
   // Unique diseases and countries from events
   const uniqueDiseases = useMemo(
@@ -82,7 +89,11 @@ export default function WatchlistsPage() {
   );
 
   const deleteCustom = useCallback(
-    (id: string) => {
+    async (id: string) => {
+      const deletedRemote = await deleteWatchlistApi(id);
+      if (deletedRemote) {
+        setServerWatchlists((current) => current.filter((w) => w.id !== id));
+      }
       const updated = customWatchlists.filter((w) => w.id !== id);
       setCustomWatchlists(updated);
       localStorage.setItem(
@@ -93,7 +104,7 @@ export default function WatchlistsPage() {
     [customWatchlists],
   );
 
-  const createWatchlist = () => {
+  const createWatchlist = async () => {
     if (!formName.trim()) return;
     const newWl: Watchlist = {
       id: `wl-custom-${Date.now()}`,
@@ -103,9 +114,20 @@ export default function WatchlistsPage() {
       min_risk_score: formMinRisk,
       one_health_tags: formTags,
     };
-    const updated = [...customWatchlists, newWl];
-    setCustomWatchlists(updated);
-    localStorage.setItem("sentinel-custom-watchlists", JSON.stringify(updated));
+
+    const createdRemote = await createWatchlistApi(newWl);
+    if (createdRemote) {
+      setServerWatchlists((current) => {
+        const next = current.filter((w) => w.id !== createdRemote.id);
+        next.push(createdRemote);
+        return next;
+      });
+    } else {
+      const updated = [...customWatchlists, newWl];
+      setCustomWatchlists(updated);
+      localStorage.setItem("sentinel-custom-watchlists", JSON.stringify(updated));
+    }
+
     setShowForm(false);
     setFormName("");
     setFormDiseases([]);
@@ -293,14 +315,14 @@ export default function WatchlistsPage() {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {allWatchlists.map((wl) => {
             const matching = events.filter((e) => matchesWatchlist(e, wl));
-            const isCustom = customWatchlists.some((c) => c.id === wl.id);
+            const isCustom = wl.id.startsWith("wl-custom-") || customWatchlists.some((c) => c.id === wl.id);
             return (
               <WatchlistCard
                 key={wl.id}
                 watchlist={wl}
                 matchingEvents={matching}
                 isCustom={isCustom}
-                onDelete={isCustom ? () => deleteCustom(wl.id) : undefined}
+                onDelete={isCustom ? () => void deleteCustom(wl.id) : undefined}
               />
             );
           })}

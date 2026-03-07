@@ -17,6 +17,33 @@
     "2026-03-06",
     "2026-03-07"
   ],
-  "total_events": 370,
-  "latest_collection": "2026-03-07"
+  "total_events": 141,
+  "latest_collection": "2026-03-07",
+  "projected_source_totals": {
+    "WOAH": 5,
+    "WHO_DON": 11,
+    "ECDC": 19,
+    "PROMED": 6,
+    "BEACON": 100
+  },
+  "collector_statuses": [],
+  "ingestion_delta": {
+    "latest_collection": "2026-03-07",
+    "previous_collection": "2026-03-06",
+    "new_count": 278,
+    "changed_count": 15,
+    "retired_count": 51,
+    "new_by_source": {
+      "CIDRAP": 92,
+      "BEACON": 100,
+      "WHO_DON": 34,
+      "PROMED": 22,
+      "WOAH": 29,
+      "ECDC": 1
+    },
+    "changed_by_source": {
+      "ECDC": 9,
+      "WHO_DON": 6
+    }
+  }
 }

@@ -26,7 +26,9 @@ from sentinel.collectors.who_don import WHODONCollector
 from sentinel.collectors.who_eios import WHOEIOSCollector
 from sentinel.collectors.woah import WOAHCollector
 from sentinel.config import settings
+from sentinel.ingestion import compute_ingestion_delta
 from sentinel.models.event import HealthEvent
+from sentinel.projection import deduplicate_by_latest, load_projected_events
 from sentinel.reports.daily_brief import generate_daily_brief
 from sentinel.store import DataStore
 
@@ -205,6 +207,21 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
 
     # 11. Save events
     store.save_events(today, all_events)
+    store.save_collector_statuses(
+        today,
+        [
+            {
+                "source": s.source,
+                "ok": s.ok,
+                "event_count": s.event_count,
+                "latency_seconds": s.latency_seconds,
+                "error": s.error,
+            }
+            for s in result.collector_statuses
+        ],
+    )
+    ingestion_delta = compute_ingestion_delta(store, today)
+    store.save_ingestion_delta(today, ingestion_delta)
 
     # 12. Evaluate alert rules
     try:
@@ -224,7 +241,21 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     store.save_report(today, report)
 
     # 14. Update manifest for frontend
-    store.write_manifest()
+    projected_events = deduplicate_by_latest(load_projected_events(store))
+    store.write_manifest(
+        projected_events=projected_events,
+        collector_statuses=[
+            {
+                "source": s.source,
+                "ok": s.ok,
+                "event_count": s.event_count,
+                "latency_seconds": s.latency_seconds,
+                "error": s.error,
+            }
+            for s in result.collector_statuses
+        ],
+        ingestion_delta=ingestion_delta,
+    )
 
     logger.info(
         "Pipeline complete: %d collected, %d after dedup, %d analyzed",

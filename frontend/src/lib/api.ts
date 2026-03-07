@@ -1,11 +1,32 @@
-import type { HealthEvent, RiskCategory, Situation, Watchlist } from "./types";
+import type {
+  CollectorStatus,
+  EventOpsState,
+  HealthEvent,
+  IngestionDelta,
+  RiskCategory,
+  Situation,
+  SituationOpsState,
+  TriageStatus,
+  Watchlist,
+} from "./types";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const DATA_BASE = process.env.NEXT_PUBLIC_DATA_PATH || `${BASE_PATH}/data`;
+const API_ROOT = (process.env.NEXT_PUBLIC_API_BASE || BASE_PATH || "").replace(/\/$/, "");
+const API_WRITE_KEY = process.env.NEXT_PUBLIC_API_WRITE_KEY || "";
 const MAX_EVENT_AGE_DAYS = Number(process.env.NEXT_PUBLIC_MAX_EVENT_AGE_DAYS || "30");
 const ALLOW_WHO_EIOS = process.env.NEXT_PUBLIC_ALLOW_WHO_EIOS === "true";
 const ECDC_LEGACY_URL_OVERRIDES: Record<string, string> = {
   "h5n1-threat-assessment-march2026": "https://www.ecdc.europa.eu/en/avian-influenza",
+};
+const SOURCE_LANDING_PAGES: Record<HealthEvent["source"], string> = {
+  WHO_DON: "https://www.who.int/emergencies/disease-outbreak-news",
+  WHO_EIOS: "https://www.who.int/initiatives/eios",
+  ECDC: "https://www.ecdc.europa.eu/en",
+  WOAH: "https://www.woah.org/",
+  PROMED: "https://promedmail.org/",
+  CIDRAP: "https://www.cidrap.umn.edu/",
+  BEACON: "https://beacon.healthmap.org/",
 };
 
 interface Manifest {
@@ -14,6 +35,19 @@ interface Manifest {
   report_dates: string[];
   total_events: number;
   latest_collection: string;
+  projected_source_totals?: Record<string, number>;
+  collector_statuses?: CollectorStatus[];
+  ingestion_delta?: IngestionDelta;
+}
+
+interface CollectorHealthSnapshot {
+  run_date: string;
+  statuses: CollectorStatus[];
+}
+
+interface IngestionDeltaSnapshot {
+  run_date: string;
+  delta: IngestionDelta;
 }
 
 let _manifestCache: Manifest | null = null;
@@ -22,6 +56,27 @@ async function fetchJson<T>(path: string): Promise<T> {
   const res = await fetch(`${DATA_BASE}${path}`);
   if (!res.ok) throw new Error(`Failed to fetch ${path}`);
   return res.json();
+}
+
+function apiHeaders(withJson = false): HeadersInit {
+  const headers: Record<string, string> = {};
+  if (withJson) headers["Content-Type"] = "application/json";
+  if (API_WRITE_KEY) headers["X-API-Key"] = API_WRITE_KEY;
+  return headers;
+}
+
+async function fetchApiJson<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(`${API_ROOT}${path}`, init);
+  if (!res.ok) throw new Error(`API request failed: ${path}`);
+  return res.json();
+}
+
+async function tryApiJson<T>(path: string, init?: RequestInit): Promise<T | null> {
+  try {
+    return await fetchApiJson<T>(path, init);
+  } catch {
+    return null;
+  }
 }
 
 async function getManifest(): Promise<Manifest> {
@@ -53,11 +108,25 @@ function deriveSourceEvidence(event: HealthEvent): HealthEvent["source_evidence"
   ];
 }
 
-function normalizeEventUrl(event: HealthEvent): string {
-  if (event.source !== "ECDC") return event.url;
+function normalizeSourceUrl(source: HealthEvent["source"], url: string): string {
+  const trimmed = (url || "").trim();
+  if (!trimmed) return SOURCE_LANDING_PAGES[source];
+
+  let parsed: URL;
   try {
-    const parsed = new URL(event.url);
-    if (parsed.hostname.toLowerCase() !== "www.ecdc.europa.eu") return event.url;
+    if (trimmed.startsWith("//")) {
+      parsed = new URL(`https:${trimmed}`);
+    } else if (!trimmed.includes("://") && trimmed.startsWith("www.")) {
+      parsed = new URL(`https://${trimmed}`);
+    } else {
+      parsed = new URL(trimmed);
+    }
+  } catch {
+    return SOURCE_LANDING_PAGES[source];
+  }
+
+  const host = parsed.hostname.toLowerCase();
+  if (source === "ECDC" && host === "www.ecdc.europa.eu") {
     const parts = parsed.pathname.split("/").filter(Boolean);
     const slug = parts[parts.length - 1];
     const override = ECDC_LEGACY_URL_OVERRIDES[slug];
@@ -65,10 +134,17 @@ function normalizeEventUrl(event: HealthEvent): string {
     if (parts.length >= 4 && parts[0] === "en" && parts[parts.length - 2] === "threats") {
       return `https://www.ecdc.europa.eu/en/news-events/${slug}`;
     }
-  } catch {
-    return event.url;
   }
-  return event.url;
+
+  const query = new URLSearchParams(parsed.search);
+  const cleaned = new URLSearchParams();
+  for (const [key, value] of query.entries()) {
+    if (!key.toLowerCase().startsWith("utm_")) cleaned.append(key, value);
+  }
+  parsed.protocol = "https:";
+  parsed.search = cleaned.toString();
+  parsed.hash = "";
+  return parsed.toString();
 }
 
 function deriveConfidence(event: Pick<HealthEvent, "source" | "verification_status">): number {
@@ -101,7 +177,7 @@ function enrichEvent(event: HealthEvent): HealthEvent {
   const playbookSLA = event.playbook_sla_hours ?? event.sla_timer_hours ?? 168;
   const escalationWorkflow = event.escalation_workflow ?? [];
   const decisionWindow = event.decision_window_hours ?? 168;
-  const url = normalizeEventUrl(event);
+  const url = normalizeSourceUrl(event.source, event.url);
 
   return {
     ...event,
@@ -122,9 +198,10 @@ function enrichEvent(event: HealthEvent): HealthEvent {
     trigger_flags: event.trigger_flags || [],
     recommended_actions: event.recommended_actions || [],
     merged_from: event.merged_from || [event.id],
-    source_evidence: (event.source_evidence || deriveSourceEvidence(event)).map((e) => (
-      e.source === "ECDC" ? { ...e, url } : e
-    )),
+    source_evidence: (event.source_evidence || deriveSourceEvidence(event)).map((e) => ({
+      ...e,
+      url: normalizeSourceUrl(e.source, e.url),
+    })),
     provenance_hash: event.provenance_hash || `legacy-${event.id}`,
     analyst_overrides: event.analyst_overrides || [],
     hazard_class: hazardClass,
@@ -147,10 +224,10 @@ function deduplicateByLatest(events: HealthEvent[]): HealthEvent[] {
   return [...latest.values()];
 }
 
-function isTrustedSourceUrl(event: HealthEvent): boolean {
+function isTrustedSourceUrl(source: HealthEvent["source"], url: string): boolean {
   const host = (() => {
     try {
-      return new URL(event.url).hostname.toLowerCase();
+      return new URL(url).hostname.toLowerCase();
     } catch {
       return "";
     }
@@ -158,13 +235,14 @@ function isTrustedSourceUrl(event: HealthEvent): boolean {
   if (!host) return false;
   const allowed: Partial<Record<HealthEvent["source"], string[]>> = {
     WHO_DON: ["who.int"],
+    WHO_EIOS: ["who.int"],
     ECDC: ["ecdc.europa.eu"],
     WOAH: ["woah.org"],
     PROMED: ["promedmail.org"],
     CIDRAP: ["cidrap.umn.edu"],
     BEACON: ["healthmap.org", "beacon.healthmap.org"],
   };
-  const domains = allowed[event.source];
+  const domains = allowed[source];
   if (!domains) return true;
   return domains.some((domain) => host === domain || host.endsWith(`.${domain}`));
 }
@@ -183,7 +261,7 @@ function filterByDataQuality(
     const reported = new Date(`${event.date_reported}T00:00:00Z`);
     if (Number.isNaN(reported.getTime())) return false;
     if (MAX_EVENT_AGE_DAYS > 0 && (reported < cutoff || reported > reference)) return false;
-    return isTrustedSourceUrl(event);
+    return isTrustedSourceUrl(event.source, event.url);
   });
 }
 
@@ -217,7 +295,92 @@ export async function loadSituations(): Promise<Situation[]> {
 }
 
 export async function loadWatchlists(): Promise<Watchlist[]> {
+  const api = await tryApiJson<Watchlist[]>("/api/watchlists");
+  if (api) return api;
   return fetchJson("/watchlists.json");
+}
+
+export async function createWatchlist(watchlist: Watchlist): Promise<Watchlist | null> {
+  return tryApiJson<Watchlist>("/api/watchlists", {
+    method: "POST",
+    headers: apiHeaders(true),
+    body: JSON.stringify(watchlist),
+  });
+}
+
+export async function deleteWatchlist(watchlistId: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${API_ROOT}/api/watchlists/${watchlistId}`, {
+      method: "DELETE",
+      headers: apiHeaders(),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+export async function loadEventOpsState(eventId: string): Promise<EventOpsState | null> {
+  return tryApiJson<EventOpsState>(`/api/operations/events/${eventId}`);
+}
+
+export async function saveEventOpsState(
+  eventId: string,
+  input: { triage_status: TriageStatus | null; note: string; updated_by: string },
+): Promise<EventOpsState | null> {
+  return tryApiJson<EventOpsState>(`/api/operations/events/${eventId}`, {
+    method: "PUT",
+    headers: apiHeaders(true),
+    body: JSON.stringify(input),
+  });
+}
+
+export async function loadSituationOpsState(situationId: string): Promise<SituationOpsState | null> {
+  return tryApiJson<SituationOpsState>(`/api/operations/situations/${situationId}`);
+}
+
+export async function addSituationAnnotation(
+  situationId: string,
+  input: { author: string; content: string },
+): Promise<SituationOpsState | null> {
+  return tryApiJson<SituationOpsState>(`/api/operations/situations/${situationId}/annotations`, {
+    method: "POST",
+    headers: apiHeaders(true),
+    body: JSON.stringify(input),
+  });
+}
+
+export async function saveSituationActions(
+  situationId: string,
+  input: { checked_action_indices: number[]; updated_by: string },
+): Promise<SituationOpsState | null> {
+  return tryApiJson<SituationOpsState>(`/api/operations/situations/${situationId}/actions`, {
+    method: "PUT",
+    headers: apiHeaders(true),
+    body: JSON.stringify(input),
+  });
+}
+
+export async function loadCollectorHealth(): Promise<CollectorHealthSnapshot | null> {
+  const api = await tryApiJson<CollectorHealthSnapshot>("/api/analytics/collector-health");
+  if (api && Array.isArray(api.statuses)) return api;
+
+  const manifest = await getManifest();
+  if (manifest.collector_statuses && manifest.collector_statuses.length > 0) {
+    return {
+      run_date: manifest.latest_collection,
+      statuses: manifest.collector_statuses,
+    };
+  }
+  return null;
+}
+
+export async function loadIngestionDelta(): Promise<IngestionDelta | null> {
+  const api = await tryApiJson<IngestionDeltaSnapshot>("/api/analytics/ingestion-delta");
+  if (api?.delta) return api.delta;
+
+  const manifest = await getManifest();
+  return manifest.ingestion_delta || null;
 }
 
 export async function loadReport(date: string): Promise<string> {
@@ -234,4 +397,4 @@ export async function loadLatestReport(): Promise<string> {
 }
 
 export { getManifest };
-export type { Manifest };
+export type { CollectorHealthSnapshot, Manifest };

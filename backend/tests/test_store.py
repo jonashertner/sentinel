@@ -48,3 +48,22 @@ class TestDataStore:
         store.save_report(date(2026, 3, 6), "# Daily Report\n\nContent here.")
         report = store.load_report(date(2026, 3, 6))
         assert "Daily Report" in report
+
+    def test_watchlists_round_trip(self, tmp_path):
+        store = DataStore(data_dir=str(tmp_path))
+        store.save_watchlists([{"id": "wl-1", "name": "Test"}])
+        loaded = store.load_watchlists()
+        assert loaded == [{"id": "wl-1", "name": "Test"}]
+
+    def test_ops_state_round_trip(self, tmp_path):
+        store = DataStore(data_dir=str(tmp_path))
+        state = {
+            "event_triage": {"evt-1": {"event_id": "evt-1", "triage_status": "MONITOR"}},
+            "situation_notes": {"sit-1": [{"id": "n-1", "author": "a", "content": "c"}]},
+            "situation_actions": {"sit-1": {"checked_action_indices": [1]}},
+        }
+        store.save_ops_state(state)
+        loaded = store.load_ops_state()
+        assert "evt-1" in loaded["event_triage"]
+        assert "sit-1" in loaded["situation_notes"]
+        assert loaded["situation_actions"]["sit-1"]["checked_action_indices"] == [1]

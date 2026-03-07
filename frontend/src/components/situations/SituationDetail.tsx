@@ -11,7 +11,12 @@ import {
 } from "lucide-react";
 import { PRIORITY_LABELS, COUNTRY_NAMES } from "@/lib/constants";
 import type { Situation, HealthEvent, Annotation } from "@/lib/types";
-import { loadAllEvents } from "@/lib/api";
+import {
+  addSituationAnnotation,
+  loadAllEvents,
+  loadSituationOpsState,
+  saveSituationActions,
+} from "@/lib/api";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Timeline } from "@/components/situations/Timeline";
@@ -21,26 +26,60 @@ interface SituationDetailProps {
   id: string;
 }
 
+function mapOpsNoteToAnnotation(note: { id: string; author: string; content: string; timestamp: string }): Annotation {
+  return {
+    id: note.id,
+    event_id: "",
+    author: note.author,
+    timestamp: note.timestamp,
+    type: "NOTE",
+    content: note.content,
+    visibility: "INTERNAL",
+    risk_override: null,
+    status_change: null,
+    linked_event_ids: [],
+    tags: [],
+    verification_override: null,
+    operational_priority_override: null,
+    playbook_override: null,
+    playbook_sla_override_hours: null,
+    escalation_level_override: null,
+    override_reason: "",
+  };
+}
+
+function loadLocalSituationState(id: string): { annotations: Annotation[]; checkedActions: Set<number> } {
+  if (typeof window === "undefined") {
+    return { annotations: [], checkedActions: new Set<number>() };
+  }
+  try {
+    const annRaw = localStorage.getItem(`sentinel-annotations-${id}`);
+    const actionRaw = localStorage.getItem(`sentinel-actions-${id}`);
+    const annotations = annRaw ? JSON.parse(annRaw) as Annotation[] : [];
+    const checkedActions = actionRaw
+      ? new Set<number>(JSON.parse(actionRaw) as number[])
+      : new Set<number>();
+    return { annotations, checkedActions };
+  } catch {
+    return { annotations: [], checkedActions: new Set<number>() };
+  }
+}
+
+function saveLocalSituationState(id: string, annotations: Annotation[], checkedActions: Set<number>) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(`sentinel-annotations-${id}`, JSON.stringify(annotations));
+  localStorage.setItem(`sentinel-actions-${id}`, JSON.stringify(Array.from(checkedActions)));
+}
+
 export function SituationDetail({ id }: SituationDetailProps) {
   const router = useRouter();
   const [situation, setSituation] = useState<Situation | null>(null);
   const [linkedEvents, setLinkedEvents] = useState<HealthEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [noteText, setNoteText] = useState("");
-  const [localAnnotations, setLocalAnnotations] = useState<Annotation[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const stored = localStorage.getItem(`sentinel-annotations-${id}`);
-      return stored ? JSON.parse(stored) : [];
-    } catch { return []; }
-  });
-  const [checkedActions, setCheckedActions] = useState<Set<number>>(() => {
-    if (typeof window === "undefined") return new Set<number>();
-    try {
-      const stored = localStorage.getItem(`sentinel-actions-${id}`);
-      return stored ? new Set(JSON.parse(stored) as number[]) : new Set<number>();
-    } catch { return new Set<number>(); }
-  });
+  const [localAnnotations, setLocalAnnotations] = useState<Annotation[]>([]);
+  const [checkedActions, setCheckedActions] = useState<Set<number>>(new Set<number>());
+  const [stateSource, setStateSource] = useState<"api" | "local">("local");
 
   useEffect(() => {
     // Fetch situation and events
@@ -50,27 +89,52 @@ export function SituationDetail({ id }: SituationDetailProps) {
         r.ok ? r.json() : null,
       ),
       loadAllEvents(),
+      loadSituationOpsState(id),
     ])
-      .then(([sit, allEvents]) => {
+      .then(([sit, allEvents, ops]) => {
         setSituation(sit as Situation);
         if (sit) {
           const eventIds = new Set((sit as Situation).events);
           setLinkedEvents(allEvents.filter((e) => eventIds.has(e.id)));
+        }
+        if (ops) {
+          setLocalAnnotations(ops.annotations.map(mapOpsNoteToAnnotation));
+          setCheckedActions(new Set(ops.checked_action_indices));
+          setStateSource("api");
+        } else {
+          const local = loadLocalSituationState(id);
+          setLocalAnnotations(local.annotations);
+          setCheckedActions(local.checkedActions);
+          setStateSource("local");
         }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [id]);
 
-  const addAnnotation = () => {
+  const addAnnotation = async () => {
     if (!noteText.trim()) return;
+    const content = noteText.trim();
+    setNoteText("");
+
+    const remote = await addSituationAnnotation(id, {
+      author: "analyst@bag.ch",
+      content,
+    });
+    if (remote) {
+      setLocalAnnotations(remote.annotations.map(mapOpsNoteToAnnotation));
+      setCheckedActions(new Set(remote.checked_action_indices));
+      setStateSource("api");
+      return;
+    }
+
     const annotation: Annotation = {
       id: `ann-${Date.now()}`,
       event_id: "",
       author: "Analyst (local)",
       timestamp: new Date().toISOString(),
       type: "NOTE",
-      content: noteText.trim(),
+      content,
       visibility: "INTERNAL",
       risk_override: null,
       status_change: null,
@@ -85,22 +149,30 @@ export function SituationDetail({ id }: SituationDetailProps) {
     };
     const updated = [...localAnnotations, annotation];
     setLocalAnnotations(updated);
-    localStorage.setItem(
-      `sentinel-annotations-${id}`,
-      JSON.stringify(updated),
-    );
-    setNoteText("");
+    saveLocalSituationState(id, updated, checkedActions);
+    setStateSource("local");
   };
 
-  const toggleAction = (idx: number) => {
+  const toggleAction = async (idx: number) => {
     const next = new Set(checkedActions);
     if (next.has(idx)) next.delete(idx);
     else next.add(idx);
     setCheckedActions(next);
-    localStorage.setItem(
-      `sentinel-actions-${id}`,
-      JSON.stringify(Array.from(next)),
-    );
+    const checkedActionIndices = Array.from(next).sort((a, b) => a - b);
+
+    const remote = await saveSituationActions(id, {
+      checked_action_indices: checkedActionIndices,
+      updated_by: "analyst@bag.ch",
+    });
+    if (remote) {
+      setLocalAnnotations(remote.annotations.map(mapOpsNoteToAnnotation));
+      setCheckedActions(new Set(remote.checked_action_indices));
+      setStateSource("api");
+      return;
+    }
+
+    saveLocalSituationState(id, localAnnotations, next);
+    setStateSource("local");
   };
 
   if (loading) {
@@ -211,6 +283,9 @@ export function SituationDetail({ id }: SituationDetailProps) {
           <div className="mt-8 border-t border-sentinel-border pt-6">
             <div className="mb-4 text-[10px] font-semibold uppercase tracking-wider text-sentinel-text-muted">
               Annotations ({allAnnotations.length})
+            </div>
+            <div className="mb-3 text-[10px] text-sentinel-text-muted">
+              {stateSource === "api" ? "Shared operations log" : "Local fallback mode"}
             </div>
 
             {allAnnotations.length > 0 && (

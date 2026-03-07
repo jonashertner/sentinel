@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from sentinel.api.deps import get_store, require_write_access
 from sentinel.audit import log_audit
 from sentinel.models.situation import Priority, Situation, SituationStatus
+from sentinel.projection import deduplicate_by_latest, load_projected_events
 from sentinel.store import DataStore
 
 router = APIRouter()
@@ -35,6 +36,21 @@ class EventLink(BaseModel):
     event_ids: list[str]
 
 
+def _assert_events_exist(store: DataStore, event_ids: list[str]) -> None:
+    if not event_ids:
+        return
+    valid_ids = {event.id for event in deduplicate_by_latest(load_projected_events(store))}
+    missing = sorted({event_id for event_id in event_ids if event_id not in valid_ids})
+    if missing:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "message": "One or more event IDs do not exist in projected events",
+                "missing_event_ids": missing,
+            },
+        )
+
+
 @router.get("", response_model=list[Situation])
 async def list_situations(store: DataStore = Depends(get_store)):
     return store.load_situations()
@@ -46,6 +62,7 @@ async def create_situation(
     store: DataStore = Depends(get_store),
     _auth: None = Depends(require_write_access),
 ):
+    _assert_events_exist(store, body.events)
     situation = Situation(**body.model_dump())
     store.save_situation(situation)
     log_audit("CREATE", "situation", situation.id, new_value=situation.model_dump(mode="json"))
@@ -91,6 +108,7 @@ async def link_events(
     store: DataStore = Depends(get_store),
     _auth: None = Depends(require_write_access),
 ):
+    _assert_events_exist(store, body.event_ids)
     situations = store.load_situations()
     for s in situations:
         if s.id == situation_id:
