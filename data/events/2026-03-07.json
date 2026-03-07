@@ -1,0 +1,312 @@
+[
+  {
+    "id": "61f68f8d716e056f",
+    "source": "ECDC",
+    "title": "Communicable disease threats report, 28 February – 6 March 2026 , week 10",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-07",
+    "disease": "Communicable disease threats report",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period 28 February–6 March 2026  and includes updates on respiratory virus epidemiology in the EU/EEA, Sars-CoV-2 variant classification, MERS, mass gathering monitoring, and chikungunya.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-28-february-6-march-2026-week-10",
+    "raw_content": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period 28 February–6 March 2026  and includes updates on respiratory virus epidemiology in the EU/EEA, Sars-CoV-2 variant classification, MERS, mass gathering monitoring, and chikungunya.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "3102f2b327e9e703",
+    "source": "ECDC",
+    "title": "Weekly respiratory virus update, week 9, March 2026",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-07",
+    "disease": "Weekly respiratory virus update, week 9, March 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Respiratory virus trends across the EU/EEA continue to show early signs of decline.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-9-march-2026",
+    "raw_content": "Respiratory virus trends across the EU/EEA continue to show early signs of decline.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "749d4554a6fe7525",
+    "source": "ECDC",
+    "title": "Communicable disease threats report, 21 - 27 February 2026, week 9",
+    "date_reported": "2026-02-27",
+    "date_collected": "2026-03-07",
+    "disease": "Communicable disease threats report, 21 - 27 February 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period 21 - 27 February 2026 and includes updates on respiratory virus epidemiology in the EU/EEA, mass gathering monitoring, chikungunya, cholera, and swine flu.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-21-27-february-2026-week-9",
+    "raw_content": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period 21 - 27 February 2026 and includes updates on respiratory virus epidemiology in the EU/EEA, mass gathering monitoring, chikungunya, cholera, and swine flu.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "af2ae71f814199d2",
+    "source": "ECDC",
+    "title": "Weekly respiratory virus update, week 8, February 2026",
+    "date_reported": "2026-02-27",
+    "date_collected": "2026-03-07",
+    "disease": "Weekly respiratory virus update, week 8, February 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Respiratory virus trends across the EU/EEA show early signs of decline. RSV activity remains high, with young children most affected. Influenza circulation remains widespread, but continues to decrease in most countries. SARS CoV 2 activity remains low.<br />",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-8-february-2026",
+    "raw_content": "Respiratory virus trends across the EU/EEA show early signs of decline. RSV activity remains high, with young children most affected. Influenza circulation remains widespread, but continues to decrease in most countries. SARS CoV 2 activity remains low.<br />",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "70507a655f1ec4fc",
+    "source": "ECDC",
+    "title": "Communicable disease threats report, 14 - 20 February 2026, week 8",
+    "date_reported": "2026-02-20",
+    "date_collected": "2026-03-07",
+    "disease": "Communicable disease threats report, 14 - 20 February 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period  7 - 13 February 2026 and includes updates on respiratory virus epidemiology in the EU/EEA, mass gathering monitoring, avian influenza, and mpox.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-14-20-february-2026-week-8",
+    "raw_content": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period  7 - 13 February 2026 and includes updates on respiratory virus epidemiology in the EU/EEA, mass gathering monitoring, avian influenza, and mpox.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "f9fbe8b0e4ea05a3",
+    "source": "ECDC",
+    "title": "Weekly respiratory virus update, week 7, February 2026",
+    "date_reported": "2026-02-20",
+    "date_collected": "2026-03-07",
+    "disease": "Weekly respiratory virus update, week 7, February 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Respiratory virus activity remains elevated across the EU/EEA: influenza transmission is still widespread but decreasing, and RSV levels remain high, while SARS CoV 2 circulation remains low.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-7-february-2026",
+    "raw_content": "Respiratory virus activity remains elevated across the EU/EEA: influenza transmission is still widespread but decreasing, and RSV levels remain high, while SARS CoV 2 circulation remains low.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "89a3d8f74fa739b7",
+    "source": "ECDC",
+    "title": "Communicable disease threats report, 7 - 13 February 2026, week 7",
+    "date_reported": "2026-02-13",
+    "date_collected": "2026-03-07",
+    "disease": "Communicable disease threats report, 7 - 13 February 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period  7 - 13 February 2026 and includes updates on respiratory virus epidemiology in the EU/EEA, mass gathering monitoring, avian influenza, chikungunya, dengue, Nipah virus disease, and measles.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-7-13-february-2026-week-7",
+    "raw_content": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period  7 - 13 February 2026 and includes updates on respiratory virus epidemiology in the EU/EEA, mass gathering monitoring, avian influenza, chikungunya, dengue, Nipah virus disease, and measles.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "e5fd1019c867beba",
+    "source": "ECDC",
+    "title": "Weekly respiratory virus update, week 6, January 2026",
+    "date_reported": "2026-02-13",
+    "date_collected": "2026-03-07",
+    "disease": "Weekly respiratory virus update, week 6, January 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Respiratory virus circulation is elevated across the EU/EEA: the circulation of influenza viruses is still high and RSV circulation is elevated and increasing. SARS-CoV-2 circulation continues to be low.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-6-january-2026",
+    "raw_content": "Respiratory virus circulation is elevated across the EU/EEA: the circulation of influenza viruses is still high and RSV circulation is elevated and increasing. SARS-CoV-2 circulation continues to be low.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "25854b495af78317",
+    "source": "ECDC",
+    "title": "Communicable disease threats report, 31 January - 6 February 2026, week 6",
+    "date_reported": "2026-02-06",
+    "date_collected": "2026-03-07",
+    "disease": "Communicable disease threats report, 31 January - 6 February 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period  31 January - 6 February 2026 and includes updates on respiratory virus epidemiology in the EU/EEA, SARS-CoV-2 variant classification, Bacillus cereus toxin in infant formula, mass gathering monitoring, mpox, nipah virus, and Middle East respiratory virus syndrome.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-31-january-6-february-2026-week-6",
+    "raw_content": "This issue of the ECDC Communicable Disease Threats Report (CDTR) covers the period  31 January - 6 February 2026 and includes updates on respiratory virus epidemiology in the EU/EEA, SARS-CoV-2 variant classification, Bacillus cereus toxin in infant formula, mass gathering monitoring, mpox, nipah virus, and Middle East respiratory virus syndrome.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  },
+  {
+    "id": "5f1b788f67dadf96",
+    "source": "ECDC",
+    "title": "Weekly respiratory virus update, week 5, January 2026",
+    "date_reported": "2026-02-06",
+    "date_collected": "2026-03-07",
+    "disease": "Weekly respiratory virus update, week 5, January 2026",
+    "pathogen": null,
+    "countries": [
+      "EU"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Respiratory virus circulation is elevated across the EU/EEA. The circulation of influenza viruses remains high with early signs of a new increase, RSV circulation is elevated and increasing, and SARS-CoV-2 circulation remains at low levels.",
+    "url": "https://www.ecdc.europa.eu/en/publications-data/weekly-respiratory-virus-update-week-5-january-2026",
+    "raw_content": "Respiratory virus circulation is elevated across the EU/EEA. The circulation of influenza viruses remains high with early signs of a new increase, RSV circulation is elevated and increasing, and SARS-CoV-2 circulation remains at low levels.",
+    "risk_score": 1.0,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "CONFIRMED",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "risk_category": "LOW"
+  }
+]
