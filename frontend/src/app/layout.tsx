@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Sidebar } from "@/components/ui/Sidebar";
+import { WelcomeOverlay } from "@/components/ui/WelcomeOverlay";
 import { ThemeProvider } from "@/lib/theme-context";
 import { I18nProvider } from "@/lib/i18n";
 
@@ -16,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="de" data-theme="dark" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className="bg-sentinel-bg text-sentinel-text min-h-screen antialiased">
         <I18nProvider>
           <ThemeProvider>
+            <WelcomeOverlay />
             <div className="flex h-screen overflow-hidden">
               <Sidebar />
               <main className="flex-1 overflow-y-auto min-w-0">{children}</main>

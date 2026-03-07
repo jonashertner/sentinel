@@ -203,6 +203,37 @@ const en: Dict = {
   "source.WOAH.desc": "Official animal disease notifications via WAHIS",
   "source.BEACON.desc": "Automated real-time disease outbreak intelligence and alerts",
   "source.CIDRAP.desc": "Center for Infectious Disease Research and Policy — expert news and analysis",
+
+  // Welcome overlay
+  "welcome.acronym": "Swiss Epidemic Notification and Threat Intelligence Engine",
+  "welcome.intro": "Real-time epidemic intelligence platform for Swiss public health authorities. SENTINEL aggregates global disease outbreak data, scores threats by Swiss relevance, and supports IHR-compliant notification workflows.",
+  "welcome.stat1": "12 data sources",
+  "welcome.stat2": "3x daily collection",
+  "welcome.stat3": "4 official languages",
+  "welcome.capabilities": "Core Capabilities",
+  "welcome.f1.title": "Global Surveillance",
+  "welcome.f1.desc": "WHO, ECDC, WOAH, ProMED, and 8 more sources — unified and deduplicated.",
+  "welcome.f2.title": "Smart Triage",
+  "welcome.f2.desc": "AI-powered risk scoring with Swiss relevance weighting and One Health tagging.",
+  "welcome.f3.title": "Situation Tracking",
+  "welcome.f3.desc": "Group related events into situations with timeline, annotations, and escalation.",
+  "welcome.f4.title": "Alert Engine",
+  "welcome.f4.desc": "Custom rules with real-time WebSocket push. Never miss a critical signal.",
+  "welcome.f5.title": "IHR Compliance",
+  "welcome.f5.desc": "Annex 2 assessment wizard with 24h deadline tracking for WHO notification.",
+  "welcome.f6.title": "Analytics & Export",
+  "welcome.f6.desc": "Trends, risk timelines, disease breakdowns. Export CSV/JSON for reporting.",
+  "welcome.swiss.title": "Built for Swiss Public Health",
+  "welcome.swiss.desc": "Designed for the Swiss Federal Office of Public Health (BAG) and the Federal Food Safety and Veterinary Office (BLV) with full support for the Swiss legal and organizational framework.",
+  "welcome.swiss.bag": "BAG",
+  "welcome.swiss.bagDesc": "Human health surveillance",
+  "welcome.swiss.blv": "BLV",
+  "welcome.swiss.blvDesc": "Animal & food safety",
+  "welcome.swiss.ihr": "IHR / EpG",
+  "welcome.swiss.ihrDesc": "Legal compliance",
+  "welcome.skip": "Skip",
+  "welcome.next": "Next",
+  "welcome.start": "Get Started",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -375,6 +406,36 @@ const de: Dict = {
   "source.WOAH.desc": "Offizielle Tierseuchenmeldungen über WAHIS",
   "source.BEACON.desc": "Automatisierte Echtzeit-Krankheitsausbruchsnachrichten und Warnungen",
   "source.CIDRAP.desc": "Zentrum für Forschung und Politik zu Infektionskrankheiten — Expertennachrichten und Analysen",
+
+  "welcome.acronym": "Swiss Epidemic Notification and Threat Intelligence Engine",
+  "welcome.intro": "Echtzeit-Plattform für epidemiologische Nachrichtenauswertung für die Schweizer Gesundheitsbehörden. SENTINEL aggregiert globale Ausbruchsdaten, bewertet Bedrohungen nach Schweizer Relevanz und unterstützt IGV-konforme Meldeworkflows.",
+  "welcome.stat1": "12 Datenquellen",
+  "welcome.stat2": "3x tägliche Erhebung",
+  "welcome.stat3": "4 Amtssprachen",
+  "welcome.capabilities": "Kernfunktionen",
+  "welcome.f1.title": "Globale Überwachung",
+  "welcome.f1.desc": "WHO, ECDC, WOAH, ProMED und 8 weitere Quellen — vereinheitlicht und dedupliziert.",
+  "welcome.f2.title": "Intelligente Triage",
+  "welcome.f2.desc": "KI-gestütztes Risikoscoring mit Schweizer Relevanzgewichtung und One-Health-Tagging.",
+  "welcome.f3.title": "Situationsverfolgung",
+  "welcome.f3.desc": "Verwandte Ereignisse zu Situationen bündeln mit Zeitachse, Anmerkungen und Eskalation.",
+  "welcome.f4.title": "Warn-Engine",
+  "welcome.f4.desc": "Individuelle Regeln mit Echtzeit-WebSocket-Push. Kein kritisches Signal verpassen.",
+  "welcome.f5.title": "IGV-Konformität",
+  "welcome.f5.desc": "Anhang-2-Bewertungsassistent mit 24-Std.-Fristüberwachung für WHO-Meldungen.",
+  "welcome.f6.title": "Analysen & Export",
+  "welcome.f6.desc": "Trends, Risikoverläufe, Krankheitsverteilungen. Export als CSV/JSON für Berichte.",
+  "welcome.swiss.title": "Entwickelt für das Schweizer Gesundheitswesen",
+  "welcome.swiss.desc": "Konzipiert für das Bundesamt für Gesundheit (BAG) und das Bundesamt für Lebensmittelsicherheit und Veterinärwesen (BLV) mit vollständiger Unterstützung des schweizerischen Rechts- und Organisationsrahmens.",
+  "welcome.swiss.bag": "BAG",
+  "welcome.swiss.bagDesc": "Humangesundheits-Surveillance",
+  "welcome.swiss.blv": "BLV",
+  "welcome.swiss.blvDesc": "Tier- und Lebensmittelsicherheit",
+  "welcome.swiss.ihr": "IGV / EpG",
+  "welcome.swiss.ihrDesc": "Rechtskonformität",
+  "welcome.skip": "Überspringen",
+  "welcome.next": "Weiter",
+  "welcome.start": "Loslegen",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -547,6 +608,36 @@ const fr: Dict = {
   "source.WOAH.desc": "Notifications officielles de maladies animales via WAHIS",
   "source.BEACON.desc": "Renseignement automatisé en temps réel sur les flambées épidémiques",
   "source.CIDRAP.desc": "Centre de recherche et politique sur les maladies infectieuses — analyses et actualités d'experts",
+
+  "welcome.acronym": "Swiss Epidemic Notification and Threat Intelligence Engine",
+  "welcome.intro": "Plateforme de renseignement épidémiologique en temps réel pour les autorités suisses de santé publique. SENTINEL agrège les données mondiales sur les flambées, évalue les menaces selon leur pertinence suisse et prend en charge les workflows de notification conformes au RSI.",
+  "welcome.stat1": "12 sources de données",
+  "welcome.stat2": "Collecte 3x par jour",
+  "welcome.stat3": "4 langues officielles",
+  "welcome.capabilities": "Fonctionnalités clés",
+  "welcome.f1.title": "Surveillance mondiale",
+  "welcome.f1.desc": "OMS, ECDC, WOAH, ProMED et 8 autres sources — unifiées et dédupliquées.",
+  "welcome.f2.title": "Triage intelligent",
+  "welcome.f2.desc": "Scoring de risque par IA avec pondération de pertinence suisse et tags One Health.",
+  "welcome.f3.title": "Suivi des situations",
+  "welcome.f3.desc": "Regroupez les événements en situations avec chronologie, annotations et escalade.",
+  "welcome.f4.title": "Moteur d'alertes",
+  "welcome.f4.desc": "Règles personnalisées avec push WebSocket en temps réel. Ne ratez aucun signal.",
+  "welcome.f5.title": "Conformité RSI",
+  "welcome.f5.desc": "Assistant d'évaluation Annexe 2 avec suivi du délai de 24h pour la notification OMS.",
+  "welcome.f6.title": "Analyses & export",
+  "welcome.f6.desc": "Tendances, chronologies de risque, répartitions. Export CSV/JSON pour les rapports.",
+  "welcome.swiss.title": "Conçu pour la santé publique suisse",
+  "welcome.swiss.desc": "Conçu pour l'Office fédéral de la santé publique (OFSP) et l'Office fédéral de la sécurité alimentaire et des affaires vétérinaires (OSAV) avec prise en charge complète du cadre juridique et organisationnel suisse.",
+  "welcome.swiss.bag": "OFSP",
+  "welcome.swiss.bagDesc": "Surveillance sanitaire humaine",
+  "welcome.swiss.blv": "OSAV",
+  "welcome.swiss.blvDesc": "Sécurité animale et alimentaire",
+  "welcome.swiss.ihr": "RSI / LEp",
+  "welcome.swiss.ihrDesc": "Conformité juridique",
+  "welcome.skip": "Passer",
+  "welcome.next": "Suivant",
+  "welcome.start": "Commencer",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -719,6 +810,36 @@ const it: Dict = {
   "source.WOAH.desc": "Notifiche ufficiali di malattie animali tramite WAHIS",
   "source.BEACON.desc": "Intelligence automatizzata in tempo reale su focolai epidemici",
   "source.CIDRAP.desc": "Centro di ricerca e politica sulle malattie infettive — notizie e analisi di esperti",
+
+  "welcome.acronym": "Swiss Epidemic Notification and Threat Intelligence Engine",
+  "welcome.intro": "Piattaforma di intelligence epidemiologica in tempo reale per le autorità sanitarie svizzere. SENTINEL aggrega i dati globali sulle epidemie, valuta le minacce in base alla rilevanza svizzera e supporta i flussi di lavoro di notifica conformi al RSI.",
+  "welcome.stat1": "12 fonti dati",
+  "welcome.stat2": "Raccolta 3x al giorno",
+  "welcome.stat3": "4 lingue ufficiali",
+  "welcome.capabilities": "Funzionalità principali",
+  "welcome.f1.title": "Sorveglianza globale",
+  "welcome.f1.desc": "OMS, ECDC, WOAH, ProMED e altre 8 fonti — unificate e deduplicate.",
+  "welcome.f2.title": "Triage intelligente",
+  "welcome.f2.desc": "Scoring del rischio basato su IA con ponderazione della rilevanza svizzera e tag One Health.",
+  "welcome.f3.title": "Tracciamento situazioni",
+  "welcome.f3.desc": "Raggruppa eventi in situazioni con cronologia, annotazioni ed escalation.",
+  "welcome.f4.title": "Motore di allerta",
+  "welcome.f4.desc": "Regole personalizzate con push WebSocket in tempo reale. Non perdere nessun segnale.",
+  "welcome.f5.title": "Conformità RSI",
+  "welcome.f5.desc": "Assistente di valutazione Allegato 2 con monitoraggio della scadenza di 24h per la notifica OMS.",
+  "welcome.f6.title": "Analisi ed export",
+  "welcome.f6.desc": "Tendenze, cronologie di rischio, distribuzione. Export CSV/JSON per i rapporti.",
+  "welcome.swiss.title": "Progettato per la sanità pubblica svizzera",
+  "welcome.swiss.desc": "Progettato per l'Ufficio federale della sanità pubblica (UFSP) e l'Ufficio federale della sicurezza alimentare e di veterinaria (USAV) con pieno supporto del quadro giuridico e organizzativo svizzero.",
+  "welcome.swiss.bag": "UFSP",
+  "welcome.swiss.bagDesc": "Sorveglianza sanitaria umana",
+  "welcome.swiss.blv": "USAV",
+  "welcome.swiss.blvDesc": "Sicurezza animale e alimentare",
+  "welcome.swiss.ihr": "RSI / LEp",
+  "welcome.swiss.ihrDesc": "Conformità legale",
+  "welcome.skip": "Salta",
+  "welcome.next": "Avanti",
+  "welcome.start": "Inizia",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -734,7 +855,7 @@ interface I18nContextValue {
 }
 
 const I18nContext = createContext<I18nContextValue>({
-  locale: "en",
+  locale: "de",
   setLocale: () => {},
   t: (key) => key,
 });
@@ -745,7 +866,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem("sentinel-locale") as Locale | null;
       if (saved && saved in DICTS) return saved;
     }
-    return "en";
+    return "de";
   });
 
   const setLocale = useCallback((l: Locale) => {
