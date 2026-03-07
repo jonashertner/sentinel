@@ -17,33 +17,80 @@
     "2026-03-06",
     "2026-03-07"
   ],
-  "total_events": 141,
+  "total_events": 140,
   "latest_collection": "2026-03-07",
   "projected_source_totals": {
     "WOAH": 5,
     "WHO_DON": 11,
     "ECDC": 19,
     "PROMED": 6,
-    "BEACON": 100
+    "BEACON": 99
   },
-  "collector_statuses": [],
+  "collector_statuses": [
+    {
+      "source": "WHO_EIOS",
+      "ok": false,
+      "event_count": 0,
+      "latency_seconds": 0.0,
+      "error": "Collector WHO_EIOS skipped: SENTINEL_WHO_EIOS_API_KEY is not configured"
+    },
+    {
+      "source": "WHO_DON",
+      "ok": true,
+      "event_count": 40,
+      "latency_seconds": 0.66,
+      "error": null
+    },
+    {
+      "source": "PROMED",
+      "ok": false,
+      "event_count": 0,
+      "latency_seconds": 1.08,
+      "error": "ProMED source unavailable: feed and sitemap fallback returned no events"
+    },
+    {
+      "source": "ECDC",
+      "ok": true,
+      "event_count": 10,
+      "latency_seconds": 0.46,
+      "error": null
+    },
+    {
+      "source": "WOAH",
+      "ok": true,
+      "event_count": 30,
+      "latency_seconds": 2.58,
+      "error": null
+    },
+    {
+      "source": "BEACON",
+      "ok": true,
+      "event_count": 120,
+      "latency_seconds": 1.97,
+      "error": null
+    },
+    {
+      "source": "CIDRAP",
+      "ok": false,
+      "event_count": 0,
+      "latency_seconds": 0.25,
+      "error": "CIDRAP source unavailable: official feed returned no events"
+    }
+  ],
   "ingestion_delta": {
     "latest_collection": "2026-03-07",
     "previous_collection": "2026-03-06",
-    "new_count": 278,
-    "changed_count": 15,
-    "retired_count": 51,
+    "new_count": 104,
+    "changed_count": 9,
+    "retired_count": 57,
     "new_by_source": {
-      "CIDRAP": 92,
-      "BEACON": 100,
-      "WHO_DON": 34,
-      "PROMED": 22,
-      "WOAH": 29,
-      "ECDC": 1
+      "BEACON": 99,
+      "WHO_DON": 2,
+      "ECDC": 1,
+      "WOAH": 2
     },
     "changed_by_source": {
-      "ECDC": 9,
-      "WHO_DON": 6
+      "ECDC": 9
     }
   }
 }
