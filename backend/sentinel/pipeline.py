@@ -4,6 +4,8 @@ import time
 from dataclasses import dataclass, field
 from datetime import date
 
+from sentinel.alerts.dispatch import dispatch_matches
+from sentinel.alerts.engine import evaluate_alerts, load_matches, load_rules, save_matches
 from sentinel.analysis.deduplicator import deduplicate
 from sentinel.analysis.executive_ops import assess_events
 from sentinel.analysis.llm_analyzer import analyze_events
@@ -152,11 +154,24 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     # 10. Save events
     store.save_events(today, all_events)
 
-    # 11. Generate and save daily report
+    # 11. Evaluate alert rules
+    try:
+        rules = load_rules()
+        if rules:
+            recent = load_matches()
+            matches = evaluate_alerts(all_events, rules, recent)
+            if matches:
+                save_matches(recent + matches)
+                await dispatch_matches(matches)
+                logger.info("Alert engine: %d matches dispatched", len(matches))
+    except Exception as e:
+        logger.error("Alert evaluation failed: %s", e)
+
+    # 12. Generate and save daily report
     report = generate_daily_brief(today, all_events)
     store.save_report(today, report)
 
-    # 12. Update manifest for frontend
+    # 13. Update manifest for frontend
     store.write_manifest()
 
     logger.info(
