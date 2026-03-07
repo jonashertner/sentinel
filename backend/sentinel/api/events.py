@@ -4,21 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from sentinel.api.deps import get_store
 from sentinel.models.event import HealthEvent, RiskCategory, Source
-from sentinel.projection import load_projected_events
+from sentinel.projection import deduplicate_by_latest, load_projected_events
 from sentinel.store import DataStore
 
 router = APIRouter()
-
-
-def _deduplicate_by_latest(events: list[HealthEvent]) -> list[HealthEvent]:
-    """When the same event ID appears across multiple collection dates,
-    keep only the observation with the latest date_collected."""
-    latest: dict[str, HealthEvent] = {}
-    for event in events:
-        existing = latest.get(event.id)
-        if existing is None or event.date_collected > existing.date_collected:
-            latest[event.id] = event
-    return list(latest.values())
 
 
 @router.get("", response_model=list[HealthEvent])
@@ -32,7 +21,7 @@ async def list_events(
     min_swiss_relevance: float | None = None,
     store: DataStore = Depends(get_store),
 ):
-    events = _deduplicate_by_latest(load_projected_events(store))
+    events = deduplicate_by_latest(load_projected_events(store))
 
     if date_from:
         events = [e for e in events if e.date_reported >= date_from]
@@ -54,7 +43,7 @@ async def list_events(
 
 @router.get("/latest", response_model=list[HealthEvent])
 async def latest_events(store: DataStore = Depends(get_store)):
-    events = _deduplicate_by_latest(load_projected_events(store))
+    events = deduplicate_by_latest(load_projected_events(store))
     if not events:
         return []
     latest_date = max(e.date_collected for e in events)
@@ -67,7 +56,7 @@ async def latest_events(store: DataStore = Depends(get_store)):
 
 @router.get("/stats")
 async def event_stats(store: DataStore = Depends(get_store)):
-    events = _deduplicate_by_latest(load_projected_events(store))
+    events = deduplicate_by_latest(load_projected_events(store))
     by_source: dict[str, int] = {}
     by_risk: dict[str, int] = {}
     by_disease: dict[str, int] = {}
@@ -87,7 +76,7 @@ async def event_stats(store: DataStore = Depends(get_store)):
 
 @router.get("/{event_id}/provenance")
 async def event_provenance(event_id: str, store: DataStore = Depends(get_store)):
-    events = _deduplicate_by_latest(load_projected_events(store))
+    events = deduplicate_by_latest(load_projected_events(store))
     for event in events:
         if event.id != event_id:
             continue
@@ -137,7 +126,7 @@ async def event_provenance(event_id: str, store: DataStore = Depends(get_store))
 
 @router.get("/{event_id}", response_model=HealthEvent)
 async def get_event(event_id: str, store: DataStore = Depends(get_store)):
-    events = _deduplicate_by_latest(load_projected_events(store))
+    events = deduplicate_by_latest(load_projected_events(store))
     for e in events:
         if e.id == event_id:
             return e

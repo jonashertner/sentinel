@@ -32,6 +32,14 @@ def require_write_access(
 ) -> None:
     """Protect mutating endpoints when SENTINEL_API_WRITE_KEY is configured."""
     if not settings.api_write_key:
-        return
+        if settings.deployment_env.lower() in {"dev", "development", "test"}:
+            return
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "Write endpoints are disabled: configure SENTINEL_API_WRITE_KEY "
+                "or set SENTINEL_DEPLOYMENT_ENV=development for local use."
+            ),
+        )
     if not x_api_key or not secrets.compare_digest(x_api_key, settings.api_write_key):
         raise HTTPException(status_code=401, detail="Unauthorized")

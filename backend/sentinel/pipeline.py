@@ -2,7 +2,7 @@ import asyncio
 import logging
 import time
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, timedelta
 
 from sentinel.alerts.dispatch import dispatch_matches
 from sentinel.alerts.engine import evaluate_alerts, load_matches, load_rules, save_matches
@@ -26,6 +26,7 @@ from sentinel.collectors.who_don import WHODONCollector
 from sentinel.collectors.who_eios import WHOEIOSCollector
 from sentinel.collectors.woah import WOAHCollector
 from sentinel.config import settings
+from sentinel.models.event import HealthEvent
 from sentinel.reports.daily_brief import generate_daily_brief
 from sentinel.store import DataStore
 
@@ -53,6 +54,26 @@ class PipelineResult:
     collector_statuses: list[CollectorStatus] = field(default_factory=list)
 
 
+def _apply_recency_gate(
+    events: list[HealthEvent],
+    *,
+    reference_day: date,
+    max_age_days: int,
+) -> tuple[list[HealthEvent], int]:
+    """Drop events outside the accepted reporting window."""
+    if max_age_days <= 0:
+        return events, 0
+    cutoff = reference_day - timedelta(days=max_age_days)
+    kept = []
+    dropped = 0
+    for event in events:
+        if event.date_reported < cutoff or event.date_reported > reference_day:
+            dropped += 1
+            continue
+        kept.append(event)
+    return kept, dropped
+
+
 async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     """Run the full SENTINEL pipeline: collect, normalize, deduplicate, score, analyze, report."""
     today = date.today()
@@ -70,7 +91,25 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     if settings.enable_woah:
         collectors.append(WOAHCollector())
     if settings.enable_who_eios:
-        collectors.append(WHOEIOSCollector(api_key=settings.who_eios_api_key or None))
+        who_eios_api_key = settings.who_eios_api_key.strip()
+        if who_eios_api_key:
+            collectors.append(WHOEIOSCollector(api_key=who_eios_api_key))
+        else:
+            error_msg = (
+                "Collector WHO_EIOS skipped: SENTINEL_WHO_EIOS_API_KEY is not configured"
+            )
+            result.errors.append(error_msg)
+            result.by_source["WHO_EIOS"] = 0
+            result.collector_statuses.append(
+                CollectorStatus(
+                    source="WHO_EIOS",
+                    ok=False,
+                    event_count=0,
+                    latency_seconds=0.0,
+                    error=error_msg,
+                )
+            )
+            logger.warning(error_msg)
     if settings.enable_beacon:
         collectors.append(BeaconCollector())
     if settings.enable_cidrap:
@@ -126,35 +165,48 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     # 2. Normalize
     all_events = [normalize_event(e) for e in all_events]
 
-    # 3. Deduplicate
+    # 3. Recency gate
+    all_events, dropped_count = _apply_recency_gate(
+        all_events,
+        reference_day=today,
+        max_age_days=settings.max_event_age_days,
+    )
+    if dropped_count:
+        logger.warning(
+            "Dropped %d events outside %d-day reporting window",
+            dropped_count,
+            settings.max_event_age_days,
+        )
+
+    # 4. Deduplicate
     all_events = deduplicate(all_events)
     result.events_after_dedup = len(all_events)
 
-    # 4. Rule-engine scoring
+    # 5. Rule-engine scoring
     all_events = [score_event(e) for e in all_events]
 
-    # 5. Swiss relevance
+    # 6. Swiss relevance
     all_events = [compute_swiss_relevance(e) for e in all_events]
 
-    # 6. Executive operations scoring (confidence, urgency, lead authority)
+    # 7. Executive operations scoring (confidence, urgency, lead authority)
     all_events = assess_events(all_events)
 
-    # 7. Decision playbooks (hazard class, SLA timer, escalation workflow)
+    # 8. Decision playbooks (hazard class, SLA timer, escalation workflow)
     all_events = apply_playbooks(all_events)
 
-    # 8. LLM analysis (events >= 4.0)
+    # 9. LLM analysis (events >= 4.0)
     all_events = await analyze_events(all_events, threshold=4.0)
     result.events_analyzed = sum(1 for e in all_events if e.analysis)
 
-    # 9. Count by risk category
+    # 10. Count by risk category
     for e in all_events:
         cat = e.risk_category.value
         result.by_risk[cat] = result.by_risk.get(cat, 0) + 1
 
-    # 10. Save events
+    # 11. Save events
     store.save_events(today, all_events)
 
-    # 11. Evaluate alert rules
+    # 12. Evaluate alert rules
     try:
         rules = load_rules()
         if rules:
@@ -167,11 +219,11 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     except Exception as e:
         logger.error("Alert evaluation failed: %s", e)
 
-    # 12. Generate and save daily report
+    # 13. Generate and save daily report
     report = generate_daily_brief(today, all_events)
     store.save_report(today, report)
 
-    # 13. Update manifest for frontend
+    # 14. Update manifest for frontend
     store.write_manifest()
 
     logger.info(

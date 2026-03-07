@@ -70,7 +70,11 @@ class DataStore:
     def load_situations(self) -> list[Situation]:
         situations = []
         for path in sorted(self.situations_dir.glob("*.json")):
-            situations.append(Situation.model_validate_json(path.read_text()))
+            situation = Situation.model_validate_json(path.read_text())
+            if situation.id != path.stem:
+                # Keep routing stable by using filename ID as canonical source.
+                situation.id = path.stem
+            situations.append(situation)
         return situations
 
     def save_annotation(self, annotation: Annotation) -> None:
@@ -99,12 +103,20 @@ class DataStore:
         report_dates = sorted(
             p.stem.replace("-daily", "") for p in self.reports_dir.glob("*-daily.md")
         )
-        total_events = 0
+        latest_by_id: dict[str, dict] = {}
         latest_collection = ""
         for d in reversed(event_dates):
             path = self.events_dir / f"{d}.json"
             data = json.loads(path.read_text())
-            total_events += len(data)
+            for item in data:
+                event_id = str(item.get("id", ""))
+                if not event_id:
+                    continue
+                item_collected = str(item.get("date_collected", d))
+                existing = latest_by_id.get(event_id)
+                existing_collected = str(existing.get("date_collected", "")) if existing else ""
+                if not existing or item_collected > existing_collected:
+                    latest_by_id[event_id] = item
             if not latest_collection and data:
                 latest_collection = data[0].get("date_collected", d)
 
@@ -112,7 +124,7 @@ class DataStore:
             "event_dates": event_dates,
             "situation_ids": situation_ids,
             "report_dates": report_dates,
-            "total_events": total_events,
+            "total_events": len(latest_by_id),
             "latest_collection": latest_collection or event_dates[-1] if event_dates else "",
         }
         path = self.base / "manifest.json"

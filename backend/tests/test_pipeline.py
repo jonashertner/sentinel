@@ -69,6 +69,7 @@ class TestPipeline:
             mock_settings.enable_ecdc = True
             mock_settings.enable_woah = True
             mock_settings.enable_who_eios = True
+            mock_settings.who_eios_api_key = "test-key"
             mock_settings.enable_beacon = True
             mock_settings.enable_cidrap = True
             mock_settings.enable_nnsid = False
@@ -76,6 +77,7 @@ class TestPipeline:
             mock_settings.enable_bag_bulletin = False
             mock_settings.enable_rasff = False
             mock_settings.enable_wastewater = False
+            mock_settings.max_event_age_days = 30
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 
@@ -123,6 +125,7 @@ class TestPipeline:
             mock_settings.enable_ecdc = True
             mock_settings.enable_woah = True
             mock_settings.enable_who_eios = True
+            mock_settings.who_eios_api_key = "test-key"
             mock_settings.enable_beacon = True
             mock_settings.enable_cidrap = True
             mock_settings.enable_nnsid = False
@@ -130,6 +133,7 @@ class TestPipeline:
             mock_settings.enable_bag_bulletin = False
             mock_settings.enable_rasff = False
             mock_settings.enable_wastewater = False
+            mock_settings.max_event_age_days = 30
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 
@@ -183,6 +187,7 @@ class TestPipeline:
             mock_settings.enable_ecdc = True
             mock_settings.enable_woah = True
             mock_settings.enable_who_eios = True
+            mock_settings.who_eios_api_key = "test-key"
             mock_settings.enable_beacon = True
             mock_settings.enable_cidrap = True
             mock_settings.enable_nnsid = False
@@ -190,6 +195,7 @@ class TestPipeline:
             mock_settings.enable_bag_bulletin = False
             mock_settings.enable_rasff = False
             mock_settings.enable_wastewater = False
+            mock_settings.max_event_age_days = 30
             mock_settings.data_dir = tmpdir
             mock_llm_settings.anthropic_api_key = ""
 
@@ -197,3 +203,113 @@ class TestPipeline:
 
         assert result.by_source["WHO_DON"] == 2
         assert sum(result.by_risk.values()) == result.events_after_dedup
+
+    @pytest.mark.asyncio
+    async def test_pipeline_marks_who_eios_unconfigured(self):
+        mock_who = AsyncMock()
+        mock_who.source_name = "WHO_DON"
+        mock_who.collect = AsyncMock(return_value=[_make_event(source=Source.WHO_DON)])
+
+        with (
+            tempfile.TemporaryDirectory() as tmpdir,
+            patch("sentinel.pipeline.settings") as mock_settings,
+            patch("sentinel.pipeline.WHODONCollector", return_value=mock_who),
+            patch("sentinel.pipeline.ProMEDCollector", return_value=AsyncMock(
+                source_name="PROMED", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.ECDCCollector", return_value=AsyncMock(
+                source_name="ECDC", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.WOAHCollector", return_value=AsyncMock(
+                source_name="WOAH", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.BeaconCollector", return_value=AsyncMock(
+                source_name="BEACON", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.CIDRAPCollector", return_value=AsyncMock(
+                source_name="CIDRAP", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.analysis.llm_analyzer.settings") as mock_llm_settings,
+        ):
+            mock_settings.enable_who_don = True
+            mock_settings.enable_promed = True
+            mock_settings.enable_ecdc = True
+            mock_settings.enable_woah = True
+            mock_settings.enable_who_eios = True
+            mock_settings.who_eios_api_key = ""
+            mock_settings.enable_beacon = True
+            mock_settings.enable_cidrap = True
+            mock_settings.enable_nnsid = False
+            mock_settings.enable_sentinella = False
+            mock_settings.enable_bag_bulletin = False
+            mock_settings.enable_rasff = False
+            mock_settings.enable_wastewater = False
+            mock_settings.max_event_age_days = 30
+            mock_settings.data_dir = tmpdir
+            mock_llm_settings.anthropic_api_key = ""
+
+            result = await run_pipeline(data_dir=tmpdir)
+
+        who_eios_status = [s for s in result.collector_statuses if s.source == "WHO_EIOS"]
+        assert len(who_eios_status) == 1
+        assert not who_eios_status[0].ok
+        assert "not configured" in (who_eios_status[0].error or "")
+
+    @pytest.mark.asyncio
+    async def test_pipeline_applies_recency_gate(self):
+        stale = _make_event(source=Source.WHO_DON).model_copy(
+            update={"date_reported": date(2010, 1, 1)}
+        )
+        recent = _make_event(source=Source.WHO_DON).model_copy(
+            update={"date_reported": date.today()}
+        )
+
+        mock_who = AsyncMock()
+        mock_who.source_name = "WHO_DON"
+        mock_who.collect = AsyncMock(return_value=[stale, recent])
+
+        with (
+            tempfile.TemporaryDirectory() as tmpdir,
+            patch("sentinel.pipeline.settings") as mock_settings,
+            patch("sentinel.pipeline.WHODONCollector", return_value=mock_who),
+            patch("sentinel.pipeline.ProMEDCollector", return_value=AsyncMock(
+                source_name="PROMED", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.ECDCCollector", return_value=AsyncMock(
+                source_name="ECDC", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.WOAHCollector", return_value=AsyncMock(
+                source_name="WOAH", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.WHOEIOSCollector", return_value=AsyncMock(
+                source_name="WHO_EIOS", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.BeaconCollector", return_value=AsyncMock(
+                source_name="BEACON", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.pipeline.CIDRAPCollector", return_value=AsyncMock(
+                source_name="CIDRAP", collect=AsyncMock(return_value=[])
+            )),
+            patch("sentinel.analysis.llm_analyzer.settings") as mock_llm_settings,
+        ):
+            mock_settings.enable_who_don = True
+            mock_settings.enable_promed = True
+            mock_settings.enable_ecdc = True
+            mock_settings.enable_woah = True
+            mock_settings.enable_who_eios = True
+            mock_settings.who_eios_api_key = "test-key"
+            mock_settings.enable_beacon = True
+            mock_settings.enable_cidrap = True
+            mock_settings.enable_nnsid = False
+            mock_settings.enable_sentinella = False
+            mock_settings.enable_bag_bulletin = False
+            mock_settings.enable_rasff = False
+            mock_settings.enable_wastewater = False
+            mock_settings.max_event_age_days = 30
+            mock_settings.data_dir = tmpdir
+            mock_llm_settings.anthropic_api_key = ""
+
+            result = await run_pipeline(data_dir=tmpdir)
+
+        assert result.events_collected == 2
+        assert result.events_after_dedup == 1

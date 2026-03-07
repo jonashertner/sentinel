@@ -1,12 +1,22 @@
 from sentinel.models.event import HealthEvent, SourceEvidence
 
-SOURCE_PRIORITY = {"ECDC": 5, "WHO_DON": 4, "WOAH": 3, "PROMED": 2, "WHO_EIOS": 1}
+SOURCE_PRIORITY = {
+    "ECDC": 7,
+    "WHO_DON": 6,
+    "WOAH": 5,
+    "CIDRAP": 4,
+    "PROMED": 3,
+    "BEACON": 2,
+    "WHO_EIOS": 1,
+}
 
 SOURCE_CONFIDENCE = {
     "WHO_DON": 0.95,
     "ECDC": 0.95,
     "WOAH": 0.90,
+    "CIDRAP": 0.80,
     "PROMED": 0.75,
+    "BEACON": 0.70,
     "WHO_EIOS": 0.60,
 }
 

@@ -147,6 +147,25 @@ def test_create_annotation_enforces_write_key_when_configured(tmp_path):
         app.dependency_overrides.clear()
 
 
+def test_create_annotation_disabled_without_key_in_production(tmp_path):
+    store = DataStore(data_dir=str(tmp_path))
+    _seed_events(store)
+    app.dependency_overrides[get_store] = lambda: store
+    client = TestClient(app)
+
+    original_key = settings.api_write_key
+    original_env = settings.deployment_env
+    settings.api_write_key = ""
+    settings.deployment_env = "production"
+    try:
+        resp = client.post("/api/annotations", json=_annotation_body())
+        assert resp.status_code == 503
+    finally:
+        settings.api_write_key = original_key
+        settings.deployment_env = original_env
+        app.dependency_overrides.clear()
+
+
 def test_create_annotation_with_playbook_override(tmp_path):
     store = DataStore(data_dir=str(tmp_path))
     _seed_events(store)

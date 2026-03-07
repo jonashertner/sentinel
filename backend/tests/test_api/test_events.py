@@ -21,7 +21,7 @@ def _make_event(**kwargs) -> HealthEvent:
         regions=["EURO"],
         species=Species.ANIMAL,
         summary="Test",
-        url="https://example.com",
+        url="https://www.who.int/example",
         raw_content="Test content",
         risk_score=7.5,
         swiss_relevance=6.0,
@@ -47,6 +47,7 @@ def client(tmp_path):
                 disease="Mpox",
                 countries=["CH"],
                 source=Source.ECDC,
+                url="https://www.ecdc.europa.eu/en/example",
                 risk_score=9.0,
                 swiss_relevance=10.0,
             ),
@@ -141,3 +142,25 @@ class TestEventsAPI:
         resp = client.get("/api/health")
         assert resp.status_code == 200
         assert resp.json()["status"] == "ok"
+
+    def test_filters_untrusted_source_domain(self, tmp_path):
+        store = DataStore(data_dir=str(tmp_path))
+        good = _make_event(
+            source=Source.CIDRAP,
+            url="https://www.cidrap.umn.edu/news-perspective/2026/03/test",
+        )
+        bad = _make_event(
+            source=Source.CIDRAP,
+            id=f"{good.id}-bad",
+            url="https://news.google.com/rss/articles/fake",
+        )
+        store.save_events(date(2026, 3, 6), [good, bad])
+        app.dependency_overrides[get_store] = lambda: store
+        local_client = TestClient(app)
+
+        resp = local_client.get("/api/events")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert len(data) == 1
+        assert data[0]["url"].startswith("https://www.cidrap.umn.edu/")
+        app.dependency_overrides.clear()

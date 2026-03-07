@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 from sentinel.api.deps import get_store
 from sentinel.models.event import RiskCategory, Source
-from sentinel.projection import load_projected_events
+from sentinel.projection import deduplicate_by_latest, load_projected_events
 from sentinel.reports.csv_export import events_to_csv
 from sentinel.store import DataStore
 
@@ -25,7 +25,7 @@ class ExportFilter(BaseModel):
 
 
 def _filter_events(store: DataStore, f: ExportFilter):
-    events = load_projected_events(store)
+    events = deduplicate_by_latest(load_projected_events(store))
     if f.date_from:
         events = [e for e in events if e.date_reported >= f.date_from]
     if f.date_to:

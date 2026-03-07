@@ -5,6 +5,8 @@ to get events with analyst overrides applied and dependent fields reconciled.
 """
 
 from collections import defaultdict
+from datetime import date, timedelta
+from urllib.parse import urlparse
 
 from sentinel.analysis.executive_ops import (
     BASE_DECISION_WINDOW_HOURS,
@@ -16,8 +18,9 @@ from sentinel.analysis.playbooks import (
     PLAYBOOK_WORKFLOWS,
     _escalation_level,
 )
+from sentinel.config import settings
 from sentinel.models.annotation import Annotation
-from sentinel.models.event import AnalystOverride, HealthEvent
+from sentinel.models.event import AnalystOverride, HealthEvent, Source
 from sentinel.store import DataStore
 
 
@@ -54,6 +57,59 @@ def _reconcile_dependent_fields(
             break
 
     return event
+
+
+def deduplicate_by_latest(events: list[HealthEvent]) -> list[HealthEvent]:
+    """When the same event ID appears across collection dates, keep latest observation."""
+    latest: dict[str, HealthEvent] = {}
+    for event in events:
+        existing = latest.get(event.id)
+        if existing is None or event.date_collected > existing.date_collected:
+            latest[event.id] = event
+    return list(latest.values())
+
+
+def _filter_recent_events(events: list[HealthEvent]) -> list[HealthEvent]:
+    max_age_days = settings.max_event_age_days
+    if max_age_days <= 0:
+        return events
+    today = date.today()
+    cutoff = today - timedelta(days=max_age_days)
+    return [event for event in events if cutoff <= event.date_reported <= today]
+
+
+TRUSTED_SOURCE_DOMAINS: dict[Source, tuple[str, ...]] = {
+    Source.WHO_DON: ("who.int",),
+    Source.ECDC: ("ecdc.europa.eu",),
+    Source.WOAH: ("woah.org",),
+    Source.PROMED: ("promedmail.org",),
+    Source.CIDRAP: ("cidrap.umn.edu",),
+    Source.BEACON: ("healthmap.org", "beacon.healthmap.org"),
+}
+
+
+def _domain_allowed(url: str, allowed_domains: tuple[str, ...]) -> bool:
+    if not url:
+        return False
+    host = urlparse(url).netloc.lower()
+    if not host:
+        return False
+    return any(host == domain or host.endswith(f".{domain}") for domain in allowed_domains)
+
+
+def _filter_trusted_sources(events: list[HealthEvent]) -> list[HealthEvent]:
+    who_eios_enabled = bool(settings.who_eios_api_key.strip())
+    filtered: list[HealthEvent] = []
+    for event in events:
+        if event.source == Source.WHO_EIOS and not who_eios_enabled:
+            continue
+        allowed_domains = TRUSTED_SOURCE_DOMAINS.get(event.source)
+        if not allowed_domains:
+            filtered.append(event)
+            continue
+        if _domain_allowed(event.url, allowed_domains):
+            filtered.append(event)
+    return filtered
 
 
 def apply_annotation_overrides(
@@ -124,6 +180,6 @@ def load_projected_events(store: DataStore) -> list[HealthEvent]:
 
     All API routes, exports, analytics, and reports should use this.
     """
-    events = store.load_all_events()
+    events = _filter_trusted_sources(_filter_recent_events(store.load_all_events()))
     annotations = store.load_annotations()
     return apply_annotation_overrides(events, annotations)

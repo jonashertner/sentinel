@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    deployment_env: str = "production"
     anthropic_api_key: str = ""
     who_eios_api_key: str = ""
     data_dir: str = "data"
@@ -9,6 +10,7 @@ class Settings(BaseSettings):
     mapbox_token: str = ""
     api_allowed_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
     api_write_key: str = ""
+    max_event_age_days: int = 30
 
     # Database — set store_backend="postgres" and database_url to use PostgreSQL
     store_backend: str = "file"  # "file" or "postgres"

@@ -17,10 +17,6 @@ PROMED_FEEDS = (
     "https://www.promedmail.org/feed/",
     PROMED_FEED,
 )
-PROMED_NEWS_FALLBACK = (
-    "https://news.google.com/rss/search?q=site:promedmail.org+infectious+disease"
-    "&hl=en-US&gl=US&ceid=US:en"
-)
 PROMED_POSTS_SITEMAP = "https://www.promedmail.org/posts-sitemap.xml"
 
 
@@ -42,21 +38,16 @@ class ProMEDCollector(BaseCollector):
                 if events:
                     return events
 
-            # Fallback 1: Google News RSS scoped to promedmail.org.
-            news_resp = await client.get(PROMED_NEWS_FALLBACK)
-            if news_resp.status_code < 400:
-                events = self.parse_google_news(news_resp.text)
-                if events:
-                    return events
-
-            # Fallback 2: posts sitemap if feed access is unavailable.
+            # Fallback: posts sitemap if feed access is unavailable.
             sitemap_resp = await client.get(PROMED_POSTS_SITEMAP)
             if sitemap_resp.status_code < 400:
                 events = self.parse_posts_sitemap(sitemap_resp.text)
                 if events:
                     return events
 
-        raise RuntimeError("ProMED source unavailable: feed and fallbacks returned no events")
+        raise RuntimeError(
+            "ProMED source unavailable: feed and sitemap fallback returned no events"
+        )
 
     def parse_feed(self, xml: str) -> list[HealthEvent]:
         feed = feedparser.parse(xml)
@@ -99,27 +90,6 @@ class ProMEDCollector(BaseCollector):
             raw_content=summary,
         )
 
-    def parse_google_news(self, xml: str) -> list[HealthEvent]:
-        feed = feedparser.parse(xml)
-        events: list[HealthEvent] = []
-        for entry in feed.entries:
-            title = entry.get("title", "")
-            # Common format: "<headline> - <source>"
-            if " - " in title:
-                title = title.rsplit(" - ", 1)[0]
-
-            event = self._parse_entry(
-                {
-                    "title": title,
-                    "link": entry.get("link", "https://www.promedmail.org"),
-                    "summary": entry.get("summary", ""),
-                    "published_parsed": entry.get("published_parsed"),
-                }
-            )
-            if event:
-                events.append(event)
-        return events
-
     def parse_posts_sitemap(self, xml: str) -> list[HealthEvent]:
         events: list[HealthEvent] = []
         for loc, lastmod in re.findall(r"<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>", xml):
@@ -128,6 +98,8 @@ class ProMEDCollector(BaseCollector):
                 url = f"https://{url.lstrip('/')}"
             slug = url.rstrip("/").rsplit("/", 1)[-1]
             title = slug.replace("-", " ").strip().title()
+            if not self._is_outbreak_signal_title(title):
+                continue
 
             try:
                 date_reported = date.fromisoformat(lastmod[:10])
@@ -151,6 +123,30 @@ class ProMEDCollector(BaseCollector):
             events.append(event)
 
         return events
+
+    def _is_outbreak_signal_title(self, title: str) -> bool:
+        lower = title.lower()
+        keywords = (
+            "outbreak",
+            "influenza",
+            "cholera",
+            "dengue",
+            "ebola",
+            "marburg",
+            "lassa",
+            "mpox",
+            "measles",
+            "polio",
+            "plague",
+            "tuberculosis",
+            "rabies",
+            "chikungunya",
+            "zika",
+            "nipah",
+            "mers",
+            "cchf",
+        )
+        return any(keyword in lower for keyword in keywords)
 
     def _detect_species(self, title: str) -> Species:
         """Detect species from ProMED subject line prefix."""

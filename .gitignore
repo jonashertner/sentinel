@@ -26,3 +26,6 @@ Thumbs.db
 # Secrets
 .env.local
 .env.production
+
+# Runtime artifacts
+backend/data/

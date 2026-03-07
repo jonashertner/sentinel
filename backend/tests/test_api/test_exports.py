@@ -20,7 +20,7 @@ def _make_event(**kwargs) -> HealthEvent:
         regions=["EURO"],
         species=Species.ANIMAL,
         summary="Test",
-        url="https://example.com",
+        url="https://www.who.int/example",
         raw_content="Test content",
         risk_score=7.5,
         swiss_relevance=6.0,
@@ -83,3 +83,23 @@ class TestExportsAPI:
     def test_get_report_not_found(self, client):
         resp = client.get("/api/exports/reports/2020-01-01")
         assert resp.status_code == 404
+
+    def test_export_deduplicates_same_id_by_latest_collection(self, tmp_path):
+        store = DataStore(data_dir=str(tmp_path))
+        first = _make_event(date_collected=date(2026, 3, 6), risk_score=4.0)
+        latest = _make_event(
+            id=first.id,
+            date_collected=date(2026, 3, 7),
+            risk_score=9.0,
+        )
+        store.save_events(date(2026, 3, 6), [first])
+        store.save_events(date(2026, 3, 7), [latest])
+
+        app.dependency_overrides[get_store] = lambda: store
+        local_client = TestClient(app)
+        resp = local_client.post("/api/exports/json", json={})
+        assert resp.status_code == 200
+        data = resp.json()
+        assert len(data) == 1
+        assert data[0]["risk_score"] == 9.0
+        app.dependency_overrides.clear()

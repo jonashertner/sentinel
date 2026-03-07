@@ -3,7 +3,7 @@ from collections import defaultdict
 from fastapi import APIRouter, Depends
 
 from sentinel.api.deps import get_store
-from sentinel.projection import load_projected_events
+from sentinel.projection import deduplicate_by_latest, load_projected_events
 from sentinel.store import DataStore
 
 router = APIRouter()
@@ -12,7 +12,7 @@ router = APIRouter()
 @router.get("/trends")
 async def trends(store: DataStore = Depends(get_store)):
     """Events per day grouped by disease (for charts)."""
-    events = load_projected_events(store)
+    events = deduplicate_by_latest(load_projected_events(store))
     data: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
     for e in events:
         day = e.date_reported.isoformat()
@@ -26,7 +26,7 @@ async def trends(store: DataStore = Depends(get_store)):
 @router.get("/sources")
 async def sources(store: DataStore = Depends(get_store)):
     """Events per source per day."""
-    events = load_projected_events(store)
+    events = deduplicate_by_latest(load_projected_events(store))
     data: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
     for e in events:
         day = e.date_reported.isoformat()
@@ -40,7 +40,7 @@ async def sources(store: DataStore = Depends(get_store)):
 @router.get("/risk-timeline")
 async def risk_timeline(store: DataStore = Depends(get_store)):
     """Average risk score and swiss relevance per day."""
-    events = load_projected_events(store)
+    events = deduplicate_by_latest(load_projected_events(store))
     buckets: dict[str, list[tuple[float, float]]] = defaultdict(list)
     for e in events:
         day = e.date_reported.isoformat()
