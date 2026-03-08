@@ -1,5 +1,5 @@
 {
-    "id": "sit-001-h5n1",
+    "id": "sit-001-h5n1-europe",
     "title": "H5N1 Avian Influenza \u2014 European Poultry Outbreaks 2026",
     "status": "ESCALATED",
     "created": "2026-03-01",
@@ -10,8 +10,7 @@
         "evt-20260303-001",
         "evt-20260303-002",
         "evt-20260304-001",
-        "evt-20260305-001",
-        "evt-20260306-001"
+        "evt-20260305-001"
     ],
     "diseases": ["Avian influenza A(H5N1)"],
     "countries": ["NL", "DE", "FR", "AT"],

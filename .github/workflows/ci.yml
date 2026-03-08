@@ -38,7 +38,5 @@ jobs:
         run: cd frontend && npm ci
       - name: Lint
         run: cd frontend && npm run lint
-      - name: Copy data
-        run: cp -r data/ frontend/public/data/
       - name: Build
         run: cd frontend && npm run build

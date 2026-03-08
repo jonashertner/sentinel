@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync-data": "node ./scripts/sync-data.mjs",
+    "predev": "npm run sync-data",
+    "prebuild": "npm run sync-data",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

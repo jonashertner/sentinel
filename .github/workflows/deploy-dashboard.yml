@@ -30,8 +30,6 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
         run: cd frontend && npm ci
-      - name: Copy data to public
-        run: cp -r data/ frontend/public/data/
       - name: Build
         run: cd frontend && npm run build
         env:

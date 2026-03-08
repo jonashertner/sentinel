@@ -171,10 +171,7 @@ cd backend && uv run python -m sentinel.pipeline
 ### 3. Run the dashboard
 
 ```bash
-# Copy pipeline output to frontend
-cp -r data/ frontend/public/data/
-
-# Start development server
+# Start development server (syncs root data/ into frontend/public/data/)
 cd frontend && npm run dev
 ```
 
