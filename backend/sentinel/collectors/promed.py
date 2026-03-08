@@ -6,7 +6,7 @@ import feedparser
 import httpx
 
 from sentinel.analysis.normalizer import normalize_country
-from sentinel.collectors.base import BaseCollector
+from sentinel.collectors.base import BaseCollector, CollectorSkipped
 from sentinel.models.event import HealthEvent, Source, Species
 
 logger = logging.getLogger(__name__)
@@ -18,6 +18,7 @@ PROMED_FEEDS = (
     PROMED_FEED,
 )
 PROMED_POSTS_SITEMAP = "https://www.promedmail.org/posts-sitemap.xml"
+PROMED_SEARCH = "https://www.promedmail.org/search"
 
 
 class ProMEDCollector(BaseCollector):
@@ -44,6 +45,18 @@ class ProMEDCollector(BaseCollector):
                 events = self.parse_posts_sitemap(sitemap_resp.text)
                 if events:
                     return events
+
+            search_resp = await client.get(PROMED_SEARCH, follow_redirects=False)
+            if search_resp.status_code in {301, 302, 303, 307, 308}:
+                location = search_resp.headers.get("location", "").lower()
+                if any(token in location for token in ("subscribe", "login", "sign", "auth")):
+                    raise CollectorSkipped(
+                        "Collector PROMED skipped: public search requires subscription/authentication"
+                    )
+            if search_resp.status_code in {401, 403}:
+                raise CollectorSkipped(
+                    "Collector PROMED skipped: public search requires subscription/authentication"
+                )
 
         raise RuntimeError(
             "ProMED source unavailable: feed and sitemap fallback returned no events"

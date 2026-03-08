@@ -19,14 +19,15 @@
     "2026-03-07",
     "2026-03-08"
   ],
-  "total_events": 183,
+  "total_events": 193,
   "latest_collection": "2026-03-08",
   "projected_source_totals": {
     "WOAH": 5,
     "WHO_DON": 11,
     "ECDC": 19,
     "PROMED": 6,
-    "BEACON": 142
+    "BEACON": 142,
+    "CIDRAP": 10
   },
   "collector_statuses": [
     {
@@ -40,53 +41,54 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 2.25,
+      "latency_seconds": 0.27,
       "error": null
     },
     {
       "source": "PROMED",
       "ok": false,
       "event_count": 0,
-      "latency_seconds": 1.13,
-      "error": "ProMED source unavailable: feed and sitemap fallback returned no events"
+      "latency_seconds": 0.0,
+      "error": "Collector PROMED skipped: public search requires subscription/authentication"
     },
     {
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 3.9,
+      "latency_seconds": 0.14,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.38,
+      "latency_seconds": 2.24,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 3.75,
+      "latency_seconds": 4.81,
       "error": null
     },
     {
       "source": "CIDRAP",
-      "ok": false,
-      "event_count": 0,
-      "latency_seconds": 0.19,
-      "error": "CIDRAP source unavailable: official feed returned no events"
+      "ok": true,
+      "event_count": 12,
+      "latency_seconds": 1.87,
+      "error": null
     }
   ],
   "ingestion_delta": {
     "latest_collection": "2026-03-08",
     "previous_collection": "2026-03-07",
-    "new_count": 43,
+    "new_count": 53,
     "changed_count": 18,
     "retired_count": 46,
     "new_by_source": {
-      "BEACON": 43
+      "BEACON": 43,
+      "CIDRAP": 10
     },
     "changed_by_source": {
       "BEACON": 16,

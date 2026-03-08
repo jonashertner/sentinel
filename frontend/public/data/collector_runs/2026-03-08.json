@@ -10,42 +10,42 @@
     "source": "WHO_DON",
     "ok": true,
     "event_count": 40,
-    "latency_seconds": 0.79,
+    "latency_seconds": 0.27,
     "error": null
   },
   {
     "source": "PROMED",
     "ok": false,
     "event_count": 0,
-    "latency_seconds": 1.48,
-    "error": "ProMED source unavailable: feed and sitemap fallback returned no events"
+    "latency_seconds": 0.0,
+    "error": "Collector PROMED skipped: public search requires subscription/authentication"
   },
   {
     "source": "ECDC",
     "ok": true,
     "event_count": 10,
-    "latency_seconds": 0.62,
+    "latency_seconds": 0.14,
     "error": null
   },
   {
     "source": "WOAH",
     "ok": true,
     "event_count": 30,
-    "latency_seconds": 2.52,
+    "latency_seconds": 2.24,
     "error": null
   },
   {
     "source": "BEACON",
     "ok": true,
     "event_count": 120,
-    "latency_seconds": 4.75,
+    "latency_seconds": 4.81,
     "error": null
   },
   {
     "source": "CIDRAP",
-    "ok": false,
-    "event_count": 0,
-    "latency_seconds": 0.09,
-    "error": "CIDRAP source unavailable: official feed returned no events"
+    "ok": true,
+    "event_count": 12,
+    "latency_seconds": 1.87,
+    "error": null
   }
 ]

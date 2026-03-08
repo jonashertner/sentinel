@@ -78,7 +78,10 @@ const REGION_COLORS: Record<string, string> = {
   "Western Pacific": "#06b6d4",
 };
 
-
+function isSkippedCollector(status: CollectorStatus): boolean {
+  const error = (status.error || "").toLowerCase();
+  return error.includes("skipped") || error.includes("not configured");
+}
 
 export default function CommandCenter() {
   const { t } = useI18n();
@@ -279,16 +282,30 @@ export default function CommandCenter() {
         label: t("cc.pipelineUnavailable"),
       };
     }
-    const failed = collectorStatuses.filter((s) => !s.ok);
-    if (failed.length === 0) {
+    const skipped = collectorStatuses.filter((s) => !s.ok && isSkippedCollector(s));
+    const failed = collectorStatuses.filter((s) => !s.ok && !isSkippedCollector(s));
+    const okCount = collectorStatuses.length - skipped.length - failed.length;
+
+    if (failed.length === 0 && skipped.length === 0) {
       return {
         dotClass: "bg-sentinel-clear",
         label: `${t("cc.pipelineHealthy")} • ${collectorStatuses.length} ${t("cc.pipelineSourcesOk")}`,
       };
     }
+
+    if (failed.length === 0) {
+      return {
+        dotClass: "bg-sentinel-text-muted",
+        label: `${okCount}/${collectorStatuses.length} ${t("cc.pipelineSourcesOk")} • ${skipped.length} ${t("cc.pipelineSourcesSkipped")}`,
+      };
+    }
+
     return {
-      dotClass: failed.length === collectorStatuses.length ? "bg-sentinel-critical" : "bg-sentinel-high",
-      label: `${failed.length}/${collectorStatuses.length} ${t("cc.pipelineSourcesFailed")}`,
+      dotClass: okCount === 0 && skipped.length === 0 ? "bg-sentinel-critical" : "bg-sentinel-high",
+      label:
+        skipped.length > 0
+          ? `${failed.length}/${collectorStatuses.length} ${t("cc.pipelineSourcesFailed")} • ${skipped.length} ${t("cc.pipelineSourcesSkipped")}`
+          : `${failed.length}/${collectorStatuses.length} ${t("cc.pipelineSourcesFailed")}`,
     };
   }, [collectorStatuses, t]);
 

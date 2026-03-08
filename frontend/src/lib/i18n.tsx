@@ -79,6 +79,7 @@ const en: Dict = {
   "cc.pipelineHealthy": "Pipeline healthy",
   "cc.pipelineSourcesOk": "sources OK",
   "cc.pipelineSourcesFailed": "source collectors failed",
+  "cc.pipelineSourcesSkipped": "source collectors skipped",
 
   // Metrics
   "metric.events": "events",
@@ -321,6 +322,7 @@ const de: Dict = {
   "cc.pipelineHealthy": "Pipeline stabil",
   "cc.pipelineSourcesOk": "Quellen OK",
   "cc.pipelineSourcesFailed": "Quellkollektoren fehlgeschlagen",
+  "cc.pipelineSourcesSkipped": "Quellkollektoren übersprungen",
 
   "metric.events": "Ereignisse",
   "metric.cases": "Fälle",
@@ -548,6 +550,7 @@ const fr: Dict = {
   "cc.pipelineHealthy": "Pipeline sain",
   "cc.pipelineSourcesOk": "sources OK",
   "cc.pipelineSourcesFailed": "collecteurs de sources en échec",
+  "cc.pipelineSourcesSkipped": "collecteurs de sources ignorés",
 
   "metric.events": "événements",
   "metric.cases": "cas",
@@ -775,6 +778,7 @@ const it: Dict = {
   "cc.pipelineHealthy": "Pipeline in salute",
   "cc.pipelineSourcesOk": "fonti OK",
   "cc.pipelineSourcesFailed": "collector delle fonti non riusciti",
+  "cc.pipelineSourcesSkipped": "collector delle fonti saltati",
 
   "metric.events": "eventi",
   "metric.cases": "casi",

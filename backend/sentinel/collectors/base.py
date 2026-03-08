@@ -3,6 +3,10 @@ from abc import ABC, abstractmethod
 from sentinel.models.event import HealthEvent
 
 
+class CollectorSkipped(RuntimeError):
+    """Raised when a collector is intentionally skipped due to source constraints."""
+
+
 class BaseCollector(ABC):
     """Abstract base class for all data source collectors."""
 

@@ -15,6 +15,7 @@ from sentinel.analysis.rule_engine import score_event
 from sentinel.analysis.swiss_relevance import compute_swiss_relevance
 from sentinel.collectors.bag_bulletin import BAGBulletinCollector
 from sentinel.collectors.beacon import BeaconCollector
+from sentinel.collectors.base import CollectorSkipped
 from sentinel.collectors.cidrap import CIDRAPCollector
 from sentinel.collectors.ecdc import ECDCCollector
 from sentinel.collectors.nnsid import NNSIDCollector
@@ -82,6 +83,19 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
     store = DataStore(data_dir=data_dir or settings.data_dir)
     result = PipelineResult(date=today)
 
+    def record_skipped(source: str, message: str) -> None:
+        result.by_source[source] = 0
+        result.collector_statuses.append(
+            CollectorStatus(
+                source=source,
+                ok=False,
+                event_count=0,
+                latency_seconds=0.0,
+                error=message,
+            )
+        )
+        logger.warning(message)
+
     # 1. Collect from all enabled sources
     collectors = []
     if settings.enable_who_don:
@@ -97,21 +111,10 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
         if who_eios_api_key:
             collectors.append(WHOEIOSCollector(api_key=who_eios_api_key))
         else:
-            error_msg = (
+            skip_msg = (
                 "Collector WHO_EIOS skipped: SENTINEL_WHO_EIOS_API_KEY is not configured"
             )
-            result.errors.append(error_msg)
-            result.by_source["WHO_EIOS"] = 0
-            result.collector_statuses.append(
-                CollectorStatus(
-                    source="WHO_EIOS",
-                    ok=False,
-                    event_count=0,
-                    latency_seconds=0.0,
-                    error=error_msg,
-                )
-            )
-            logger.warning(error_msg)
+            record_skipped("WHO_EIOS", skip_msg)
     if settings.enable_beacon:
         collectors.append(BeaconCollector())
     if settings.enable_cidrap:
@@ -147,6 +150,8 @@ async def run_pipeline(data_dir: str | None = None) -> PipelineResult:
                 "Collected %d events from %s in %.1fs",
                 len(events), collector.source_name, latency,
             )
+        except CollectorSkipped as e:
+            record_skipped(collector.source_name, str(e))
         except Exception as e:
             latency = time.monotonic() - t0
             error_msg = f"Collector {collector.source_name} failed: {e}"

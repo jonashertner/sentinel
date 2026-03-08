@@ -101,7 +101,7 @@
     "one_health_tags": [
       "zoonotic"
     ],
-    "analysis": "**Risk Assessment:** ```json\n{\n  \"risk_assessment\": \"A single confirmed Nipah virus case in Bangladesh linked to raw date palm sap consumption represents a recurring seasonal pattern consistent with known epidemiology. No secondary transmission has been detected among 35 monitored contacts, suggesting limited human-to-human spread in this instance. While NiV carries a high case fatality rate (40-75%), the current event is contained and poses very low immediate risk to Switzerland.\",\n  \"swiss_relevance_narrative\": \"Direct risk to Switzerland is very low. There are no direct flights from Rajshahi Division to Swiss airports, though connecting flights via Dhaka and Gulf hubs exist. The Bangladeshi diaspora in Switzerland is small (~3,000-5,000 persons), and the outbreak is localized with no evidence of sustained human-to-human transmission. Date palm sap is not commercially imported into Switzerland. However, NiV remains a WHO R&D Blueprint priority pathogen with pandemic potential due to its high fatality rate, potential for mutation toward increased transmissibility, and lack of approved vaccines or therapeutics. Swiss global health institutions (e.g., University of Basel, Swiss TPH) and pharmaceutical companies (Roche, Novartis) may have research and preparedness equities. Any returning traveler from affected areas with compatible symptoms would require immediate high-consequence infectious disease (HCID) protocols.\",\n  \"one_health_analysis\": \"This is a classic One Health event. The primary reservoir is Pteropus fruit bats (flying foxes), which contaminate date palm sap collection pots. The human-animal-environment interface is driven by agricultural practices (date palm sap harvesting) intersecting with bat ecology. Environmental factors including deforestation, habitat fragmentation, and seasonal fruiting patterns influence bat-human contact intensity. The December-April seasonality corresponds to both sap harvesting and bat behavioral patterns. While Switzerland has no Pteropus bats, the event underscores the importance of monitoring zoonotic spillover at wildlife-livestock-human interfaces globally. Swiss veterinary surveillance of bat-borne paramyxoviruses (e.g., in native Eptesicus and Myotis species) contributes to broader henipavirus preparedness.\",\n  \"recommended_actions",
+    "analysis": "",
     "verification_status": "CONFIRMED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -898,7 +898,7 @@
     "one_health_tags": [
       "zoonotic"
     ],
-    "analysis": "**Risk Assessment:** ```json\n{\n  \"risk_assessment\": \"High pathogenicity avian influenza (HPAI) detection in Swedish poultry represents a proximate threat given Sweden's position along shared migratory flyways with Switzerland (East Atlantic and Black Sea/Mediterranean flyways overlap). The February timing coincides with late winter congregation of waterfowl and early pre-migratory movements, which could facilitate southward or lateral viral dissemination. While direct poultry-to-poultry transmission to Switzerland is less likely given distance, wild bird-mediated spread remains the primary concern, and zoonotic spillover potential (particularly if H5N1 clade 2.3.4.4b) warrants heightened vigilance.\",\n  \"swiss_relevance_narrative\": \"Switzerland is directly relevant for several reasons: (1) Migratory routes — Sweden and Switzerland share flyway corridors, particularly for dabbling ducks, geese, and swans that overwinter on Swiss lakes and waterways; spring migration from Scandinavian breeding grounds passes through or near Switzerland. (2) Trade — Switzerland imports poultry products and live birds from EU/EEA countries including Sweden; any HPAI outbreak triggers trade restriction assessments. (3) Historical precedent — Switzerland has experienced HPAI detections in wild birds along Lake Geneva, Lake Constance, and other major water bodies during European epizootic waves originating from northern Europe. (4) Border proximity — the European poultry sector is interconnected, and secondary outbreaks in geographically intermediate countries (Germany, France) could rapidly bring the threat closer. (5) Swiss free-range and outdoor poultry operations are particularly vulnerable during periods of elevated wild bird HPAI circulation.\",\n  \"one_health_analysis\": \"Human health: HPAI viruses, particularly H5N1 clade 2.3.4.4b, have demonstrated sporadic zoonotic transmission globally. Occupational exposure risk exists for poultry workers, veterinarians, and wildlife biologists. Mammalian adaptation markers must be monitored in viral sequences. Animal health: Swiss domestic poultry (approximately 12 million birds) and captive bird collections (zoos, falconry) face direct",
+    "analysis": "",
     "verification_status": "CONFIRMED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -1438,7 +1438,7 @@
     "one_health_tags": [
       "zoonotic"
     ],
-    "analysis": "**Risk Assessment:** \n\n```json\n{\n  \"risk_assessment\": \"This appears to be an aggregated, poorly structured signal combining dozens of unrelated disease events in the United States rather than a single coherent avian influenza event. The underlying data lacks specific case counts, death counts, or epidemiological detail for any single pathogen. While individual components (measles outbreaks, respiratory virus spread, avian influenza in animals) warrant monitoring, the composite signal does not justify a NATIONAL_CRISIS classification for Switzerland, and the automated risk scoring appears to be an artifact of signal aggregation rather than a genuine escalation trigger.\",\n  \"swiss_relevance_narrative\": \"Switzerland maintains extensive travel and trade links with the United States, with approximately 1.5-2 million passenger movements annually between the two countries. Specific components of this signal have variable Swiss relevance: (1) Avian influenza in US animal populations is relevant for BLV given poultry trade restrictions and migratory bird pathways (though Atlantic flyways do not directly overlap with Swiss migratory corridors); (2) Measles outbreaks in US immigration detention facilities have limited direct importation risk but serve as a reminder of Switzerland's own suboptimal measles vaccination coverage in certain cantons; (3) The respiratory virus report and seasonal influenza/cold signals align with ongoing Northern Hemisphere winter respiratory season monitoring already in place. No immediate border or trade implications are evident from this composite signal.\",\n  \"one_health_analysis\": \"The avian influenza component is the most relevant One Health signal: continued circulation of HPAI in US animal populations (poultry, wild birds, dairy cattle) maintains the global zoonotic spillover risk and potential for viral reassortment. The environmental dimension includes wild bird reservoir dynamics and potential contamination of shared migratory ecosystems. The human health dimension remains low-probability but high-consequence if mammalian adaptation occurs. Other signals (ringworm STI, gastroenteritis outbreak, Salmonella in food products) reflect routine food safety and zoonotic transmission cycles. The Lyme disease mention relates to tick-borne ecology but the 'declassified documents' framing suggests misinformation rather than actionable epidemiological intelligence.\",\n  \"recommended_actions\": [\n    \"IMMEDIATE",
+    "analysis": "",
     "verification_status": "UNVERIFIED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -1733,7 +1733,7 @@
     "risk_score": 4.0,
     "swiss_relevance": 2.0,
     "one_health_tags": [],
-    "analysis": "**Risk Assessment:** ```json\n{\n  \"risk_assessment\": \"This alert appears to be a low-quality signal composed of aggregated, miscellaneous Chinese media snippets with no substantive epidemiological content regarding a novel or escalating COVID-19 event in Beijing. The summary references the 2020 pandemic context and unrelated lifestyle/political news articles, suggesting automated scraping noise rather than a genuine outbreak signal. There is no evidence of unusual SARS-CoV-2 activity, novel variant emergence, or increased severity that would warrant concern beyond routine COVID-19 surveillance.\",\n  \"swiss_relevance_narrative\": \"Switzerland maintains routine COVID-19 genomic and wastewater surveillance. Direct air travel links between Zurich/Geneva and Beijing exist, and China remains a significant source of novel SARS-CoV-2 variants historically. However, this particular signal contains no actionable epidemiological data — no case counts, no variant information, no hospitalization or mortality trends. Swiss relevance is minimal unless corroborated by WHO, Chinese CDC, or GISAID signals indicating a novel variant or unusual surge in Beijing. Current global COVID-19 activity does not suggest heightened risk from China specifically.\",\n  \"one_health_analysis\": \"No One Health dimensions are implicated by this signal. There is no indication of novel zoonotic spillover, animal reservoir activity, or environmental factors. SARS-CoV-2 surveillance at the human-animal interface (e.g., monitoring in mink farms, deer populations, or other susceptible animal species) remains relevant as standing policy but is not specifically triggered by this report. No environmental contamination or ecosystem-level concerns are identified.\",\n  \"recommended_actions\": [\n    \"DOWNGRADE operational priority from CRITICAL to ROUTINE — this signal does not meet criteria for FULL_ACTIVATION or NATIONAL_CRISIS escalation. Reassess the automated classification system that flagged this as critical to prevent alert fatigue.\",\n    \"Continue routine monitoring of GISAID, WHO Disease Outbreak News, and Chinese CDC reports for any genuine signals of novel SARS-CoV-2 variant emergence or unusual COVID-19 activity in China.\",\n    \"Verify BEACON source reliability and filtering algorithms — this alert appears to be noise from automated media scr",
+    "analysis": "",
     "verification_status": "UNVERIFIED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -1956,7 +1956,7 @@
     "one_health_tags": [
       "zoonotic"
     ],
-    "analysis": "**Risk Assessment:** ```json\n{\n  \"risk_assessment\": \"This is a composite surveillance summary from Spain aggregating multiple disease events rather than a single acute emergency. The most notable signals for Switzerland are: (1) a confirmed human case of swine influenza A (H1N1v) in Lleida, Catalonia, indicating zoonotic spillover at the human-animal interface; (2) multiple gastroenteritis outbreaks (Narón, 48+ cases) suggesting foodborne or waterborne transmission; (3) Legionella alert in Gibraltar; and (4) bovine parasitosis deaths in Sanabria raising animal health concerns. While the automated system flagged this as CRITICAL/NATIONAL_CRISIS, the actual risk profile is moderate — these are largely localized events with no evidence of sustained human-to-human transmission of novel influenza, and the remaining signals represent routine seasonal or foodborne disease activity.\",\n\n  \"swiss_relevance_narrative\": \"Spain is one of Switzerland's top tourism destinations and a major trade partner for agricultural and food products. The swine influenza A (H1N1v) case in Lleida is the most relevant signal: Catalonia has significant pig farming, and Switzerland imports Spanish pork products. Direct air connections between Swiss cities and Barcelona/Madrid mean travelers could import respiratory pathogens. The bovine parasitosis deaths in Sanabria, while localized, warrant monitoring given Swiss cattle imports and transhumance patterns. Gastroenteritis outbreaks in Narón are less directly relevant but inform Swiss travelers. RSV decline in Galicia aligns with the expected seasonal downturn also observed in Switzerland. The Legionella alert in Gibraltar has minimal direct Swiss relevance but contributes to regional situational awareness. Migratory bird routes connecting Iberia and Switzerland remain relevant for avian influenza surveillance, though no specific H5N1 poultry or wild bird outbreak is detailed in this report.\",\n\n  \"one_health_analysis\": \"This event cluster exemplifies One Health complexity: (1) HUMAN-ANIMAL INTERFACE: The swine influenza H1N1v case in Lleida represents direct zoonotic spillover from pigs to a human, requiring assessment of whether the virus has acquired mutations facilitating human adaptation or",
+    "analysis": "",
     "verification_status": "UNVERIFIED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -2108,7 +2108,7 @@
     "risk_score": 4.0,
     "swiss_relevance": 2.5,
     "one_health_tags": [],
-    "analysis": "**Risk Assessment:** ```json\n{\n  \"risk_assessment\": \"This alert appears to be a low-quality, aggregated signal from the BEACON source combining multiple unrelated disease events (COVID-19, measles, dengue, conjunctivitis, poisoning) across different countries, incorrectly attributed solely to the United Kingdom. The summary references events in Vietnam (Ha Tinh), Indonesia (Sikka), and other non-UK locations. There is no coherent single outbreak signal, and the operational priority flags (CRITICAL, FULL_ACTIVATION, NATIONAL_CRISIS) are grossly disproportionate to the actual content and represent a likely automated classification error.\",\n  \"swiss_relevance_narrative\": \"Direct relevance to Switzerland is minimal based on the actual content of this report. The measles reference (8,000 suspected cases) may relate to a global measles resurgence trend, which is relevant given Switzerland's historically suboptimal MMR vaccination coverage in certain cantons and ongoing cross-border travel with the UK and EU. COVID-19 linkage to pediatric hepatitis is a previously investigated hypothesis with no confirmed causal link. Dengue cases in Indonesia (Sikka) have no direct Swiss relevance beyond returning travelers. None of the signals described represent an acute threat requiring emergency-level Swiss response. The UK-Switzerland travel corridor and trade links warrant routine surveillance but not crisis activation.\",\n  \"one_health_analysis\": \"No meaningful One Health signal is present in this aggregated report. The diseases mentioned span purely human health domains (measles, COVID-19, conjunctivitis, dengue) with no reported animal reservoir events or environmental drivers highlighted. Dengue has a One Health dimension through Aedes mosquito vectors, but the reported cases in Indonesia are geographically distant. The potential establishment of Aedes albopictus in southern Switzerland (Ticino) remains a long-term concern for dengue importation but is not triggered by this specific report. No zoonotic spillover, antimicrobial resistance, or environmental contamination signals are evident.\",\n  \"recommended_actions\": [\n    \"Immediately downgrade operational priority from CRITICAL/FULL_ACTIVATION to ROUTINE MONITORING — the automated classification is erroneous and risks alert fatigue and misallocation of crisis resources\",",
+    "analysis": "",
     "verification_status": "UNVERIFIED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -5718,7 +5718,7 @@
     "one_health_tags": [
       "zoonotic"
     ],
-    "analysis": "**Risk Assessment:** ```json\n{\n  \"risk_assessment\": \"Another HPAI outbreak in Guangxi, China, a region with dense poultry production and live bird markets, signals ongoing viral circulation in a known hotspot for avian influenza evolution. While direct risk to Switzerland from this specific outbreak is limited by geographic distance, the repeated outbreaks in southern China raise concern about viral reassortment and potential emergence of strains with enhanced zoonotic or pandemic potential. The lack of specific subtype information (H5N1, H5N6, H7N9, etc.) and case/death counts limits precise risk calibration.\",\n  \"swiss_relevance_narrative\": \"Switzerland's direct exposure risk is low but not negligible. Key pathways include: (1) Migratory bird routes — while the East Asian-Australasian flyway does not directly overlap with Swiss migratory corridors (Central Asian and East Atlantic flyways), viral gene segments can spread via overlapping flyway connections in Central Asia, eventually reaching European waterfowl. (2) Trade and travel — Switzerland imports limited poultry products from China, but travelers and goods movement could serve as fomite vectors. (3) Pandemic preparedness — any novel HPAI strain with human transmissibility emerging from southern China would have global implications, including for Switzerland. (4) The current HPAI H5N1 clade 2.3.4.4b situation already affecting European poultry and wild birds means Switzerland must remain vigilant about any new viral introductions that could compound existing pressures.\",\n  \"one_health_analysis\": \"Human: Risk of zoonotic spillover exists particularly for poultry workers and live market visitors in Guangxi; any human cases would trigger heightened global concern. Without subtype data, the human pandemic risk cannot be precisely assessed but remains a standing concern. Animal: Ongoing HPAI circulation in a major poultry-producing region threatens animal health regionally and potentially globally through wild bird dissemination. Swiss domestic poultry and wild bird populations are indirectly at risk via migratory corridors if novel strains spread westward. Environment: Wetlands and migratory stopover sites in Central Asia serve as ecological bridges; viral persistence in aquatic environments facilitates transmission among",
+    "analysis": "",
     "verification_status": "UNVERIFIED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -6313,7 +6313,7 @@
     "one_health_tags": [
       "vector-borne"
     ],
-    "analysis": "**Risk Assessment:** ```json\n{\n  \"risk_assessment\": \"The reported 95.8% drop in dengue cases in São Paulo at the beginning of 2026 represents a significantly improved epidemiological situation compared to the severe 2024 outbreak. This is a positive development indicating successful vector control and/or population immunity buildup. The current automated risk scoring and operational priority assignment (CRITICAL/FULL_ACTIVATION/NATIONAL_CRISIS) are grossly disproportionate to the actual event, which describes a dramatic decline in cases, not an escalation.\",\n  \"swiss_relevance_narrative\": \"Switzerland has a moderate travel connection to São Paulo, Brazil's largest city and a major business hub. With dengue cases dropping by nearly 96%, the risk to Swiss travelers is substantially lower than during the 2024 peak season. Aedes mosquito vectors for dengue are not established in Switzerland, though Aedes albopictus (tiger mosquito) is present in Ticino and parts of the Rhône valley, representing a theoretical but currently negligible autochthonous transmission risk. No Aedes aegypti populations exist in Switzerland. Viraemic returning travelers could theoretically seed local transmission in summer months in Ticino, but this risk is lower given the declining case burden in São Paulo.\",\n  \"one_health_analysis\": \"Dengue is primarily a vector-borne human disease with limited direct animal health implications. The environmental dimension relates to Aedes mosquito habitat suitability, which in Switzerland is confined to southern cantons during warm months. Climate change is gradually expanding the range of Aedes albopictus northward in Europe, making long-term monitoring relevant. The significant case reduction in São Paulo likely reflects integrated vector management strategies combining environmental modification, community engagement, and possibly Wolbachia-based biological control — approaches that offer lessons for Swiss preparedness against future mosquito-borne disease threats.\",\n  \"recommended_actions\": [\n    \"Downgrade operational priority from CRITICAL to ROUTINE MONITORING — the event describes a 95.8% case decline, not an outbreak escalation; current FULL_ACTIVATION and NATIONAL_CRISIS classifications are unwarranted and should be corrected immediately\",\n    \"Maintain standard BAG travel health advisories for Brazil",
+    "analysis": "",
     "verification_status": "UNVERIFIED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -6392,7 +6392,7 @@
     "risk_score": 4.0,
     "swiss_relevance": 2.0,
     "one_health_tags": [],
-    "analysis": "**Risk Assessment:** ```json\n{\n  \"risk_assessment\": \"This event combines a historical COVID-19 reference (March 6, 2020 anniversary) with an active, large-scale measles outbreak in South Carolina approaching 1,000 cases with interstate spread (Placer County, California). The measles outbreak is significant in scale and reflects declining vaccination coverage in the US, but the operational priority classification as CRITICAL/NATIONAL_CRISIS with FULL_ACTIVATION and PANDEMIC_RESPIRATORY playbook represents a substantial over-triage for Switzerland. The COVID-19 component is purely retrospective/commemorative and carries no current risk.\",\n  \"swiss_relevance_narrative\": \"Switzerland has moderate direct relevance through several pathways: (1) Significant transatlantic travel between Switzerland and the US, including South Carolina tourism destinations (Charleston, Myrtle Beach), creates importation risk for measles; (2) Switzerland itself has historically had sub-optimal measles vaccination coverage in certain cantons, with pockets of susceptibility that could sustain transmission if cases are imported; (3) No trade implications exist. The risk is primarily to unvaccinated or incompletely vaccinated Swiss travelers returning from the US, and to communities in Switzerland with lower MMR uptake. The COVID-19 historical reference has zero current relevance to Switzerland.\",\n  \"one_health_analysis\": \"This is primarily a human health event with limited One Health cross-domain implications. Measles is exclusively a human pathogen with no animal reservoir or environmental persistence of significance. The environmental/social determinant angle relates to vaccine hesitancy as a societal phenomenon affecting public health infrastructure. There are no animal health or environmental health dimensions requiring BLV or BAFU engagement. The One Health framework is not materially applicable to this event beyond the social determinants of health (misinformation, vaccine hesitancy) that operate across human communities.\",\n  \"recommended_actions\": [\n    \"BAG should issue a travel health advisory reminding Swiss travelers to the United States to verify measles immunity (2 doses MMR) before departure, particularly for travel to South Carolina and connected regions\",\n    \"BAG should coordinate with cantonal health authorities to reinforce measles surveillance at points of entry, ensuring rapid laboratory confirmation capacity for suspected measles cases in returning travelers",
+    "analysis": "",
     "verification_status": "UNVERIFIED",
     "ihr_unusual": true,
     "ihr_serious_impact": true,
@@ -8214,6 +8214,725 @@
       "Trigger animal-human interface investigation and targeted diagnostics.",
       "Align cantonal veterinary/public health control measures.",
       "Escalate federal coordination if spillover or cross-border spread is detected."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "7a066800f270fbba",
+    "source": "CIDRAP",
+    "title": "Tylenol use in pregnant women visiting ED dropped after Trump’s unfounded autism claim",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-08",
+    "disease": "Tylenol use in pregnant women visiting ED dropped after Trump’s unfounded autism",
+    "pathogen": null,
+    "countries": [
+      "CD"
+    ],
+    "regions": [
+      "AFRO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "The authors caution that a causal relationship can’t be established with observational studies.",
+    "url": "https://www.cidrap.umn.edu/anti-science/tylenol-use-pregnant-women-visiting-ed-dropped-after-trump-s-unfounded-autism-claim",
+    "raw_content": "The authors caution that a causal relationship can’t be established with observational studies.",
+    "risk_score": 0.75,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.52,
+    "probability_score": 0.8,
+    "impact_score": 0.38,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:general_monitoring"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Maintain routine monitoring and refresh the assessment at the next checkpoint."
+    ],
+    "merged_from": [
+      "7a066800f270fbba"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "7a066800f270fbba",
+        "url": "https://www.cidrap.umn.edu/anti-science/tylenol-use-pregnant-women-visiting-ed-dropped-after-trump-s-unfounded-autism-claim",
+        "title": "Tylenol use in pregnant women visiting ED dropped after Trump’s unfounded autism claim",
+        "date_reported": "2026-03-06",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "8057b30592be1751d161",
+    "analyst_overrides": [],
+    "hazard_class": "GENERAL",
+    "playbook": "GENERAL_MONITORING",
+    "playbook_sla_hours": 168,
+    "sla_timer_hours": 168,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Maintain routine surveillance and source verification.",
+      "Review epidemiological indicators at scheduled checkpoints.",
+      "Escalate to enhanced monitoring if risk trajectory increases."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "bc1dbb43704f1d52",
+    "source": "CIDRAP",
+    "title": "CWD digest: Detections at Gettysburg Park in Pennsylvania, Carbon County, Utah",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-08",
+    "disease": "CWD digest",
+    "pathogen": null,
+    "countries": [
+      "XX"
+    ],
+    "regions": [],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "In the previous hunting season, three parks near Gettysburg National Military Park reported their first cases.",
+    "url": "https://www.cidrap.umn.edu/chronic-wasting-disease/cwd-digest-detections-gettysburg-park-pennsylvania-carbon-county-utah",
+    "raw_content": "In the previous hunting season, three parks near Gettysburg National Military Park reported their first cases.",
+    "risk_score": 0.75,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.45,
+    "probability_score": 0.8,
+    "impact_score": 0.38,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:general_monitoring"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Maintain routine monitoring and refresh the assessment at the next checkpoint."
+    ],
+    "merged_from": [
+      "bc1dbb43704f1d52"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "bc1dbb43704f1d52",
+        "url": "https://www.cidrap.umn.edu/chronic-wasting-disease/cwd-digest-detections-gettysburg-park-pennsylvania-carbon-county-utah",
+        "title": "CWD digest: Detections at Gettysburg Park in Pennsylvania, Carbon County, Utah",
+        "date_reported": "2026-03-06",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "fdd5cb26746a99c1c8ca",
+    "analyst_overrides": [],
+    "hazard_class": "GENERAL",
+    "playbook": "GENERAL_MONITORING",
+    "playbook_sla_hours": 168,
+    "sla_timer_hours": 168,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Maintain routine surveillance and source verification.",
+      "Review epidemiological indicators at scheduled checkpoints.",
+      "Escalate to enhanced monitoring if risk trajectory increases."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "2d844c2a7b1819c9",
+    "source": "CIDRAP",
+    "title": "Babies with COVID-19 develop more serious disease than those with RSV, US data reveal",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-08",
+    "disease": "COVID-19",
+    "pathogen": null,
+    "countries": [
+      "XX"
+    ],
+    "regions": [],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Although a number of studies have found that a diabetes drug called metformin reduces the risk of long COVID, new research finds that it does not reduce symptoms of the condition.",
+    "url": "https://www.cidrap.umn.edu/covid-19/babies-covid-19-develop-more-serious-disease-those-rsv-us-data-reveal",
+    "raw_content": "Although a number of studies have found that a diabetes drug called metformin reduces the risk of long COVID, new research finds that it does not reduce symptoms of the condition.",
+    "risk_score": 3.25,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": true,
+    "ihr_serious_impact": true,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.45,
+    "probability_score": 0.8,
+    "impact_score": 3.02,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "ihr_review",
+      "playbook:pandemic_respiratory"
+    ],
+    "recommended_actions": [
+      "Prepare IHR Annex 2 review package for National IHR Focal Point decision support.",
+      "Validate respiratory surveillance signals and run a rapid federal readiness check.",
+      "Prepare cross-cantonal communication and clinical advisory updates."
+    ],
+    "merged_from": [
+      "2d844c2a7b1819c9",
+      "4440226948d5aea0"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "2d844c2a7b1819c9",
+        "url": "https://www.cidrap.umn.edu/covid-19/babies-covid-19-develop-more-serious-disease-those-rsv-us-data-reveal",
+        "title": "Babies with COVID-19 develop more serious disease than those with RSV, US data reveal",
+        "date_reported": "2026-03-06",
+        "confidence": 0.8
+      },
+      {
+        "source": "CIDRAP",
+        "event_id": "4440226948d5aea0",
+        "url": "https://www.cidrap.umn.edu/covid-19/metformin-not-effective-treating-long-covid-symptoms-study-finds",
+        "title": "Metformin not effective in treating long-COVID symptoms, study finds",
+        "date_reported": "2026-03-05",
+        "confidence": 0.8
+      },
+      {
+        "source": "CIDRAP",
+        "event_id": "4440226948d5aea0",
+        "url": "https://www.cidrap.umn.edu/covid-19/prepandemic-respiratory-illness-tied-increased-risk-long-covid",
+        "title": "Prepandemic respiratory illness tied to increased risk of long COVID",
+        "date_reported": "2026-03-05",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "8fac920d2574f6af1eb2",
+    "analyst_overrides": [],
+    "hazard_class": "PANDEMIC_RESPIRATORY",
+    "playbook": "PANDEMIC_RESPIRATORY",
+    "playbook_sla_hours": 72,
+    "sla_timer_hours": 72,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Rapid respiratory threat briefing to BAG leadership.",
+      "Activate hospital and laboratory surge readiness checkpoints.",
+      "Issue cross-cantonal situational communication plan.",
+      "Escalate to federal crisis coordination if transmission indicators rise."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "a9557f756bada019",
+    "source": "CIDRAP",
+    "title": "Pandemic disruptions tied to changes in executive function progress in young children",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-08",
+    "disease": "Pandemic disruptions tied to changes in executive function progress in young chi",
+    "pathogen": null,
+    "countries": [
+      "XX"
+    ],
+    "regions": [],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Executive function can influence memory, academic achievement, relationships, and health.",
+    "url": "https://www.cidrap.umn.edu/covid-19/pandemic-disruptions-tied-changes-executive-function-progress-young-children",
+    "raw_content": "Executive function can influence memory, academic achievement, relationships, and health.",
+    "risk_score": 0.75,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.45,
+    "probability_score": 0.8,
+    "impact_score": 0.38,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:general_monitoring"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Maintain routine monitoring and refresh the assessment at the next checkpoint."
+    ],
+    "merged_from": [
+      "a9557f756bada019"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "a9557f756bada019",
+        "url": "https://www.cidrap.umn.edu/covid-19/pandemic-disruptions-tied-changes-executive-function-progress-young-children",
+        "title": "Pandemic disruptions tied to changes in executive function progress in young children",
+        "date_reported": "2026-03-06",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "a6584ed88ee489a6111f",
+    "analyst_overrides": [],
+    "hazard_class": "GENERAL",
+    "playbook": "GENERAL_MONITORING",
+    "playbook_sla_hours": 168,
+    "sla_timer_hours": 168,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Maintain routine surveillance and source verification.",
+      "Review epidemiological indicators at scheduled checkpoints.",
+      "Escalate to enhanced monitoring if risk trajectory increases."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "5f054dffc5359d01",
+    "source": "CIDRAP",
+    "title": "CDC reports 11 more pediatric flu deaths",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-08",
+    "disease": "CDC reports 11 more pediatric flu deaths",
+    "pathogen": null,
+    "countries": [
+      "XX"
+    ],
+    "regions": [],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "A total of 90 US children have died from flu-related complications this season, according to the latest CDC update.",
+    "url": "https://www.cidrap.umn.edu/influenza-general/cdc-reports-11-more-pediatric-flu-deaths",
+    "raw_content": "A total of 90 US children have died from flu-related complications this season, according to the latest CDC update.",
+    "risk_score": 0.75,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.45,
+    "probability_score": 0.8,
+    "impact_score": 0.38,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:general_monitoring"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Maintain routine monitoring and refresh the assessment at the next checkpoint."
+    ],
+    "merged_from": [
+      "5f054dffc5359d01"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "5f054dffc5359d01",
+        "url": "https://www.cidrap.umn.edu/influenza-general/cdc-reports-11-more-pediatric-flu-deaths",
+        "title": "CDC reports 11 more pediatric flu deaths",
+        "date_reported": "2026-03-06",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "fe0af3a32416e811210b",
+    "analyst_overrides": [],
+    "hazard_class": "GENERAL",
+    "playbook": "GENERAL_MONITORING",
+    "playbook_sla_hours": 168,
+    "sla_timer_hours": 168,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Maintain routine surveillance and source verification.",
+      "Review epidemiological indicators at scheduled checkpoints.",
+      "Escalate to enhanced monitoring if risk trajectory increases."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "594a00b7133d4e38",
+    "source": "CIDRAP",
+    "title": "US measles total approaches 1,300 infections",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-08",
+    "disease": "Measles",
+    "pathogen": null,
+    "countries": [
+      "CD"
+    ],
+    "regions": [
+      "AFRO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "The CDC notes that Texas has now recorded 93 cases this year after having the nation's largest outbreak last year.",
+    "url": "https://www.cidrap.umn.edu/measles/us-measles-total-approaches-1300-infections",
+    "raw_content": "The CDC notes that Texas has now recorded 93 cases this year after having the nation's largest outbreak last year.",
+    "risk_score": 0.75,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.52,
+    "probability_score": 0.8,
+    "impact_score": 0.38,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:general_monitoring"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Maintain routine monitoring and refresh the assessment at the next checkpoint."
+    ],
+    "merged_from": [
+      "594a00b7133d4e38"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "594a00b7133d4e38",
+        "url": "https://www.cidrap.umn.edu/measles/us-measles-total-approaches-1300-infections",
+        "title": "US measles total approaches 1,300 infections",
+        "date_reported": "2026-03-06",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "afd4ee7b530cf040a077",
+    "analyst_overrides": [],
+    "hazard_class": "GENERAL",
+    "playbook": "GENERAL_MONITORING",
+    "playbook_sla_hours": 168,
+    "sla_timer_hours": 168,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Maintain routine surveillance and source verification.",
+      "Review epidemiological indicators at scheduled checkpoints.",
+      "Escalate to enhanced monitoring if risk trajectory increases."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "be13ccccb7a89bc0",
+    "source": "CIDRAP",
+    "title": "Quick takes: Polio in 2 nations, Sudan’s cholera outbreak ends, avian flu vaccine trials in UK",
+    "date_reported": "2026-03-06",
+    "date_collected": "2026-03-08",
+    "disease": "Avian influenza",
+    "pathogen": null,
+    "countries": [
+      "SD"
+    ],
+    "regions": [
+      "AFRO"
+    ],
+    "species": "animal",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Sudan's 18-month cholera outbreak resulted in more than 100,000 cases nationwide, with an estimated 2,408 deaths.",
+    "url": "https://www.cidrap.umn.edu/cholera/quick-takes-polio-2-nations-sudan-s-cholera-outbreak-ends-avian-flu-vaccine-trials-uk",
+    "raw_content": "Sudan's 18-month cholera outbreak resulted in more than 100,000 cases nationwide, with an estimated 2,408 deaths.",
+    "risk_score": 4.25,
+    "swiss_relevance": 1.5,
+    "one_health_tags": [
+      "zoonotic"
+    ],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": true,
+    "ihr_serious_impact": true,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.52,
+    "probability_score": 0.8,
+    "impact_score": 3.92,
+    "operational_priority": "ELEVATED",
+    "ims_activation": "ENHANCED_MONITORING",
+    "lead_agency": "JOINT",
+    "decision_window_hours": 72,
+    "trigger_flags": [
+      "ihr_review",
+      "one_health_coordination",
+      "playbook:zoonotic_spillover"
+    ],
+    "recommended_actions": [
+      "Activate a One Health coordination cell across human, animal, and environmental domains.",
+      "Prepare IHR Annex 2 review package for National IHR Focal Point decision support.",
+      "Coordinate a joint BAG/BLV spillover assessment within the One Health framework.",
+      "Launch targeted animal-human interface diagnostics and field verification."
+    ],
+    "merged_from": [
+      "be13ccccb7a89bc0"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "be13ccccb7a89bc0",
+        "url": "https://www.cidrap.umn.edu/cholera/quick-takes-polio-2-nations-sudan-s-cholera-outbreak-ends-avian-flu-vaccine-trials-uk",
+        "title": "Quick takes: Polio in 2 nations, Sudan’s cholera outbreak ends, avian flu vaccine trials in UK",
+        "date_reported": "2026-03-06",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "e16048c7ea7c19f8f4ba",
+    "analyst_overrides": [],
+    "hazard_class": "ZOONOTIC_SPILLOVER",
+    "playbook": "ZOONOTIC_SPILLOVER",
+    "playbook_sla_hours": 48,
+    "sla_timer_hours": 48,
+    "escalation_level": "INTERAGENCY_COORDINATION",
+    "escalation_workflow": [
+      "Convene BAG-BLV One Health incident cell.",
+      "Trigger animal-human interface investigation and targeted diagnostics.",
+      "Align cantonal veterinary/public health control measures.",
+      "Escalate federal coordination if spillover or cross-border spread is detected."
+    ],
+    "risk_category": "MEDIUM"
+  },
+  {
+    "id": "6ba6c3b14bbccde2",
+    "source": "CIDRAP",
+    "title": "Poll: Americans increasingly trust career scientists, not leaders, at CDC, NIH, and FDA",
+    "date_reported": "2026-03-05",
+    "date_collected": "2026-03-08",
+    "disease": "Poll",
+    "pathogen": null,
+    "countries": [
+      "XX"
+    ],
+    "regions": [],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Two-thirds of respondents say they're confident in career scientists at the CDC, NIH, and FDA.",
+    "url": "https://www.cidrap.umn.edu/public-health/poll-americans-increasingly-trust-career-scientists-not-leaders-cdc-nih-and-fda",
+    "raw_content": "Two-thirds of respondents say they're confident in career scientists at the CDC, NIH, and FDA.",
+    "risk_score": 0.75,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.45,
+    "probability_score": 0.8,
+    "impact_score": 0.38,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:general_monitoring"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Maintain routine monitoring and refresh the assessment at the next checkpoint."
+    ],
+    "merged_from": [
+      "6ba6c3b14bbccde2"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "6ba6c3b14bbccde2",
+        "url": "https://www.cidrap.umn.edu/public-health/poll-americans-increasingly-trust-career-scientists-not-leaders-cdc-nih-and-fda",
+        "title": "Poll: Americans increasingly trust career scientists, not leaders, at CDC, NIH, and FDA",
+        "date_reported": "2026-03-05",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "04945b4fbef6419965d2",
+    "analyst_overrides": [],
+    "hazard_class": "GENERAL",
+    "playbook": "GENERAL_MONITORING",
+    "playbook_sla_hours": 168,
+    "sla_timer_hours": 168,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Maintain routine surveillance and source verification.",
+      "Review epidemiological indicators at scheduled checkpoints.",
+      "Escalate to enhanced monitoring if risk trajectory increases."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "7ffc629276463c4f",
+    "source": "CIDRAP",
+    "title": "The State of US Vaccine Policy — Mar 5, 2026",
+    "date_reported": "2026-03-05",
+    "date_collected": "2026-03-08",
+    "disease": "The State of US Vaccine Policy — Mar 5, 2026",
+    "pathogen": null,
+    "countries": [
+      "DK"
+    ],
+    "regions": [
+      "EURO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "Since our last update, 14 states have filed vaccine lawsuits, the CDC lost its 2 most senior officials in rapid succession, a surgeon general nominee couldn't bring herself to recommend the measles vaccine, and more.",
+    "url": "https://www.cidrap.umn.edu/childhood-vaccines/state-us-vaccine-policy-mar-5-2026",
+    "raw_content": "Since our last update, 14 states have filed vaccine lawsuits, the CDC lost its 2 most senior officials in rapid succession, a surgeon general nominee couldn't bring herself to recommend the measles vaccine, and more.",
+    "risk_score": 0.75,
+    "swiss_relevance": 2.5,
+    "one_health_tags": [],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.52,
+    "probability_score": 0.8,
+    "impact_score": 0.38,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:general_monitoring"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Maintain routine monitoring and refresh the assessment at the next checkpoint."
+    ],
+    "merged_from": [
+      "7ffc629276463c4f"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "7ffc629276463c4f",
+        "url": "https://www.cidrap.umn.edu/childhood-vaccines/state-us-vaccine-policy-mar-5-2026",
+        "title": "The State of US Vaccine Policy — Mar 5, 2026",
+        "date_reported": "2026-03-05",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "648aa851057e55beb240",
+    "analyst_overrides": [],
+    "hazard_class": "GENERAL",
+    "playbook": "GENERAL_MONITORING",
+    "playbook_sla_hours": 168,
+    "sla_timer_hours": 168,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Maintain routine surveillance and source verification.",
+      "Review epidemiological indicators at scheduled checkpoints.",
+      "Escalate to enhanced monitoring if risk trajectory increases."
+    ],
+    "risk_category": "LOW"
+  },
+  {
+    "id": "49460a2165f1f9cb",
+    "source": "CIDRAP",
+    "title": "Pandemic-related factors may lead to nearly 3,000 excess TB cases, 1,100 deaths by 2035",
+    "date_reported": "2026-03-05",
+    "date_collected": "2026-03-08",
+    "disease": "Tuberculosis",
+    "pathogen": null,
+    "countries": [
+      "CD"
+    ],
+    "regions": [
+      "AFRO"
+    ],
+    "species": "human",
+    "case_count": null,
+    "death_count": null,
+    "summary": "The factors may continue to influence TB trends over time, the authors say.",
+    "url": "https://www.cidrap.umn.edu/tuberculosis/pandemic-related-factors-may-lead-nearly-3000-excess-tb-cases-1100-deaths-2035",
+    "raw_content": "The factors may continue to influence TB trends over time, the authors say.",
+    "risk_score": 0.75,
+    "swiss_relevance": 0.0,
+    "one_health_tags": [
+      "AMR"
+    ],
+    "analysis": "",
+    "verification_status": "PENDING",
+    "ihr_unusual": false,
+    "ihr_serious_impact": false,
+    "ihr_international_spread": false,
+    "ihr_trade_travel_risk": false,
+    "confidence_score": 0.52,
+    "probability_score": 0.8,
+    "impact_score": 0.38,
+    "operational_priority": "ROUTINE",
+    "ims_activation": "MONITORING",
+    "lead_agency": "BAG",
+    "decision_window_hours": 168,
+    "trigger_flags": [
+      "playbook:general_monitoring"
+    ],
+    "recommended_actions": [
+      "Maintain routine monitoring and refresh assessment if indicators change.",
+      "Maintain routine monitoring and refresh the assessment at the next checkpoint."
+    ],
+    "merged_from": [
+      "49460a2165f1f9cb"
+    ],
+    "source_evidence": [
+      {
+        "source": "CIDRAP",
+        "event_id": "49460a2165f1f9cb",
+        "url": "https://www.cidrap.umn.edu/tuberculosis/pandemic-related-factors-may-lead-nearly-3000-excess-tb-cases-1100-deaths-2035",
+        "title": "Pandemic-related factors may lead to nearly 3,000 excess TB cases, 1,100 deaths by 2035",
+        "date_reported": "2026-03-05",
+        "confidence": 0.8
+      }
+    ],
+    "provenance_hash": "ce41bd38d1a40aeba662",
+    "analyst_overrides": [],
+    "hazard_class": "GENERAL",
+    "playbook": "GENERAL_MONITORING",
+    "playbook_sla_hours": 168,
+    "sla_timer_hours": 168,
+    "escalation_level": "ROUTINE_SURVEILLANCE",
+    "escalation_workflow": [
+      "Maintain routine surveillance and source verification.",
+      "Review epidemiological indicators at scheduled checkpoints.",
+      "Escalate to enhanced monitoring if risk trajectory increases."
     ],
     "risk_category": "LOW"
   }
