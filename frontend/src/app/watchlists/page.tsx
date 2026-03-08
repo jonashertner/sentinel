@@ -38,13 +38,7 @@ function matchesWatchlist(event: HealthEvent, wl: Watchlist): boolean {
 export default function WatchlistsPage() {
   const { t } = useI18n();
   const [serverWatchlists, setServerWatchlists] = useState<Watchlist[]>([]);
-  const [customWatchlists, setCustomWatchlists] = useState<Watchlist[]>(() => {
-    try {
-      const stored = localStorage.getItem("sentinel-custom-watchlists");
-      if (stored) return JSON.parse(stored);
-    } catch {}
-    return [];
-  });
+  const [customWatchlists, setCustomWatchlists] = useState<Watchlist[]>([]);
   const [events, setEvents] = useState<HealthEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -56,6 +50,18 @@ export default function WatchlistsPage() {
   const [formCountries, setFormCountries] = useState<string[]>([]);
   const [formMinRisk, setFormMinRisk] = useState(3);
   const [formTags, setFormTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      try {
+        const stored = localStorage.getItem("sentinel-custom-watchlists");
+        if (stored) {
+          setCustomWatchlists(JSON.parse(stored) as Watchlist[]);
+        }
+      } catch {}
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   useEffect(() => {
     Promise.all([loadWatchlists(), loadAllEvents()])

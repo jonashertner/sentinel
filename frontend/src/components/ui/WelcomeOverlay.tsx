@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Shield,
   Globe,
@@ -20,18 +20,28 @@ const STORAGE_KEY = "sentinel-welcome-dismissed";
 
 export function WelcomeOverlay() {
   const { t } = useI18n();
-  const [visible, setVisible] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !localStorage.getItem(STORAGE_KEY);
-  });
+  const [visible, setVisible] = useState(false);
   const [page, setPage] = useState(0);
   const [exiting, setExiting] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      try {
+        setVisible(!localStorage.getItem(STORAGE_KEY));
+      } catch {
+        setVisible(true);
+      }
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   function dismiss() {
     setExiting(true);
     setTimeout(() => {
       setVisible(false);
-      localStorage.setItem(STORAGE_KEY, "1");
+      try {
+        localStorage.setItem(STORAGE_KEY, "1");
+      } catch {}
     }, 300);
   }
 

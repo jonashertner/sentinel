@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 
 export type Locale = "en" | "de" | "fr" | "it";
 
@@ -961,18 +961,28 @@ const I18nContext = createContext<I18nContextValue>({
 });
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("sentinel-locale") as Locale | null;
-      if (saved && saved in DICTS) return saved;
-    }
-    return "de";
-  });
+  const [locale, setLocaleState] = useState<Locale>("de");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const timeoutId = window.setTimeout(() => {
+      let nextLocale: Locale = "de";
+      try {
+        const saved = localStorage.getItem("sentinel-locale") as Locale | null;
+        if (saved && saved in DICTS) nextLocale = saved;
+      } catch {}
+      setLocaleState(nextLocale);
+      document.documentElement.lang = nextLocale;
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);
     if (typeof window !== "undefined") {
-      localStorage.setItem("sentinel-locale", l);
+      try {
+        localStorage.setItem("sentinel-locale", l);
+      } catch {}
       document.documentElement.lang = l;
     }
   }, []);

@@ -12,7 +12,10 @@ import type {
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const DATA_BASE = process.env.NEXT_PUBLIC_DATA_PATH || `${BASE_PATH}/data`;
-const API_ROOT = (process.env.NEXT_PUBLIC_API_BASE || BASE_PATH || "").replace(/\/$/, "");
+const EXPLICIT_API_ROOT = (process.env.NEXT_PUBLIC_API_BASE || "").replace(/\/$/, "");
+const ENABLE_SAME_ORIGIN_API = process.env.NEXT_PUBLIC_ENABLE_SAME_ORIGIN_API === "true";
+const API_ENABLED = EXPLICIT_API_ROOT.length > 0 || ENABLE_SAME_ORIGIN_API;
+const API_ROOT = (EXPLICIT_API_ROOT || (ENABLE_SAME_ORIGIN_API ? BASE_PATH : "")).replace(/\/$/, "");
 const MAX_EVENT_AGE_DAYS = Number(process.env.NEXT_PUBLIC_MAX_EVENT_AGE_DAYS || "30");
 const ALLOW_WHO_EIOS = process.env.NEXT_PUBLIC_ALLOW_WHO_EIOS === "true";
 const API_WRITE_KEY_STORAGE_KEY = "sentinel:api_write_key";
@@ -146,6 +149,14 @@ async function fetchApiJson<T>(
 }
 
 async function tryApiJsonDetailed<T>(path: string, init?: RequestInit): Promise<ApiMutationResult<T>> {
+  if (!API_ENABLED) {
+    return {
+      ok: false,
+      data: null,
+      status: null,
+      error: `API disabled: ${path}`,
+    };
+  }
   try {
     const { data, status } = await fetchApiJson<T>(path, init);
     return {
@@ -418,6 +429,14 @@ export async function createWatchlistShared(watchlist: Watchlist): Promise<ApiMu
 }
 
 export async function deleteWatchlist(watchlistId: string): Promise<ApiMutationResult<null>> {
+  if (!API_ENABLED) {
+    return {
+      ok: false,
+      data: null,
+      status: null,
+      error: `API disabled: /api/watchlists/${watchlistId}`,
+    };
+  }
   try {
     const res = await fetch(`${API_ROOT}/api/watchlists/${watchlistId}`, {
       method: "DELETE",

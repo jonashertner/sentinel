@@ -53,10 +53,17 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [manifest, setManifest] = useState<Manifest | null>(null);
-  const [writeKeyConfigured, setWriteKeyConfigured] = useState<boolean>(() => hasApiWriteKey());
+  const [writeKeyConfigured, setWriteKeyConfigured] = useState(false);
 
   useEffect(() => {
     getManifest().then(setManifest).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setWriteKeyConfigured(hasApiWriteKey());
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {

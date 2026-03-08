@@ -22,9 +22,12 @@ function getSystemTheme(): Theme {
   return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 }
 
-function getInitialMode(): ThemeMode {
+function getStoredMode(): ThemeMode {
   if (typeof window === "undefined") return "system";
-  const stored = localStorage.getItem("sentinel-theme-mode");
+  let stored = "";
+  try {
+    stored = localStorage.getItem("sentinel-theme-mode") || "";
+  } catch {}
   if (stored === "dark" || stored === "light") return stored;
   return "system";
 }
@@ -34,11 +37,21 @@ function resolveTheme(mode: ThemeMode): Theme {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setModeState] = useState<ThemeMode>(getInitialMode);
-  const [theme, setTheme] = useState<Theme>(() => resolveTheme(getInitialMode()));
+  const [mode, setModeState] = useState<ThemeMode>("system");
+  const [theme, setTheme] = useState<Theme>("dark");
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      const nextMode = getStoredMode();
+      setModeState(nextMode);
+      setTheme(resolveTheme(nextMode));
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   // Listen for OS theme changes when in system mode
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const mq = window.matchMedia("(prefers-color-scheme: light)");
     const handler = () => {
       if (mode === "system") {
@@ -56,7 +69,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const setMode = useCallback((next: ThemeMode) => {
     setModeState(next);
-    localStorage.setItem("sentinel-theme-mode", next);
+    try {
+      localStorage.setItem("sentinel-theme-mode", next);
+    } catch {}
     setTheme(resolveTheme(next));
   }, []);
 
