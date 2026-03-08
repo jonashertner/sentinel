@@ -6,7 +6,8 @@
     "2026-03-04",
     "2026-03-05",
     "2026-03-06",
-    "2026-03-07"
+    "2026-03-07",
+    "2026-03-08"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -15,16 +16,17 @@
   ],
   "report_dates": [
     "2026-03-06",
-    "2026-03-07"
+    "2026-03-07",
+    "2026-03-08"
   ],
-  "total_events": 140,
-  "latest_collection": "2026-03-07",
+  "total_events": 173,
+  "latest_collection": "2026-03-08",
   "projected_source_totals": {
     "WOAH": 5,
     "WHO_DON": 11,
     "ECDC": 19,
     "PROMED": 6,
-    "BEACON": 99
+    "BEACON": 132
   },
   "collector_statuses": [
     {
@@ -38,59 +40,58 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.66,
+      "latency_seconds": 0.79,
       "error": null
     },
     {
       "source": "PROMED",
       "ok": false,
       "event_count": 0,
-      "latency_seconds": 1.08,
+      "latency_seconds": 1.48,
       "error": "ProMED source unavailable: feed and sitemap fallback returned no events"
     },
     {
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.46,
+      "latency_seconds": 0.62,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.58,
+      "latency_seconds": 2.52,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 1.97,
+      "latency_seconds": 4.75,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": false,
       "event_count": 0,
-      "latency_seconds": 0.25,
+      "latency_seconds": 0.09,
       "error": "CIDRAP source unavailable: official feed returned no events"
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-03-07",
-    "previous_collection": "2026-03-06",
-    "new_count": 104,
-    "changed_count": 9,
-    "retired_count": 57,
+    "latest_collection": "2026-03-08",
+    "previous_collection": "2026-03-07",
+    "new_count": 33,
+    "changed_count": 20,
+    "retired_count": 35,
     "new_by_source": {
-      "BEACON": 99,
-      "WHO_DON": 2,
-      "ECDC": 1,
-      "WOAH": 2
+      "BEACON": 33
     },
     "changed_by_source": {
-      "ECDC": 9
+      "BEACON": 18,
+      "WHO_DON": 1,
+      "WOAH": 1
     }
   }
 }
