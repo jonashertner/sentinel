@@ -27,15 +27,15 @@
     "2026-03-11",
     "2026-03-12"
   ],
-  "total_events": 489,
+  "total_events": 511,
   "latest_collection": "2026-03-12",
   "projected_source_totals": {
-    "WOAH": 15,
+    "WOAH": 14,
     "WHO_DON": 9,
     "ECDC": 18,
     "PROMED": 6,
-    "BEACON": 413,
-    "CIDRAP": 28
+    "BEACON": 430,
+    "CIDRAP": 34
   },
   "collector_statuses": [
     {
@@ -49,58 +49,58 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.83,
+      "latency_seconds": 0.73,
       "error": null
     },
     {
       "source": "PROMED",
       "ok": false,
       "event_count": 0,
-      "latency_seconds": 0.0,
-      "error": "Collector PROMED skipped: public search requires subscription/authentication"
+      "latency_seconds": 0.2,
+      "error": "ProMED source unavailable: feed and sitemap fallback returned no events"
     },
     {
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.5,
+      "latency_seconds": 0.68,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 3.33,
+      "latency_seconds": 2.28,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 5.14,
+      "latency_seconds": 2.56,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.56,
+      "latency_seconds": 0.5,
       "error": null
     }
   ],
   "ingestion_delta": {
     "latest_collection": "2026-03-12",
     "previous_collection": "2026-03-11",
-    "new_count": 60,
-    "changed_count": 16,
-    "retired_count": 58,
+    "new_count": 82,
+    "changed_count": 11,
+    "retired_count": 79,
     "new_by_source": {
-      "BEACON": 58,
-      "WOAH": 2
+      "BEACON": 76,
+      "CIDRAP": 6
     },
     "changed_by_source": {
-      "BEACON": 14,
-      "CIDRAP": 2
+      "CIDRAP": 2,
+      "BEACON": 9
     }
   }
 }
