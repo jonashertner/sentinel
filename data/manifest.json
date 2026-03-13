@@ -29,15 +29,15 @@
     "2026-03-12",
     "2026-03-13"
   ],
-  "total_events": 572,
+  "total_events": 589,
   "latest_collection": "2026-03-13",
   "projected_source_totals": {
-    "WOAH": 16,
-    "WHO_DON": 9,
+    "WOAH": 15,
+    "WHO_DON": 10,
     "ECDC": 19,
     "PROMED": 6,
-    "BEACON": 488,
-    "CIDRAP": 34
+    "BEACON": 499,
+    "CIDRAP": 40
   },
   "collector_statuses": [
     {
@@ -51,58 +51,60 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.71,
+      "latency_seconds": 2.11,
       "error": null
     },
     {
       "source": "PROMED",
       "ok": false,
       "event_count": 0,
-      "latency_seconds": 0.33,
+      "latency_seconds": 0.22,
       "error": "ProMED source unavailable: feed and sitemap fallback returned no events"
     },
     {
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.08,
+      "latency_seconds": 0.6,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.88,
+      "latency_seconds": 2.55,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 3.17,
+      "latency_seconds": 3.54,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.8,
+      "latency_seconds": 0.49,
       "error": null
     }
   ],
   "ingestion_delta": {
     "latest_collection": "2026-03-13",
     "previous_collection": "2026-03-12",
-    "new_count": 63,
-    "changed_count": 16,
-    "retired_count": 60,
+    "new_count": 80,
+    "changed_count": 12,
+    "retired_count": 83,
     "new_by_source": {
-      "BEACON": 60,
-      "WOAH": 2,
-      "ECDC": 1
+      "BEACON": 71,
+      "WHO_DON": 1,
+      "CIDRAP": 6,
+      "ECDC": 1,
+      "WOAH": 1
     },
     "changed_by_source": {
-      "BEACON": 15,
+      "BEACON": 11,
       "CIDRAP": 1
     }
   }
