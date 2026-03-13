@@ -11,7 +11,8 @@
     "2026-03-09",
     "2026-03-10",
     "2026-03-11",
-    "2026-03-12"
+    "2026-03-12",
+    "2026-03-13"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -25,16 +26,17 @@
     "2026-03-09",
     "2026-03-10",
     "2026-03-11",
-    "2026-03-12"
+    "2026-03-12",
+    "2026-03-13"
   ],
-  "total_events": 511,
-  "latest_collection": "2026-03-12",
+  "total_events": 557,
+  "latest_collection": "2026-03-13",
   "projected_source_totals": {
     "WOAH": 14,
     "WHO_DON": 9,
     "ECDC": 18,
     "PROMED": 6,
-    "BEACON": 430,
+    "BEACON": 476,
     "CIDRAP": 34
   },
   "collector_statuses": [
@@ -49,58 +51,57 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.73,
+      "latency_seconds": 0.97,
       "error": null
     },
     {
       "source": "PROMED",
       "ok": false,
       "event_count": 0,
-      "latency_seconds": 0.2,
+      "latency_seconds": 0.4,
       "error": "ProMED source unavailable: feed and sitemap fallback returned no events"
     },
     {
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.68,
+      "latency_seconds": 0.72,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.28,
+      "latency_seconds": 2.47,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.56,
+      "latency_seconds": 2.4,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.5,
+      "latency_seconds": 0.72,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-03-12",
-    "previous_collection": "2026-03-11",
-    "new_count": 82,
-    "changed_count": 11,
-    "retired_count": 79,
+    "latest_collection": "2026-03-13",
+    "previous_collection": "2026-03-12",
+    "new_count": 47,
+    "changed_count": 19,
+    "retired_count": 47,
     "new_by_source": {
-      "BEACON": 76,
-      "CIDRAP": 6
+      "BEACON": 47
     },
     "changed_by_source": {
-      "CIDRAP": 2,
-      "BEACON": 9
+      "BEACON": 18,
+      "CIDRAP": 1
     }
   }
 }
