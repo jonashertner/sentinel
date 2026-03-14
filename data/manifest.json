@@ -12,7 +12,8 @@
     "2026-03-10",
     "2026-03-11",
     "2026-03-12",
-    "2026-03-13"
+    "2026-03-13",
+    "2026-03-14"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -27,16 +28,17 @@
     "2026-03-10",
     "2026-03-11",
     "2026-03-12",
-    "2026-03-13"
+    "2026-03-13",
+    "2026-03-14"
   ],
-  "total_events": 589,
-  "latest_collection": "2026-03-13",
+  "total_events": 626,
+  "latest_collection": "2026-03-14",
   "projected_source_totals": {
     "WOAH": 15,
     "WHO_DON": 10,
     "ECDC": 19,
     "PROMED": 6,
-    "BEACON": 499,
+    "BEACON": 536,
     "CIDRAP": 40
   },
   "collector_statuses": [
@@ -51,61 +53,58 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 2.11,
+      "latency_seconds": 0.58,
       "error": null
     },
     {
       "source": "PROMED",
       "ok": false,
       "event_count": 0,
-      "latency_seconds": 0.22,
-      "error": "ProMED source unavailable: feed and sitemap fallback returned no events"
+      "latency_seconds": 0.0,
+      "error": "Collector PROMED skipped: public search requires subscription/authentication"
     },
     {
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.6,
+      "latency_seconds": 0.53,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.55,
+      "latency_seconds": 2.64,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 3.54,
+      "latency_seconds": 2.31,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.49,
+      "latency_seconds": 0.13,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-03-13",
-    "previous_collection": "2026-03-12",
-    "new_count": 80,
-    "changed_count": 12,
-    "retired_count": 83,
+    "latest_collection": "2026-03-14",
+    "previous_collection": "2026-03-13",
+    "new_count": 38,
+    "changed_count": 17,
+    "retired_count": 40,
     "new_by_source": {
-      "BEACON": 71,
-      "WHO_DON": 1,
-      "CIDRAP": 6,
-      "ECDC": 1,
-      "WOAH": 1
+      "BEACON": 38
     },
     "changed_by_source": {
-      "BEACON": 11,
-      "CIDRAP": 1
+      "BEACON": 15,
+      "CIDRAP": 1,
+      "WOAH": 1
     }
   }
 }
