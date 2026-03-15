@@ -13,7 +13,8 @@
     "2026-03-11",
     "2026-03-12",
     "2026-03-13",
-    "2026-03-14"
+    "2026-03-14",
+    "2026-03-15"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -29,16 +30,17 @@
     "2026-03-11",
     "2026-03-12",
     "2026-03-13",
-    "2026-03-14"
+    "2026-03-14",
+    "2026-03-15"
   ],
-  "total_events": 589,
-  "latest_collection": "2026-03-14",
+  "total_events": 658,
+  "latest_collection": "2026-03-15",
   "projected_source_totals": {
     "WOAH": 15,
     "WHO_DON": 10,
     "ECDC": 19,
     "PROMED": 6,
-    "BEACON": 499,
+    "BEACON": 568,
     "CIDRAP": 40
   },
   "collector_statuses": [
@@ -53,7 +55,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.74,
+      "latency_seconds": 0.62,
       "error": null
     },
     {
@@ -67,38 +69,40 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.59,
+      "latency_seconds": 0.37,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 3.0,
+      "latency_seconds": 2.73,
       "error": null
     },
     {
       "source": "BEACON",
-      "ok": false,
-      "event_count": 0,
-      "latency_seconds": 30.12,
-      "error": ""
+      "ok": true,
+      "event_count": 120,
+      "latency_seconds": 2.77,
+      "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.17,
+      "latency_seconds": 0.74,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-03-14",
-    "previous_collection": "2026-03-13",
-    "new_count": 0,
+    "latest_collection": "2026-03-15",
+    "previous_collection": "2026-03-14",
+    "new_count": 95,
     "changed_count": 2,
-    "retired_count": 93,
-    "new_by_source": {},
+    "retired_count": 0,
+    "new_by_source": {
+      "BEACON": 95
+    },
     "changed_by_source": {
       "CIDRAP": 1,
       "WOAH": 1
