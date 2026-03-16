@@ -14,7 +14,8 @@
     "2026-03-12",
     "2026-03-13",
     "2026-03-14",
-    "2026-03-15"
+    "2026-03-15",
+    "2026-03-16"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -31,16 +32,17 @@
     "2026-03-12",
     "2026-03-13",
     "2026-03-14",
-    "2026-03-15"
+    "2026-03-15",
+    "2026-03-16"
   ],
-  "total_events": 663,
-  "latest_collection": "2026-03-15",
+  "total_events": 694,
+  "latest_collection": "2026-03-16",
   "projected_source_totals": {
     "WOAH": 15,
     "WHO_DON": 10,
-    "ECDC": 19,
+    "ECDC": 17,
     "PROMED": 6,
-    "BEACON": 573,
+    "BEACON": 606,
     "CIDRAP": 40
   },
   "collector_statuses": [
@@ -55,7 +57,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 2.03,
+      "latency_seconds": 0.94,
       "error": null
     },
     {
@@ -69,41 +71,42 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.42,
+      "latency_seconds": 0.55,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.58,
+      "latency_seconds": 2.25,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.42,
+      "latency_seconds": 2.36,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.55,
+      "latency_seconds": 0.74,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-03-15",
-    "previous_collection": "2026-03-14",
-    "new_count": 95,
-    "changed_count": 2,
-    "retired_count": 0,
+    "latest_collection": "2026-03-16",
+    "previous_collection": "2026-03-15",
+    "new_count": 33,
+    "changed_count": 15,
+    "retired_count": 38,
     "new_by_source": {
-      "BEACON": 95
+      "BEACON": 33
     },
     "changed_by_source": {
+      "BEACON": 13,
       "CIDRAP": 1,
       "WOAH": 1
     }
