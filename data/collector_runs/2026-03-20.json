@@ -10,7 +10,7 @@
     "source": "WHO_DON",
     "ok": true,
     "event_count": 40,
-    "latency_seconds": 1.05,
+    "latency_seconds": 0.87,
     "error": null
   },
   {
@@ -24,21 +24,21 @@
     "source": "ECDC",
     "ok": true,
     "event_count": 10,
-    "latency_seconds": 0.39,
+    "latency_seconds": 0.42,
     "error": null
   },
   {
     "source": "WOAH",
     "ok": true,
     "event_count": 30,
-    "latency_seconds": 2.45,
+    "latency_seconds": 2.63,
     "error": null
   },
   {
     "source": "BEACON",
     "ok": true,
     "event_count": 120,
-    "latency_seconds": 2.75,
+    "latency_seconds": 2.57,
     "error": null
   },
   {
