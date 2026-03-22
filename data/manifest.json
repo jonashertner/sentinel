@@ -20,7 +20,8 @@
     "2026-03-18",
     "2026-03-19",
     "2026-03-20",
-    "2026-03-21"
+    "2026-03-21",
+    "2026-03-22"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -43,16 +44,17 @@
     "2026-03-18",
     "2026-03-19",
     "2026-03-20",
-    "2026-03-21"
+    "2026-03-21",
+    "2026-03-22"
   ],
-  "total_events": 1122,
-  "latest_collection": "2026-03-21",
+  "total_events": 1143,
+  "latest_collection": "2026-03-22",
   "projected_source_totals": {
-    "WOAH": 22,
+    "WOAH": 21,
     "WHO_DON": 8,
     "ECDC": 19,
     "PROMED": 6,
-    "BEACON": 996,
+    "BEACON": 1018,
     "CIDRAP": 71
   },
   "collector_statuses": [
@@ -67,7 +69,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.7,
+      "latency_seconds": 0.94,
       "error": null
     },
     {
@@ -81,42 +83,42 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.2,
+      "latency_seconds": 0.34,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.79,
+      "latency_seconds": 2.76,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.81,
+      "latency_seconds": 3.36,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.73,
+      "latency_seconds": 0.26,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-03-21",
-    "previous_collection": "2026-03-20",
-    "new_count": 64,
-    "changed_count": 15,
-    "retired_count": 71,
+    "latest_collection": "2026-03-22",
+    "previous_collection": "2026-03-21",
+    "new_count": 23,
+    "changed_count": 20,
+    "retired_count": 23,
     "new_by_source": {
-      "BEACON": 64
+      "BEACON": 23
     },
     "changed_by_source": {
-      "BEACON": 11,
+      "BEACON": 16,
       "CIDRAP": 1,
       "WOAH": 3
     }
