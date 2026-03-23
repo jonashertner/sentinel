@@ -21,7 +21,8 @@
     "2026-03-19",
     "2026-03-20",
     "2026-03-21",
-    "2026-03-22"
+    "2026-03-22",
+    "2026-03-23"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -45,16 +46,17 @@
     "2026-03-19",
     "2026-03-20",
     "2026-03-21",
-    "2026-03-22"
+    "2026-03-22",
+    "2026-03-23"
   ],
-  "total_events": 1167,
-  "latest_collection": "2026-03-22",
+  "total_events": 1181,
+  "latest_collection": "2026-03-23",
   "projected_source_totals": {
     "WOAH": 21,
     "WHO_DON": 8,
-    "ECDC": 19,
+    "ECDC": 17,
     "PROMED": 6,
-    "BEACON": 1042,
+    "BEACON": 1058,
     "CIDRAP": 71
   },
   "collector_statuses": [
@@ -69,7 +71,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.36,
+      "latency_seconds": 1.37,
       "error": null
     },
     {
@@ -83,42 +85,42 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.75,
+      "latency_seconds": 5.18,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 3.03,
+      "latency_seconds": 2.57,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.58,
+      "latency_seconds": 3.36,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.8,
+      "latency_seconds": 0.77,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-03-22",
-    "previous_collection": "2026-03-21",
-    "new_count": 49,
-    "changed_count": 18,
-    "retired_count": 46,
+    "latest_collection": "2026-03-23",
+    "previous_collection": "2026-03-22",
+    "new_count": 18,
+    "changed_count": 19,
+    "retired_count": 21,
     "new_by_source": {
-      "BEACON": 49
+      "BEACON": 18
     },
     "changed_by_source": {
-      "BEACON": 14,
+      "BEACON": 15,
       "CIDRAP": 1,
       "WOAH": 3
     }
