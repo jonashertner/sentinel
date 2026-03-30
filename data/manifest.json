@@ -28,7 +28,8 @@
     "2026-03-26",
     "2026-03-27",
     "2026-03-28",
-    "2026-03-29"
+    "2026-03-29",
+    "2026-03-30"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -59,16 +60,17 @@
     "2026-03-26",
     "2026-03-27",
     "2026-03-28",
-    "2026-03-29"
+    "2026-03-29",
+    "2026-03-30"
   ],
-  "total_events": 1703,
-  "latest_collection": "2026-03-29",
+  "total_events": 1736,
+  "latest_collection": "2026-03-30",
   "projected_source_totals": {
-    "WOAH": 26,
+    "WOAH": 25,
     "WHO_DON": 8,
-    "ECDC": 22,
+    "ECDC": 20,
     "PROMED": 6,
-    "BEACON": 1540,
+    "BEACON": 1576,
     "CIDRAP": 101
   },
   "collector_statuses": [
@@ -83,7 +85,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.33,
+      "latency_seconds": 0.96,
       "error": null
     },
     {
@@ -97,42 +99,42 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.79,
+      "latency_seconds": 0.8,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.61,
+      "latency_seconds": 2.5,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.78,
+      "latency_seconds": 2.45,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.32,
+      "latency_seconds": 0.58,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-03-29",
-    "previous_collection": "2026-03-28",
-    "new_count": 68,
-    "changed_count": 12,
-    "retired_count": 64,
+    "latest_collection": "2026-03-30",
+    "previous_collection": "2026-03-29",
+    "new_count": 38,
+    "changed_count": 15,
+    "retired_count": 37,
     "new_by_source": {
-      "BEACON": 68
+      "BEACON": 38
     },
     "changed_by_source": {
-      "BEACON": 11,
+      "BEACON": 14,
       "CIDRAP": 1
     }
   }
