@@ -38,7 +38,8 @@
     "2026-04-05",
     "2026-04-06",
     "2026-04-07",
-    "2026-04-08"
+    "2026-04-08",
+    "2026-04-09"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -79,14 +80,15 @@
     "2026-04-05",
     "2026-04-06",
     "2026-04-07",
-    "2026-04-08"
+    "2026-04-08",
+    "2026-04-09"
   ],
-  "total_events": 2270,
-  "latest_collection": "2026-04-08",
+  "total_events": 2244,
+  "latest_collection": "2026-04-09",
   "projected_source_totals": {
-    "BEACON": 2107,
-    "CIDRAP": 133,
     "ECDC": 10,
+    "BEACON": 2087,
+    "CIDRAP": 127,
     "WHO_DON": 1,
     "WOAH": 19
   },
@@ -102,7 +104,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.92,
+      "latency_seconds": 0.85,
       "error": null
     },
     {
@@ -116,44 +118,43 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.55,
+      "latency_seconds": 0.9,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 3.52,
+      "latency_seconds": 2.56,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.64,
+      "latency_seconds": 2.9,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.73,
+      "latency_seconds": 1.07,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-04-08",
-    "previous_collection": "2026-04-07",
-    "new_count": 95,
-    "changed_count": 4,
-    "retired_count": 102,
+    "latest_collection": "2026-04-09",
+    "previous_collection": "2026-04-08",
+    "new_count": 47,
+    "changed_count": 20,
+    "retired_count": 47,
     "new_by_source": {
-      "BEACON": 89,
-      "CIDRAP": 4,
-      "WOAH": 2
+      "BEACON": 47
     },
     "changed_by_source": {
-      "BEACON": 4
+      "BEACON": 17,
+      "CIDRAP": 3
     }
   }
 }
