@@ -1,0 +1,51 @@
+[
+  {
+    "source": "WHO_EIOS",
+    "ok": false,
+    "event_count": 0,
+    "latency_seconds": 0.0,
+    "error": "Collector WHO_EIOS skipped: SENTINEL_WHO_EIOS_API_KEY is not configured"
+  },
+  {
+    "source": "WHO_DON",
+    "ok": true,
+    "event_count": 40,
+    "latency_seconds": 1.76,
+    "error": null
+  },
+  {
+    "source": "PROMED",
+    "ok": false,
+    "event_count": 0,
+    "latency_seconds": 0.0,
+    "error": "Collector PROMED skipped: public search requires subscription/authentication"
+  },
+  {
+    "source": "ECDC",
+    "ok": true,
+    "event_count": 10,
+    "latency_seconds": 0.63,
+    "error": null
+  },
+  {
+    "source": "WOAH",
+    "ok": true,
+    "event_count": 30,
+    "latency_seconds": 2.32,
+    "error": null
+  },
+  {
+    "source": "BEACON",
+    "ok": true,
+    "event_count": 120,
+    "latency_seconds": 2.59,
+    "error": null
+  },
+  {
+    "source": "CIDRAP",
+    "ok": true,
+    "event_count": 12,
+    "latency_seconds": 0.35,
+    "error": null
+  }
+]
