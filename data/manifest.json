@@ -41,7 +41,8 @@
     "2026-04-08",
     "2026-04-09",
     "2026-04-10",
-    "2026-04-11"
+    "2026-04-11",
+    "2026-04-12"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -85,15 +86,16 @@
     "2026-04-08",
     "2026-04-09",
     "2026-04-10",
-    "2026-04-11"
+    "2026-04-11",
+    "2026-04-12"
   ],
-  "total_events": 2284,
-  "latest_collection": "2026-04-11",
+  "total_events": 2232,
+  "latest_collection": "2026-04-12",
   "projected_source_totals": {
-    "BEACON": 2125,
-    "CIDRAP": 128,
     "WHO_DON": 2,
     "ECDC": 11,
+    "BEACON": 2079,
+    "CIDRAP": 122,
     "WOAH": 18
   },
   "collector_statuses": [
@@ -108,7 +110,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.63,
+      "latency_seconds": 1.03,
       "error": null
     },
     {
@@ -122,42 +124,42 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.35,
+      "latency_seconds": 0.25,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.58,
+      "latency_seconds": 2.68,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 3.92,
+      "latency_seconds": 2.36,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 1.28,
+      "latency_seconds": 0.5,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-04-11",
-    "previous_collection": "2026-04-10",
-    "new_count": 70,
-    "changed_count": 18,
-    "retired_count": 64,
+    "latest_collection": "2026-04-12",
+    "previous_collection": "2026-04-11",
+    "new_count": 34,
+    "changed_count": 17,
+    "retired_count": 35,
     "new_by_source": {
-      "BEACON": 70
+      "BEACON": 34
     },
     "changed_by_source": {
-      "BEACON": 14,
+      "BEACON": 13,
       "CIDRAP": 3,
       "WHO_DON": 1
     }
