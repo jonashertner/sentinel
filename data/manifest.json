@@ -54,7 +54,8 @@
     "2026-04-21",
     "2026-04-22",
     "2026-04-23",
-    "2026-04-24"
+    "2026-04-24",
+    "2026-04-25"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -111,15 +112,16 @@
     "2026-04-21",
     "2026-04-22",
     "2026-04-23",
-    "2026-04-24"
+    "2026-04-24",
+    "2026-04-25"
   ],
-  "total_events": 2375,
-  "latest_collection": "2026-04-24",
+  "total_events": 2315,
+  "latest_collection": "2026-04-25",
   "projected_source_totals": {
-    "BEACON": 2204,
-    "CIDRAP": 143,
-    "WOAH": 16,
+    "BEACON": 2151,
+    "CIDRAP": 138,
     "ECDC": 10,
+    "WOAH": 14,
     "WHO_DON": 2
   },
   "collector_statuses": [
@@ -134,7 +136,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.62,
+      "latency_seconds": 2.2,
       "error": null
     },
     {
@@ -148,47 +150,44 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.38,
+      "latency_seconds": 0.4,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.4,
+      "latency_seconds": 3.01,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.53,
+      "latency_seconds": 2.78,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.56,
+      "latency_seconds": 0.45,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-04-24",
-    "previous_collection": "2026-04-23",
-    "new_count": 93,
-    "changed_count": 7,
-    "retired_count": 89,
+    "latest_collection": "2026-04-25",
+    "previous_collection": "2026-04-24",
+    "new_count": 29,
+    "changed_count": 29,
+    "retired_count": 28,
     "new_by_source": {
-      "BEACON": 81,
-      "CIDRAP": 8,
-      "ECDC": 2,
-      "WOAH": 2
+      "BEACON": 29
     },
     "changed_by_source": {
-      "CIDRAP": 1,
-      "BEACON": 4,
-      "WHO_DON": 2
+      "BEACON": 27,
+      "WOAH": 1,
+      "WHO_DON": 1
     }
   }
 }
