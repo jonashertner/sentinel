@@ -167,11 +167,11 @@
     "2026-05-20",
     "2026-05-21"
   ],
-  "total_events": 2474,
+  "total_events": 2494,
   "latest_collection": "2026-05-21",
   "projected_source_totals": {
-    "BEACON": 2301,
-    "CIDRAP": 146,
+    "BEACON": 2320,
+    "CIDRAP": 147,
     "WHO_DON": 6,
     "WOAH": 13,
     "ECDC": 8
@@ -188,7 +188,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.82,
+      "latency_seconds": 0.65,
       "error": null
     },
     {
@@ -202,42 +202,43 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.96,
+      "latency_seconds": 0.65,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.71,
+      "latency_seconds": 2.29,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 4.35,
+      "latency_seconds": 3.98,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.61,
+      "latency_seconds": 11.7,
       "error": null
     }
   ],
   "ingestion_delta": {
     "latest_collection": "2026-05-21",
     "previous_collection": "2026-05-20",
-    "new_count": 58,
-    "changed_count": 19,
-    "retired_count": 54,
+    "new_count": 78,
+    "changed_count": 12,
+    "retired_count": 73,
     "new_by_source": {
-      "BEACON": 58
+      "BEACON": 77,
+      "CIDRAP": 1
     },
     "changed_by_source": {
-      "BEACON": 14,
+      "BEACON": 7,
       "CIDRAP": 2,
       "WHO_DON": 3
     }
