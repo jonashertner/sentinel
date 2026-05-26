@@ -85,7 +85,8 @@
     "2026-05-22",
     "2026-05-23",
     "2026-05-24",
-    "2026-05-25"
+    "2026-05-25",
+    "2026-05-26"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -173,13 +174,14 @@
     "2026-05-22",
     "2026-05-23",
     "2026-05-24",
-    "2026-05-25"
+    "2026-05-25",
+    "2026-05-26"
   ],
-  "total_events": 2472,
-  "latest_collection": "2026-05-25",
+  "total_events": 2458,
+  "latest_collection": "2026-05-26",
   "projected_source_totals": {
-    "BEACON": 2314,
-    "WOAH": 13,
+    "BEACON": 2301,
+    "WOAH": 12,
     "CIDRAP": 131,
     "ECDC": 8,
     "WHO_DON": 6
@@ -196,7 +198,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.9,
+      "latency_seconds": 0.85,
       "error": null
     },
     {
@@ -210,44 +212,44 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.16,
+      "latency_seconds": 0.38,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.65,
+      "latency_seconds": 2.49,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 3.13,
+      "latency_seconds": 2.69,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.86,
+      "latency_seconds": 0.38,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-05-25",
-    "previous_collection": "2026-05-24",
-    "new_count": 68,
-    "changed_count": 16,
-    "retired_count": 72,
+    "latest_collection": "2026-05-26",
+    "previous_collection": "2026-05-25",
+    "new_count": 61,
+    "changed_count": 23,
+    "retired_count": 57,
     "new_by_source": {
-      "BEACON": 68
+      "BEACON": 61
     },
     "changed_by_source": {
-      "BEACON": 8,
+      "BEACON": 16,
       "CIDRAP": 4,
-      "WHO_DON": 4
+      "WHO_DON": 3
     }
   }
 }
