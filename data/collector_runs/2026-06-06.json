@@ -10,7 +10,7 @@
     "source": "WHO_DON",
     "ok": true,
     "event_count": 40,
-    "latency_seconds": 1.22,
+    "latency_seconds": 1.4,
     "error": null
   },
   {
@@ -22,30 +22,30 @@
   },
   {
     "source": "ECDC",
-    "ok": true,
-    "event_count": 10,
-    "latency_seconds": 0.33,
-    "error": null
+    "ok": false,
+    "event_count": 0,
+    "latency_seconds": 0.41,
+    "error": "Client error '403 Forbidden' for url 'https://www.ecdc.europa.eu/en/taxonomy/term/2942/feed'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
   },
   {
     "source": "WOAH",
     "ok": true,
     "event_count": 30,
-    "latency_seconds": 2.5,
+    "latency_seconds": 2.6,
     "error": null
   },
   {
     "source": "BEACON",
     "ok": true,
     "event_count": 120,
-    "latency_seconds": 2.19,
+    "latency_seconds": 2.69,
     "error": null
   },
   {
     "source": "CIDRAP",
     "ok": true,
     "event_count": 12,
-    "latency_seconds": 0.43,
+    "latency_seconds": 0.59,
     "error": null
   }
 ]
