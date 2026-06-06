@@ -199,10 +199,10 @@
     "2026-06-05",
     "2026-06-06"
   ],
-  "total_events": 2450,
+  "total_events": 2462,
   "latest_collection": "2026-06-06",
   "projected_source_totals": {
-    "BEACON": 2296,
+    "BEACON": 2308,
     "CIDRAP": 127,
     "WHO_DON": 7,
     "ECDC": 9,
@@ -220,7 +220,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.4,
+      "latency_seconds": 1.12,
       "error": null
     },
     {
@@ -232,44 +232,44 @@
     },
     {
       "source": "ECDC",
-      "ok": false,
-      "event_count": 0,
-      "latency_seconds": 0.41,
-      "error": "Client error '403 Forbidden' for url 'https://www.ecdc.europa.eu/en/taxonomy/term/2942/feed'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+      "ok": true,
+      "event_count": 10,
+      "latency_seconds": 0.47,
+      "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.6,
+      "latency_seconds": 2.57,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.69,
+      "latency_seconds": 2.54,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.59,
+      "latency_seconds": 1.43,
       "error": null
     }
   ],
   "ingestion_delta": {
     "latest_collection": "2026-06-06",
     "previous_collection": "2026-06-05",
-    "new_count": 55,
-    "changed_count": 18,
-    "retired_count": 65,
+    "new_count": 67,
+    "changed_count": 15,
+    "retired_count": 68,
     "new_by_source": {
-      "BEACON": 55
+      "BEACON": 67
     },
     "changed_by_source": {
-      "BEACON": 12,
+      "BEACON": 9,
       "CIDRAP": 4,
       "WHO_DON": 2
     }
