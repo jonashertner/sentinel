@@ -103,7 +103,8 @@
     "2026-06-09",
     "2026-06-10",
     "2026-06-11",
-    "2026-06-12"
+    "2026-06-12",
+    "2026-06-13"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -209,14 +210,15 @@
     "2026-06-09",
     "2026-06-10",
     "2026-06-11",
-    "2026-06-12"
+    "2026-06-12",
+    "2026-06-13"
   ],
-  "total_events": 2428,
-  "latest_collection": "2026-06-12",
+  "total_events": 2367,
+  "latest_collection": "2026-06-13",
   "projected_source_totals": {
-    "WHO_DON": 7,
-    "BEACON": 2260,
-    "CIDRAP": 134,
+    "BEACON": 2205,
+    "CIDRAP": 129,
+    "WHO_DON": 6,
     "ECDC": 7,
     "WOAH": 20
   },
@@ -232,7 +234,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.58,
+      "latency_seconds": 1.78,
       "error": null
     },
     {
@@ -244,48 +246,45 @@
     },
     {
       "source": "ECDC",
-      "ok": true,
-      "event_count": 10,
-      "latency_seconds": 0.35,
-      "error": null
+      "ok": false,
+      "event_count": 0,
+      "latency_seconds": 0.41,
+      "error": "Client error '403 Forbidden' for url 'https://www.ecdc.europa.eu/en/taxonomy/term/2942/feed'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.72,
+      "latency_seconds": 2.69,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.5,
+      "latency_seconds": 2.61,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.43,
+      "latency_seconds": 0.47,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-06-12",
-    "previous_collection": "2026-06-11",
-    "new_count": 81,
-    "changed_count": 15,
-    "retired_count": 88,
+    "latest_collection": "2026-06-13",
+    "previous_collection": "2026-06-12",
+    "new_count": 48,
+    "changed_count": 14,
+    "retired_count": 56,
     "new_by_source": {
-      "CIDRAP": 6,
-      "BEACON": 73,
-      "WOAH": 2
+      "BEACON": 48
     },
     "changed_by_source": {
-      "BEACON": 12,
       "CIDRAP": 2,
-      "WHO_DON": 1
+      "BEACON": 12
     }
   }
 }
