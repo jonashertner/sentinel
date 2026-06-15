@@ -105,7 +105,8 @@
     "2026-06-11",
     "2026-06-12",
     "2026-06-13",
-    "2026-06-14"
+    "2026-06-14",
+    "2026-06-15"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -213,16 +214,17 @@
     "2026-06-11",
     "2026-06-12",
     "2026-06-13",
-    "2026-06-14"
+    "2026-06-14",
+    "2026-06-15"
   ],
-  "total_events": 2373,
-  "latest_collection": "2026-06-14",
+  "total_events": 2317,
+  "latest_collection": "2026-06-15",
   "projected_source_totals": {
-    "BEACON": 2217,
-    "CIDRAP": 122,
+    "BEACON": 2166,
     "WHO_DON": 7,
+    "CIDRAP": 116,
     "ECDC": 7,
-    "WOAH": 20
+    "WOAH": 21
   },
   "collector_statuses": [
     {
@@ -236,7 +238,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.48,
+      "latency_seconds": 0.97,
       "error": null
     },
     {
@@ -250,43 +252,44 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.46,
+      "latency_seconds": 0.38,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 3.08,
+      "latency_seconds": 2.9,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.58,
+      "latency_seconds": 2.78,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.86,
+      "latency_seconds": 0.42,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-06-14",
-    "previous_collection": "2026-06-13",
-    "new_count": 63,
-    "changed_count": 10,
-    "retired_count": 66,
+    "latest_collection": "2026-06-15",
+    "previous_collection": "2026-06-14",
+    "new_count": 33,
+    "changed_count": 19,
+    "retired_count": 31,
     "new_by_source": {
-      "BEACON": 63
+      "BEACON": 32,
+      "WOAH": 1
     },
     "changed_by_source": {
       "CIDRAP": 2,
-      "BEACON": 8
+      "BEACON": 17
     }
   }
 }
