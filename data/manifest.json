@@ -115,7 +115,8 @@
     "2026-06-21",
     "2026-06-22",
     "2026-06-23",
-    "2026-06-24"
+    "2026-06-24",
+    "2026-06-25"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -233,12 +234,13 @@
     "2026-06-21",
     "2026-06-22",
     "2026-06-23",
-    "2026-06-24"
+    "2026-06-24",
+    "2026-06-25"
   ],
-  "total_events": 2356,
-  "latest_collection": "2026-06-24",
+  "total_events": 2338,
+  "latest_collection": "2026-06-25",
   "projected_source_totals": {
-    "BEACON": 2193,
+    "BEACON": 2175,
     "CIDRAP": 133,
     "ECDC": 4,
     "WHO_DON": 6,
@@ -256,7 +258,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.61,
+      "latency_seconds": 1.14,
       "error": null
     },
     {
@@ -270,46 +272,44 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.4,
+      "latency_seconds": 0.31,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.73,
+      "latency_seconds": 3.0,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 4.52,
+      "latency_seconds": 4.82,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.57,
+      "latency_seconds": 0.79,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-06-24",
-    "previous_collection": "2026-06-23",
-    "new_count": 88,
-    "changed_count": 12,
-    "retired_count": 83,
+    "latest_collection": "2026-06-25",
+    "previous_collection": "2026-06-24",
+    "new_count": 47,
+    "changed_count": 15,
+    "retired_count": 48,
     "new_by_source": {
-      "BEACON": 79,
-      "CIDRAP": 8,
-      "WHO_DON": 1
+      "BEACON": 47
     },
     "changed_by_source": {
-      "BEACON": 8,
-      "WOAH": 2,
-      "CIDRAP": 2
+      "BEACON": 11,
+      "CIDRAP": 2,
+      "WOAH": 2
     }
   }
 }
