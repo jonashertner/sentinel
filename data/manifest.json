@@ -120,7 +120,8 @@
     "2026-06-26",
     "2026-06-27",
     "2026-06-28",
-    "2026-06-29"
+    "2026-06-29",
+    "2026-06-30"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -243,12 +244,13 @@
     "2026-06-26",
     "2026-06-27",
     "2026-06-28",
-    "2026-06-29"
+    "2026-06-29",
+    "2026-06-30"
   ],
-  "total_events": 2313,
-  "latest_collection": "2026-06-29",
+  "total_events": 2296,
+  "latest_collection": "2026-06-30",
   "projected_source_totals": {
-    "BEACON": 2158,
+    "BEACON": 2141,
     "CIDRAP": 129,
     "WOAH": 18,
     "ECDC": 3,
@@ -266,7 +268,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.84,
+      "latency_seconds": 0.81,
       "error": null
     },
     {
@@ -280,14 +282,14 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.59,
+      "latency_seconds": 0.88,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.95,
+      "latency_seconds": 2.85,
       "error": null
     },
     {
@@ -301,24 +303,22 @@
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.69,
+      "latency_seconds": 0.58,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-06-29",
-    "previous_collection": "2026-06-28",
-    "new_count": 67,
-    "changed_count": 18,
-    "retired_count": 63,
+    "latest_collection": "2026-06-30",
+    "previous_collection": "2026-06-29",
+    "new_count": 52,
+    "changed_count": 19,
+    "retired_count": 51,
     "new_by_source": {
-      "BEACON": 61,
-      "CIDRAP": 5,
-      "WOAH": 1
+      "BEACON": 52
     },
     "changed_by_source": {
+      "CIDRAP": 3,
       "BEACON": 14,
-      "CIDRAP": 2,
       "WOAH": 1,
       "WHO_DON": 1
     }
