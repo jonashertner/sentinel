@@ -127,7 +127,8 @@
     "2026-07-03",
     "2026-07-04",
     "2026-07-05",
-    "2026-07-06"
+    "2026-07-06",
+    "2026-07-07"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -257,12 +258,13 @@
     "2026-07-03",
     "2026-07-04",
     "2026-07-05",
-    "2026-07-06"
+    "2026-07-06",
+    "2026-07-07"
   ],
-  "total_events": 2322,
-  "latest_collection": "2026-07-06",
+  "total_events": 2314,
+  "latest_collection": "2026-07-07",
   "projected_source_totals": {
-    "BEACON": 2180,
+    "BEACON": 2172,
     "WHO_DON": 7,
     "CIDRAP": 122,
     "ECDC": 3,
@@ -280,7 +282,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.54,
+      "latency_seconds": 1.24,
       "error": null
     },
     {
@@ -294,47 +296,44 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.2,
+      "latency_seconds": 0.11,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.81,
+      "latency_seconds": 2.74,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 2.73,
+      "latency_seconds": 2.71,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 2.07,
+      "latency_seconds": 0.28,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-07-06",
-    "previous_collection": "2026-07-05",
-    "new_count": 91,
-    "changed_count": 12,
-    "retired_count": 89,
+    "latest_collection": "2026-07-07",
+    "previous_collection": "2026-07-06",
+    "new_count": 54,
+    "changed_count": 20,
+    "retired_count": 55,
     "new_by_source": {
-      "BEACON": 84,
-      "CIDRAP": 6,
-      "WOAH": 1
+      "BEACON": 54
     },
     "changed_by_source": {
-      "BEACON": 6,
-      "CIDRAP": 2,
+      "CIDRAP": 3,
+      "BEACON": 15,
       "WOAH": 1,
-      "ECDC": 2,
       "WHO_DON": 1
     }
   }
