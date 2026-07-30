@@ -150,7 +150,8 @@
     "2026-07-26",
     "2026-07-27",
     "2026-07-28",
-    "2026-07-29"
+    "2026-07-29",
+    "2026-07-30"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -303,16 +304,17 @@
     "2026-07-26",
     "2026-07-27",
     "2026-07-28",
-    "2026-07-29"
+    "2026-07-29",
+    "2026-07-30"
   ],
-  "total_events": 2318,
-  "latest_collection": "2026-07-29",
+  "total_events": 2292,
+  "latest_collection": "2026-07-30",
   "projected_source_totals": {
-    "BEACON": 2173,
-    "CIDRAP": 125,
-    "WOAH": 13,
+    "BEACON": 2153,
+    "CIDRAP": 120,
     "WHO_DON": 3,
-    "ECDC": 4
+    "ECDC": 4,
+    "WOAH": 12
   },
   "collector_statuses": [
     {
@@ -326,7 +328,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.54,
+      "latency_seconds": 1.08,
       "error": null
     },
     {
@@ -340,45 +342,44 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.3,
+      "latency_seconds": 0.28,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.78,
+      "latency_seconds": 4.32,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 13.7,
+      "latency_seconds": 7.84,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.69,
+      "latency_seconds": 0.82,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-07-29",
-    "previous_collection": "2026-07-28",
-    "new_count": 100,
-    "changed_count": 5,
-    "retired_count": 97,
+    "latest_collection": "2026-07-30",
+    "previous_collection": "2026-07-29",
+    "new_count": 62,
+    "changed_count": 12,
+    "retired_count": 70,
     "new_by_source": {
-      "BEACON": 94,
-      "CIDRAP": 5,
-      "WOAH": 1
+      "BEACON": 62
     },
     "changed_by_source": {
-      "BEACON": 4,
-      "WHO_DON": 1
+      "BEACON": 10,
+      "WHO_DON": 1,
+      "WOAH": 1
     }
   }
 }
