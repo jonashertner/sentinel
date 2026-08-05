@@ -156,7 +156,8 @@
     "2026-08-01",
     "2026-08-02",
     "2026-08-03",
-    "2026-08-04"
+    "2026-08-04",
+    "2026-08-05"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -315,12 +316,13 @@
     "2026-08-01",
     "2026-08-02",
     "2026-08-03",
-    "2026-08-04"
+    "2026-08-04",
+    "2026-08-05"
   ],
-  "total_events": 2347,
-  "latest_collection": "2026-08-04",
+  "total_events": 2364,
+  "latest_collection": "2026-08-05",
   "projected_source_totals": {
-    "BEACON": 2198,
+    "BEACON": 2215,
     "CIDRAP": 131,
     "WOAH": 13,
     "ECDC": 3,
@@ -338,7 +340,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.05,
+      "latency_seconds": 0.96,
       "error": null
     },
     {
@@ -352,45 +354,45 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.34,
+      "latency_seconds": 0.35,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 3.11,
+      "latency_seconds": 2.65,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 5.85,
+      "latency_seconds": 5.31,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.91,
+      "latency_seconds": 0.5,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-08-04",
-    "previous_collection": "2026-08-03",
-    "new_count": 107,
-    "changed_count": 3,
-    "retired_count": 110,
+    "latest_collection": "2026-08-05",
+    "previous_collection": "2026-08-04",
+    "new_count": 64,
+    "changed_count": 11,
+    "retired_count": 66,
     "new_by_source": {
-      "BEACON": 98,
-      "CIDRAP": 8,
+      "BEACON": 63,
       "WOAH": 1
     },
     "changed_by_source": {
-      "WHO_DON": 2,
-      "BEACON": 1
+      "BEACON": 9,
+      "WHO_DON": 1,
+      "CIDRAP": 1
     }
   }
 }
