@@ -10,7 +10,7 @@
     "source": "WHO_DON",
     "ok": true,
     "event_count": 40,
-    "latency_seconds": 0.78,
+    "latency_seconds": 6.94,
     "error": null
   },
   {
@@ -24,14 +24,14 @@
     "source": "ECDC",
     "ok": true,
     "event_count": 10,
-    "latency_seconds": 0.15,
+    "latency_seconds": 0.38,
     "error": null
   },
   {
     "source": "WOAH",
     "ok": true,
     "event_count": 30,
-    "latency_seconds": 3.4,
+    "latency_seconds": 3.34,
     "error": null
   },
   {
@@ -45,7 +45,7 @@
     "source": "CIDRAP",
     "ok": true,
     "event_count": 12,
-    "latency_seconds": 0.73,
+    "latency_seconds": 1.2,
     "error": null
   }
 ]
