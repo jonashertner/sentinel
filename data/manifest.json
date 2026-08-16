@@ -167,7 +167,8 @@
     "2026-08-12",
     "2026-08-13",
     "2026-08-14",
-    "2026-08-15"
+    "2026-08-15",
+    "2026-08-16"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -337,14 +338,15 @@
     "2026-08-12",
     "2026-08-13",
     "2026-08-14",
-    "2026-08-15"
+    "2026-08-15",
+    "2026-08-16"
   ],
-  "total_events": 2444,
-  "latest_collection": "2026-08-15",
+  "total_events": 2382,
+  "latest_collection": "2026-08-16",
   "projected_source_totals": {
-    "BEACON": 2286,
-    "CIDRAP": 134,
     "WHO_DON": 3,
+    "BEACON": 2230,
+    "CIDRAP": 128,
     "ECDC": 3,
     "WOAH": 18
   },
@@ -360,7 +362,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.73,
+      "latency_seconds": 0.9,
       "error": null
     },
     {
@@ -374,45 +376,43 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.16,
+      "latency_seconds": 0.42,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.93,
+      "latency_seconds": 3.94,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 5.28,
+      "latency_seconds": 4.61,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.77,
+      "latency_seconds": 0.58,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-08-15",
-    "previous_collection": "2026-08-14",
-    "new_count": 79,
-    "changed_count": 8,
-    "retired_count": 80,
+    "latest_collection": "2026-08-16",
+    "previous_collection": "2026-08-15",
+    "new_count": 39,
+    "changed_count": 19,
+    "retired_count": 37,
     "new_by_source": {
-      "BEACON": 78,
-      "WHO_DON": 1
+      "BEACON": 39
     },
     "changed_by_source": {
-      "BEACON": 6,
-      "WHO_DON": 1,
-      "CIDRAP": 1
+      "BEACON": 18,
+      "WHO_DON": 1
     }
   }
 }
