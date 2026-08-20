@@ -171,7 +171,8 @@
     "2026-08-16",
     "2026-08-17",
     "2026-08-18",
-    "2026-08-19"
+    "2026-08-19",
+    "2026-08-20"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -345,16 +346,17 @@
     "2026-08-16",
     "2026-08-17",
     "2026-08-18",
-    "2026-08-19"
+    "2026-08-19",
+    "2026-08-20"
   ],
-  "total_events": 2492,
-  "latest_collection": "2026-08-19",
+  "total_events": 2457,
+  "latest_collection": "2026-08-20",
   "projected_source_totals": {
-    "ECDC": 3,
-    "BEACON": 2329,
-    "CIDRAP": 139,
-    "WOAH": 19,
-    "WHO_DON": 2
+    "BEACON": 2301,
+    "CIDRAP": 135,
+    "WOAH": 18,
+    "WHO_DON": 2,
+    "ECDC": 1
   },
   "collector_statuses": [
     {
@@ -368,7 +370,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 0.65,
+      "latency_seconds": 1.7,
       "error": null
     },
     {
@@ -382,45 +384,43 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.42,
+      "latency_seconds": 0.35,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.96,
+      "latency_seconds": 2.78,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 5.22,
+      "latency_seconds": 5.0,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.56,
+      "latency_seconds": 0.94,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-08-19",
-    "previous_collection": "2026-08-18",
-    "new_count": 98,
-    "changed_count": 6,
-    "retired_count": 104,
+    "latest_collection": "2026-08-20",
+    "previous_collection": "2026-08-19",
+    "new_count": 43,
+    "changed_count": 20,
+    "retired_count": 47,
     "new_by_source": {
-      "BEACON": 90,
-      "CIDRAP": 6,
-      "WOAH": 2
+      "BEACON": 43
     },
     "changed_by_source": {
-      "BEACON": 5,
-      "CIDRAP": 1
+      "BEACON": 18,
+      "CIDRAP": 2
     }
   }
 }
