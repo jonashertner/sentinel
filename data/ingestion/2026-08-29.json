@@ -1,0 +1,52 @@
+{
+  "latest_collection": "2026-08-29",
+  "previous_collection": "2026-08-28",
+  "new_count": 8,
+  "changed_count": 16,
+  "retired_count": 8,
+  "new_event_ids": [
+    "0e13a0fa93b56a32",
+    "33d33161e6d2ea34",
+    "346b4f1b806e886e",
+    "56487a8c145748c6",
+    "6d3969912f35aa8e",
+    "abd95d59357e5498",
+    "d8aac695cd91afb9",
+    "ffefcd3889de2cf1"
+  ],
+  "changed_event_ids": [
+    "0e80353a0ed2359e",
+    "29d6ae4316ac725e",
+    "3552d20154c2c479",
+    "5733d78149b89175",
+    "5f5bd56f12745acd",
+    "611032bf47b5c5f7",
+    "716778bf9ea22fa5",
+    "79e7fa620afbaadc",
+    "82b287ea04f9ec5c",
+    "9c5f63669f74db9b",
+    "a4184f2fad7ce55b",
+    "ae7b43f1c23ddc87",
+    "c45e71fb1d93376f",
+    "f351e2a8f68fdb48",
+    "f93aa93d751c89e7",
+    "f9dcab3893a8d7ad"
+  ],
+  "retired_event_ids": [
+    "130dd69232d0b676",
+    "47964144431558df",
+    "4b542c1937fc6911",
+    "4cfb28abd3b36226",
+    "88c7ecf5ae32aa7b",
+    "891eda4fbab6b0e9",
+    "9e197554946522c5",
+    "d7f20214e135e779"
+  ],
+  "new_by_source": {
+    "BEACON": 8
+  },
+  "changed_by_source": {
+    "CIDRAP": 3,
+    "BEACON": 13
+  }
+}
