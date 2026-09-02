@@ -10,7 +10,7 @@
     "source": "WHO_DON",
     "ok": true,
     "event_count": 40,
-    "latency_seconds": 0.87,
+    "latency_seconds": 1.62,
     "error": null
   },
   {
@@ -24,28 +24,28 @@
     "source": "ECDC",
     "ok": true,
     "event_count": 10,
-    "latency_seconds": 0.27,
+    "latency_seconds": 0.46,
     "error": null
   },
   {
     "source": "WOAH",
     "ok": true,
     "event_count": 30,
-    "latency_seconds": 2.79,
+    "latency_seconds": 3.18,
     "error": null
   },
   {
     "source": "BEACON",
-    "ok": true,
-    "event_count": 120,
-    "latency_seconds": 5.86,
-    "error": null
+    "ok": false,
+    "event_count": 0,
+    "latency_seconds": 5.9,
+    "error": "Server error '502 Bad Gateway' for url 'https://www.healthmap.org/getAlerts.php'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
   },
   {
     "source": "CIDRAP",
     "ok": true,
     "event_count": 12,
-    "latency_seconds": 3.5,
+    "latency_seconds": 0.96,
     "error": null
   }
 ]
