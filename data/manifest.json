@@ -185,7 +185,8 @@
     "2026-08-30",
     "2026-08-31",
     "2026-09-01",
-    "2026-09-02"
+    "2026-09-02",
+    "2026-09-03"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -373,14 +374,15 @@
     "2026-08-30",
     "2026-08-31",
     "2026-09-01",
-    "2026-09-02"
+    "2026-09-02",
+    "2026-09-03"
   ],
-  "total_events": 2535,
-  "latest_collection": "2026-09-02",
+  "total_events": 2519,
+  "latest_collection": "2026-09-03",
   "projected_source_totals": {
-    "BEACON": 2362,
-    "CIDRAP": 148,
-    "WOAH": 20,
+    "BEACON": 2355,
+    "CIDRAP": 141,
+    "WOAH": 18,
     "ECDC": 3,
     "WHO_DON": 2
   },
@@ -396,7 +398,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.62,
+      "latency_seconds": 1.16,
       "error": null
     },
     {
@@ -410,41 +412,43 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.46,
+      "latency_seconds": 0.62,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 3.18,
+      "latency_seconds": 3.06,
       "error": null
     },
     {
       "source": "BEACON",
-      "ok": false,
-      "event_count": 0,
-      "latency_seconds": 5.9,
-      "error": "Server error '502 Bad Gateway' for url 'https://www.healthmap.org/getAlerts.php'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+      "ok": true,
+      "event_count": 120,
+      "latency_seconds": 5.92,
+      "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.96,
+      "latency_seconds": 0.79,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-09-02",
-    "previous_collection": "2026-09-01",
-    "new_count": 8,
-    "changed_count": 0,
-    "retired_count": 101,
+    "latest_collection": "2026-09-03",
+    "previous_collection": "2026-09-02",
+    "new_count": 88,
+    "changed_count": 2,
+    "retired_count": 0,
     "new_by_source": {
-      "CIDRAP": 7,
-      "WOAH": 1
+      "BEACON": 88
     },
-    "changed_by_source": {}
+    "changed_by_source": {
+      "WOAH": 1,
+      "CIDRAP": 1
+    }
   }
 }
