@@ -381,10 +381,10 @@
     "2026-09-04",
     "2026-09-05"
   ],
-  "total_events": 2501,
+  "total_events": 2428,
   "latest_collection": "2026-09-05",
   "projected_source_totals": {
-    "BEACON": 2337,
+    "BEACON": 2264,
     "WOAH": 17,
     "CIDRAP": 141,
     "ECDC": 4,
@@ -402,7 +402,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.18,
+      "latency_seconds": 1.39,
       "error": null
     },
     {
@@ -416,43 +416,40 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.57,
+      "latency_seconds": 0.42,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 2.86,
+      "latency_seconds": 2.8,
       "error": null
     },
     {
       "source": "BEACON",
-      "ok": true,
-      "event_count": 120,
-      "latency_seconds": 5.49,
-      "error": null
+      "ok": false,
+      "event_count": 0,
+      "latency_seconds": 0.07,
+      "error": "Server error '502 Bad Gateway' for url 'https://www.healthmap.org/getAlerts.php'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.63,
+      "latency_seconds": 1.01,
       "error": null
     }
   ],
   "ingestion_delta": {
     "latest_collection": "2026-09-05",
     "previous_collection": "2026-09-04",
-    "new_count": 74,
-    "changed_count": 11,
-    "retired_count": 72,
-    "new_by_source": {
-      "BEACON": 74
-    },
+    "new_count": 0,
+    "changed_count": 3,
+    "retired_count": 101,
+    "new_by_source": {},
     "changed_by_source": {
-      "CIDRAP": 2,
-      "BEACON": 9
+      "CIDRAP": 3
     }
   }
 }
