@@ -188,7 +188,8 @@
     "2026-09-02",
     "2026-09-03",
     "2026-09-04",
-    "2026-09-05"
+    "2026-09-05",
+    "2026-09-06"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -379,15 +380,16 @@
     "2026-09-02",
     "2026-09-03",
     "2026-09-04",
-    "2026-09-05"
+    "2026-09-05",
+    "2026-09-06"
   ],
-  "total_events": 2428,
-  "latest_collection": "2026-09-05",
+  "total_events": 2444,
+  "latest_collection": "2026-09-06",
   "projected_source_totals": {
-    "BEACON": 2264,
-    "WOAH": 17,
-    "CIDRAP": 141,
+    "BEACON": 2288,
+    "CIDRAP": 135,
     "ECDC": 4,
+    "WOAH": 15,
     "WHO_DON": 2
   },
   "collector_statuses": [
@@ -402,7 +404,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.39,
+      "latency_seconds": 1.14,
       "error": null
     },
     {
@@ -416,7 +418,7 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.42,
+      "latency_seconds": 0.39,
       "error": null
     },
     {
@@ -428,26 +430,28 @@
     },
     {
       "source": "BEACON",
-      "ok": false,
-      "event_count": 0,
-      "latency_seconds": 0.07,
-      "error": "Server error '502 Bad Gateway' for url 'https://www.healthmap.org/getAlerts.php'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+      "ok": true,
+      "event_count": 120,
+      "latency_seconds": 5.19,
+      "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 1.01,
+      "latency_seconds": 0.31,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-09-05",
-    "previous_collection": "2026-09-04",
-    "new_count": 0,
+    "latest_collection": "2026-09-06",
+    "previous_collection": "2026-09-05",
+    "new_count": 103,
     "changed_count": 3,
-    "retired_count": 101,
-    "new_by_source": {},
+    "retired_count": 0,
+    "new_by_source": {
+      "BEACON": 103
+    },
     "changed_by_source": {
       "CIDRAP": 3
     }
