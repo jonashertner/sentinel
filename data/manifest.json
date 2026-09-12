@@ -194,7 +194,8 @@
     "2026-09-08",
     "2026-09-09",
     "2026-09-10",
-    "2026-09-11"
+    "2026-09-11",
+    "2026-09-12"
   ],
   "situation_ids": [
     "sit-001-h5n1-europe",
@@ -391,15 +392,16 @@
     "2026-09-08",
     "2026-09-09",
     "2026-09-10",
-    "2026-09-11"
+    "2026-09-11",
+    "2026-09-12"
   ],
-  "total_events": 2470,
-  "latest_collection": "2026-09-11",
+  "total_events": 2423,
+  "latest_collection": "2026-09-12",
   "projected_source_totals": {
-    "BEACON": 2304,
-    "CIDRAP": 139,
+    "BEACON": 2266,
+    "CIDRAP": 131,
     "WHO_DON": 3,
-    "WOAH": 20,
+    "WOAH": 19,
     "ECDC": 4
   },
   "collector_statuses": [
@@ -414,7 +416,7 @@
       "source": "WHO_DON",
       "ok": true,
       "event_count": 40,
-      "latency_seconds": 1.25,
+      "latency_seconds": 3.24,
       "error": null
     },
     {
@@ -428,46 +430,43 @@
       "source": "ECDC",
       "ok": true,
       "event_count": 10,
-      "latency_seconds": 0.7,
+      "latency_seconds": 0.32,
       "error": null
     },
     {
       "source": "WOAH",
       "ok": true,
       "event_count": 30,
-      "latency_seconds": 4.88,
+      "latency_seconds": 3.19,
       "error": null
     },
     {
       "source": "BEACON",
       "ok": true,
       "event_count": 120,
-      "latency_seconds": 5.74,
+      "latency_seconds": 5.26,
       "error": null
     },
     {
       "source": "CIDRAP",
       "ok": true,
       "event_count": 12,
-      "latency_seconds": 0.76,
+      "latency_seconds": 0.68,
       "error": null
     }
   ],
   "ingestion_delta": {
-    "latest_collection": "2026-09-11",
-    "previous_collection": "2026-09-10",
-    "new_count": 94,
-    "changed_count": 6,
-    "retired_count": 91,
+    "latest_collection": "2026-09-12",
+    "previous_collection": "2026-09-11",
+    "new_count": 38,
+    "changed_count": 19,
+    "retired_count": 41,
     "new_by_source": {
-      "BEACON": 82,
-      "CIDRAP": 6,
-      "WOAH": 5,
-      "ECDC": 1
+      "BEACON": 38
     },
     "changed_by_source": {
-      "CIDRAP": 2,
-      "BEACON": 4
+      "BEACON": 16,
+      "CIDRAP": 3
     }
   }
 }
